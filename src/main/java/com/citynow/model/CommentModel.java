@@ -2,10 +2,10 @@ package com.citynow.model;
 
 import java.util.Date;
 
-public class Comment {
+public class CommentModel {
 
     private Long id;
-    private User user;
+    private UserModel user;
     private String content;
     private Date dateCreated;
 
@@ -17,11 +17,11 @@ public class Comment {
         this.id = id;
     }
 
-    public User getUser() {
+    public UserModel getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserModel user) {
         this.user = user;
     }
 

@@ -1,6 +1,6 @@
 package com.citynow.model;
 
-public class Role {
+public class RoleModel {
 
     private Long id;
     private String code;

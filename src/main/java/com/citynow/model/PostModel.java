@@ -1,11 +1,11 @@
 package com.citynow.model;
 
-import java.util.Date;
+import java.sql.Date;
 
-public class Post {
+public class PostModel {
 
     private Long id;
-    private User user;
+    private UserModel user;
     private Date dateModified;
     private Long upvote;
     private Long downvote;
@@ -23,11 +23,11 @@ public class Post {
         this.id = id;
     }
 
-    public User getUser() {
+    public UserModel getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserModel user) {
         this.user = user;
     }
 

@@ -1,20 +1,22 @@
 package com.citynow.model;
 
-import java.util.Date;
+import java.sql.Date;
 
-public class User {
+public class UserModel {
 
     private Long id;
     private String username;
     private String password;
     private String fullname;
     private String email;
-    private byte[] avatar;
+    private String avatar;
+    private byte[] avatarByte;
     private Date dateOfBirth;
     private String phone;
     private Long quantityPost;
     private Long quantityUpvote;
     private int status;
+    private RoleModel role = new RoleModel();
 
     public Long getId() {
         return id;
@@ -56,11 +58,11 @@ public class User {
         this.email = email;
     }
 
-    public byte[] getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(byte[] avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
@@ -102,5 +104,21 @@ public class User {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public RoleModel getRole() {
+        return role;
+    }
+
+    public void setRole(RoleModel role) {
+        this.role = role;
+    }
+
+    public byte[] getAvatarByte() {
+        return avatarByte;
+    }
+
+    public void setAvatarByte(byte[] avatarByte) {
+        this.avatarByte = avatarByte;
     }
 }
