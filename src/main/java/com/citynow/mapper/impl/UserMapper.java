@@ -19,13 +19,26 @@ public class UserMapper implements Mapper<UserModel> {
             user.setPassword(rs.getString("password"));
             user.setFullname(rs.getString("fullname"));
             user.setEmail(rs.getString("email"));
-            user.setAvatar(ConvertUtil.convertBytesToString(rs.getBytes("avatar")));
+            if(rs.getBytes("avatar") == null){
+
+            }else{
+                user.setAvatar(ConvertUtil.convertBytesToString(rs.getBytes("avatar")));
+            }
             user.setDateOfBirth(rs.getDate("dateofbirth"));
             user.setPhone(rs.getString("phone"));
             user.setQuantityPost(rs.getLong("quantitypost"));
             user.setQuantityUpvote(rs.getLong("quantityupvote"));
             user.setStatus(rs.getInt("status"));
+        /*    if(rs.getLong("quantitypost") == null){
 
+            }else{
+                user.setQuantityPost(rs.getLong("quantitypost"));
+            }
+            if(rs.getLong("quantityupvote") == null){
+
+            }else{
+                user.setQuantityUpvote(rs.getLong("quantityupvote"));
+            }*/
             try {
                 RoleModel role = new RoleModel();
                 role.setId(rs.getLong("role_id"));
