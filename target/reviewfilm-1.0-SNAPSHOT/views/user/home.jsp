@@ -35,8 +35,11 @@
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">Profile</a>
-                                    <a class="dropdown-item" href="#">Your posts</a>
+                                    <c:url var="profile" value="/profile">
+                                        <c:param name="id" value="${sessionScope.LOGIN.id}"/>
+                                    </c:url>
+                                    <a class="dropdown-item" href="${profile}">Profile</a>
+                                    <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your posts</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
                                 </div>
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -107,7 +110,7 @@
                             </div>
                             <div class="content-collapse__item--right">
                                 <div class="content-collapse__item--title">
-                                    <span>#1 </span><span>${item.title}</span>
+                                    <span>#${item.id} </span><span>${item.title}</span>
                                 </div>
                                 <div class="content-collapse__item--subtitle">
                                     <p><span class="u-bold">Date Modified:</span> <span>${item.dateModified}</span></p>

@@ -2,7 +2,7 @@ package com.citynow.dao;
 
 import com.citynow.model.UserModel;
 
-public interface UserDao extends Dao<UserModel> {
+public interface UserDao {
 
     UserModel findByUserNameAndPassword(String userName, String password);
     UserModel findOne(Long id);

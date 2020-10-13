@@ -4,7 +4,7 @@ import com.citynow.model.CommentModel;
 
 import java.util.List;
 
-public interface CommentDao extends Dao<CommentModel> {
+public interface CommentDao {
 
     Long save(CommentModel commentModel);
     CommentModel findOne(Long id);

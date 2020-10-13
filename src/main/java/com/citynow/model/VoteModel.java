@@ -5,6 +5,7 @@ public class VoteModel {
     private Long id;
     private UserModel user;
     private PostModel post;
+    private int actionVote;
 
     public Long getId() {
         return id;
@@ -28,5 +29,13 @@ public class VoteModel {
 
     public void setPost(PostModel post) {
         this.post = post;
+    }
+
+    public int getActionVote() {
+        return actionVote;
+    }
+
+    public void setActionVote(int actionVote) {
+        this.actionVote = actionVote;
     }
 }

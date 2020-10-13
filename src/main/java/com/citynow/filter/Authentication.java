@@ -33,7 +33,7 @@ public class Authentication implements Filter {
             } else {
                 response.sendRedirect(request.getContextPath()+"/login");
             }
-        } else if (url.startsWith("/create-post")) {
+        } else if (url.startsWith("/create-post") || url.startsWith("/list-posts") || url.startsWith("/profile")) {
             if (model != null){
                 chain.doFilter(servletRequest, servletResponse);
             }else{

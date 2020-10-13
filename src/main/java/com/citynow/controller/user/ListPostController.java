@@ -1,5 +1,12 @@
 package com.citynow.controller.user;
 
+import com.citynow.model.UserModel;
+import com.citynow.service.PostService;
+import com.citynow.service.VoteService;
+import com.citynow.service.impl.PostServiceImpl;
+import com.citynow.service.impl.VoteServiceImpl;
+import com.citynow.utils.SessionUtil;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,12 +17,19 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/list-posts"})
 public class ListPostController extends HttpServlet {
 
+    PostService postService = new PostServiceImpl();
+
+    VoteService voteService = new VoteServiceImpl();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String message = req.getParameter("message");
         if (message != null) {
             req.setAttribute("message", message);
         }
+        UserModel model = (UserModel) SessionUtil.getInstance().getValue(req, "LOGIN");
+        req.setAttribute("yourposts", postService.findAllByUserId(model.getId()));
+        req.setAttribute("postsinteract", voteService.findAllByUserId(model.getId()));
         req.getRequestDispatcher("/views/user/listPost.jsp").forward(req,resp);
     }
 }

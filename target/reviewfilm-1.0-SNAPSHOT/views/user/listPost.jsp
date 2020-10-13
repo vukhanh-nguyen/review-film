@@ -36,8 +36,11 @@
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">Profile</a>
-                                    <a class="dropdown-item" href="#">Your posts</a>
+                                    <c:url var="profile" value="/profile">
+                                        <c:param name="id" value="${sessionScope.LOGIN.id}"/>
+                                    </c:url>
+                                    <a class="dropdown-item" href="#${profile}">Profile</a>
+                                    <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your posts</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
                                 </div>
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
@@ -77,56 +80,48 @@
         </c:if>
     </c:if>
     <div class="row mb-5">
-        <a href="index.html" class="cbutton cbutton--blue cbutton--big">Danh sách bài viết</a>
+        <a href="<c:url value="/home"/>" class="cbutton cbutton--blue cbutton--big">List Posts</a>
     </div>
-    <p class="heading-primary">Danh sách hoạt động</p>
+    <p class="heading-primary">Your Activity</p>
     <div class="information">
         <div class="row">
             <div class="col-12">
                 <div class="tabs">
                     <input id="tab-1" type="radio" name="radio-set" class="tab-selector-1" checked="checked" />
-                    <label for="tab-1" class="tab-label-1">Bài viết cá nhân</label>
-
+                    <label for="tab-1" class="tab-label-1">Your Posts</label>
                     <input id="tab-2" type="radio" name="radio-set" class="tab-selector-2" />
-                    <label for="tab-2" class="tab-label-2">Bài viết đã tương tác</label>
+                    <label for="tab-2" class="tab-label-2">Posts Interacted</label>
                     <div class="clear-shadow"></div>
                     <div class="content">
                         <div class="content-1">
                             <table class="table table-bordered u-center-text">
                                 <thead>
                                 <tr class="d-flex table-secondary">
-                                    <th class="col-1" scope="col">ID</th>
-                                    <th class="col-7" scope="col">Tiêu đề</th>
-                                    <th class="col-2" scope="col">Trạng thái</th>
-                                    <th class="col-2" scope="col"> Chỉnh sửa
-                                    </th>
+                                    <th class="col-1" scope="col">ID Post</th>
+                                    <th class="col-7" scope="col">Title</th>
+                                    <th class="col-2" scope="col">Status</th>
+                                    <th class="col-2" scope="col">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="d-flex">
-                                    <th class="col-1" scope="row">1</th>
-                                    <td class="col-7">Mark</td>
-                                    <td class="col-2">Otto</td>
-                                    <td class="col-2">
-                                        <a href="index.html" class="cbutton cbutton--blue cbutton--small">Chỉnh sửa</a>
-                                    </td>
-                                </tr>
-                                <tr class="d-flex">
-                                    <th class="col-1" scope="row">2</th>
-                                    <td class="col-7">Jacob</td>
-                                    <td class="col-2">Thornton</td>
-                                    <td class="col-2">
-                                        <a href="index.html" class="cbutton cbutton--blue cbutton--small">Chỉnh sửa</a>
-                                    </td>
-                                </tr>
-                                <tr class="d-flex">
-                                    <th class="col-1" scope="row">3</th>
-                                    <td class="col-7">Larry the Bird</td>
-                                    <td class="col-2">@twitter</td>
-                                    <td class="col-2">
-                                        <a href="index.html" class="cbutton cbutton--blue cbutton--small">Chỉnh sửa</a>
-                                    </td>
-                                </tr>
+                                <c:forEach var="item" items="${yourposts}">
+                                    <tr class="d-flex">
+                                        <th class="col-1">${item.id}</th>
+                                        <td class="col-7">${item.title}</td>
+                                        <c:if test="${item.status == 1}">
+                                            <td class="col-2 u-color-green u-bold">Approved</td>
+                                        </c:if>
+                                        <c:if test="${item.status == 0}">
+                                            <td class="col-2 u-color-yellow u-bold">Pending</td>
+                                        </c:if>
+                                        <td class="col-2">
+                                            <c:url var="detailPost" value="/detail-post">
+                                                <c:param name="id" value="${item.id}"/>
+                                            </c:url>
+                                            <a href="${detailPost}" class="cbutton cbutton--blue cbutton--small">EDIT</a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
@@ -134,38 +129,26 @@
                             <table class="table table-bordered u-center-text">
                                 <thead>
                                 <tr class="d-flex table-secondary">
-                                    <th class="col-1" scope="col">ID</th>
-                                    <th class="col-7" scope="col">Tiêu đề</th>
-                                    <th class="col-2" scope="col">Trạng thái</th>
-                                    <th class="col-2" scope="col"> Chỉnh sửa
-                                    </th>
+                                    <th class="col-1" scope="col">ID Post</th>
+                                    <th class="col-7" scope="col">Title</th>
+                                    <th class="col-2" scope="col">Vote</th>
+                                    <th class="col-2" scope="col">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="d-flex">
-                                    <th class="col-1" scope="row">1</th>
-                                    <td class="col-7">Mark</td>
-                                    <td class="col-2">Otto</td>
-                                    <td class="col-2">
-                                        <a href="index.html" class="cbutton cbutton--blue cbutton--small">Chỉnh sửa</a>
-                                    </td>
-                                </tr>
-                                <tr class="d-flex">
-                                    <th class="col-1" scope="row">2</th>
-                                    <td class="col-7">Jacob</td>
-                                    <td class="col-2">Thornton</td>
-                                    <td class="col-2">
-                                        <a href="index.html" class="cbutton cbutton--blue cbutton--small">Chỉnh sửa</a>
-                                    </td>
-                                </tr>
-                                <tr class="d-flex">
-                                    <th class="col-1" scope="row">3</th>
-                                    <td class="col-7">Larry the Bird</td>
-                                    <td class="col-2">@twitter</td>
-                                    <td class="col-2">
-                                        <a href="index.html" class="cbutton cbutton--blue cbutton--small">Chỉnh sửa</a>
-                                    </td>
-                                </tr>
+                                <c:forEach var="item" items="${postsinteract}">
+                                    <tr class="d-flex">
+                                        <th class="col-1">${item.post.id}</th>
+                                        <td class="col-7">${item.post.title}</td>
+                                        <td class="col-2">${item.actionvote}</td>
+                                        <td class="col-2">
+                                            <c:url var="detailPost" value="/detail-post">
+                                                <c:param name="id" value="${item.post.id}"/>
+                                            </c:url>
+                                            <a href="${detailPost}" class="cbutton cbutton--blue cbutton--small">VIEW</a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>

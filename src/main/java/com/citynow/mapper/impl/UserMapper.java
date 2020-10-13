@@ -29,16 +29,6 @@ public class UserMapper implements Mapper<UserModel> {
             user.setQuantityPost(rs.getLong("quantitypost"));
             user.setQuantityUpvote(rs.getLong("quantityupvote"));
             user.setStatus(rs.getInt("status"));
-        /*    if(rs.getLong("quantitypost") == null){
-
-            }else{
-                user.setQuantityPost(rs.getLong("quantitypost"));
-            }
-            if(rs.getLong("quantityupvote") == null){
-
-            }else{
-                user.setQuantityUpvote(rs.getLong("quantityupvote"));
-            }*/
             try {
                 RoleModel role = new RoleModel();
                 role.setId(rs.getLong("role_id"));
