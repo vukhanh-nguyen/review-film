@@ -14,6 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Post - Review Film</title>
     <link href="<c:url value='/css/style.css'/>" rel="stylesheet">
+    <link rel="shortcut icon" href="<c:url value="/images/logo.ico"/>"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -41,8 +42,8 @@
                                     <c:url var="profile" value="/profile">
                                         <c:param name="id" value="${sessionScope.LOGIN.id}"/>
                                     </c:url>
-                                    <a class="dropdown-item" href="#${profile}">Profile</a>
-                                    <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your posts</a>
+                                    <a class="dropdown-item" href="${profile}">Profile</a>
+                                    <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
                                 </div>
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -79,9 +80,9 @@
                     ${post.user.fullname}
                 </div>
                 <div class="box-avatar__action">
-                    <p><span class="u-bold">Lượt post:</span> <span class="u-color-blue">${post.user.quantityPost}</span>
+                    <p><span class="u-bold">Total Posts:</span> <span class="u-color-blue">${post.user.quantityPost}</span>
                     </p>
-                    <p><span class="u-bold">Lượt vote:</span> <span class="u-color-green">${post.user.quantityUpvote}</span>
+                    <p><span class="u-bold">Total Likes:</span> <span class="u-color-green">${post.user.quantityUpvote}</span>
                     </p>
                 </div>
             </div>
@@ -117,9 +118,9 @@
                 </div>
                 <div class="box-detail-post__row">
                     <div class="box-detail-post__row--left">
-                        <p><span class="u-bold">Lượt like:</span> <span class="u-color-green">${post.upvote}</span>
+                        <p><span class="u-bold">Like:</span> <span class="u-color-green">${post.upvote}</span>
                         </p>
-                        <p><span class="u-bold">Lượt dislike:</span> <span class="u-color-red">${post.downvote}</span>
+                        <p><span class="u-bold">Dislike:</span> <span class="u-color-red">${post.downvote}</span>
                         </p>
                     </div>
                     <div class="box-detail-post__row--right">

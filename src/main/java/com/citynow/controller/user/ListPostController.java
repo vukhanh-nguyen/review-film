@@ -1,8 +1,8 @@
 package com.citynow.controller.user;
 
 import com.citynow.model.UserModel;
-import com.citynow.service.PostService;
-import com.citynow.service.VoteService;
+import com.citynow.service.IPostService;
+import com.citynow.service.IVoteService;
 import com.citynow.service.impl.PostServiceImpl;
 import com.citynow.service.impl.VoteServiceImpl;
 import com.citynow.utils.SessionUtil;
@@ -17,9 +17,9 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/list-posts"})
 public class ListPostController extends HttpServlet {
 
-    PostService postService = new PostServiceImpl();
+    IPostService postService = new PostServiceImpl();
 
-    VoteService voteService = new VoteServiceImpl();
+    IVoteService voteService = new VoteServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

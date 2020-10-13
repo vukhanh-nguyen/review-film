@@ -1,13 +1,13 @@
 package com.citynow.dao.impl;
 
-import com.citynow.dao.UserDao;
+import com.citynow.dao.IUserDao;
 import com.citynow.mapper.impl.UserMapper;
 import com.citynow.model.UserModel;
 import com.citynow.utils.ConvertUtil;
 
 import java.util.List;
 
-public class UserDaoImpl extends AbstractDao<UserModel> implements UserDao {
+public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
 
     @Override
     public UserModel findByUserNameAndPassword(String userName, String password) {
@@ -50,5 +50,11 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements UserDao {
                 userModel.getRole().getId());
     }
 
+    @Override
+    public List<UserModel> findAll() {
+        StringBuilder sql = new StringBuilder("SELECT * ");
+        sql.append(" FROM USER WHERE role_id = 2");
+        return query(sql.toString(), new UserMapper());
+    }
 
 }

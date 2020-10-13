@@ -14,6 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Management - Review Film</title>
     <link href="<c:url value='/css/style.css'/>" rel="stylesheet">
+    <link rel="shortcut icon" href="<c:url value="/images/logo.ico"/>" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -40,8 +41,8 @@
                                     <c:url var="profile" value="/profile">
                                         <c:param name="id" value="${sessionScope.LOGIN.id}"/>
                                     </c:url>
-                                    <a class="dropdown-item" href="#${profile}">Profile</a>
-                                    <a class="dropdown-item" href="#"><c:url value="/list-posts"/></a>
+                                    <a class="dropdown-item" href="${profile}">Profile</a>
+                                    <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
                                 </div>
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -87,34 +88,28 @@
                                     <th class="col-1" scope="col">ID</th>
                                     <th class="col-7" scope="col">Title</th>
                                     <th class="col-2" scope="col">Status</th>
-                                    <th class="col-2" scope="col">Edit</th>
+                                    <th class="col-2" scope="col">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="d-flex">
-                                    <th class="col-1" scope="row">1</th>
-                                    <td class="col-7">Mark</td>
-                                    <td class="col-2">Otto</td>
-                                    <td class="col-2">
-                                        <a href="index.html" class="cbutton cbutton--blue cbutton--small">Chỉnh sửa</a>
-                                    </td>
-                                </tr>
-                                <tr class="d-flex">
-                                    <th class="col-1" scope="row">2</th>
-                                    <td class="col-7">Jacob</td>
-                                    <td class="col-2">Thornton</td>
-                                    <td class="col-2">
-                                        <a href="index.html" class="cbutton cbutton--blue cbutton--small">Chỉnh sửa</a>
-                                    </td>
-                                </tr>
-                                <tr class="d-flex">
-                                    <th class="col-1" scope="row">3</th>
-                                    <td class="col-7">Larry the Bird</td>
-                                    <td class="col-2">@twitter</td>
-                                    <td class="col-2">
-                                        <a href="index.html" class="cbutton cbutton--blue cbutton--small">Chỉnh sửa</a>
-                                    </td>
-                                </tr>
+                                <c:forEach var="item" items="${posts}">
+                                    <tr class="d-flex">
+                                        <th class="col-1">${item.id}</th>
+                                        <td class="col-7">${item.title}</td>
+                                        <c:if test="${item.status == 1}">
+                                            <td class="col-2 u-color-green u-bold">Approved</td>
+                                        </c:if>
+                                        <c:if test="${item.status == 0}">
+                                            <td class="col-2 u-color-yellow u-bold">Pending</td>
+                                        </c:if>
+                                        <td class="col-2">
+                                            <c:url var="detailPost" value="/detail-post">
+                                                <c:param name="id" value="${item.id}"/>
+                                            </c:url>
+                                            <a href="${detailPost}" class="cbutton cbutton--blue cbutton--small">VIEW</a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
@@ -125,35 +120,31 @@
                                     <th class="col-1" scope="col">Username</th>
                                     <th class="col-7" scope="col">Fullname</th>
                                     <th class="col-2" scope="col">Status</th>
-                                    <th class="col-2" scope="col">Edit
-                                    </th>
+                                    <th class="col-2" scope="col">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="d-flex">
-                                    <th class="col-1" scope="row">1</th>
-                                    <td class="col-7">Mark</td>
-                                    <td class="col-2">Otto</td>
-                                    <td class="col-2">
-                                        <a href="index.html" class="cbutton cbutton--blue cbutton--small">Chỉnh sửa</a>
-                                    </td>
-                                </tr>
-                                <tr class="d-flex">
-                                    <th class="col-1" scope="row">2</th>
-                                    <td class="col-7">Jacob</td>
-                                    <td class="col-2">Thornton</td>
-                                    <td class="col-2">
-                                        <a href="index.html" class="cbutton cbutton--blue cbutton--small">Chỉnh sửa</a>
-                                    </td>
-                                </tr>
-                                <tr class="d-flex">
-                                    <th class="col-1" scope="row">3</th>
-                                    <td class="col-7">Larry the Bird</td>
-                                    <td class="col-2">@twitter</td>
-                                    <td class="col-2">
-                                        <a href="index.html" class="cbutton cbutton--blue cbutton--small">Chỉnh sửa</a>
-                                    </td>
-                                </tr>
+                                <c:forEach var="item" items="${users}">
+                                    <tr class="d-flex">
+                                        <th class="col-1">${item.username}</th>
+                                        <td class="col-7">${item.fullname}</td>
+                                        <c:if test="${item.status == 1}">
+                                            <td class="col-2 u-color-green u-bold">Normal</td>
+                                        </c:if>
+                                        <c:if test="${item.status == 0}">
+                                            <td class="col-2 u-color-yellow u-bold">Block</td>
+                                        </c:if>
+                                        <c:if test="${item.status == -1}">
+                                            <td class="col-2 u-color-red u-bold">Ban</td>
+                                        </c:if>
+                                        <td class="col-2">
+                                            <c:url var="profile" value="/profile">
+                                                <c:param name="id" value="${item.id}"/>
+                                            </c:url>
+                                            <a href="${profile}" class="cbutton cbutton--blue cbutton--small">VIEW</a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>

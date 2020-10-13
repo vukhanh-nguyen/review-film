@@ -1,13 +1,13 @@
 package com.citynow.mapper.impl;
 
-import com.citynow.mapper.Mapper;
+import com.citynow.mapper.IMapper;
 import com.citynow.model.PostModel;
 import com.citynow.model.UserModel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class PostMapper implements Mapper<PostModel> {
+public class PostMapper implements IMapper<PostModel> {
 
     public PostModel map(ResultSet rs) {
         PostModel postModel = new PostModel();

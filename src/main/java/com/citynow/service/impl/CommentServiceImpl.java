@@ -1,15 +1,15 @@
 package com.citynow.service.impl;
 
-import com.citynow.dao.CommentDao;
+import com.citynow.dao.ICommentDao;
 import com.citynow.dao.impl.CommentDaoImpl;
 import com.citynow.model.CommentModel;
-import com.citynow.service.CommentService;
+import com.citynow.service.ICommentService;
 
 import java.util.List;
 
-public class CommentServiceImpl implements CommentService {
+public class CommentServiceImpl implements ICommentService {
 
-    CommentDao commentDao = new CommentDaoImpl();
+    ICommentDao commentDao = new CommentDaoImpl();
 
     @Override
     public List<CommentModel> findAll() {

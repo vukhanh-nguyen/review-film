@@ -1,14 +1,14 @@
 package com.citynow.dao.impl;
 
-import com.citynow.dao.Dao;
-import com.citynow.mapper.Mapper;
+import com.citynow.dao.IDao;
+import com.citynow.mapper.IMapper;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AbstractDao<T> implements Dao<T> {
+public class AbstractDao<T> implements IDao<T> {
 
     ResourceBundle resource = ResourceBundle.getBundle("database");
 
@@ -18,10 +18,6 @@ public class AbstractDao<T> implements Dao<T> {
             String url = resource.getString("url");
             String user = resource.getString("user");
             String password = resource.getString("password");
-          /*  Class.forName("com.mysql.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/reviewfilm";
-            String user = "root";
-            String password = "robber1965";*/
             return DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             return null;
@@ -52,7 +48,7 @@ public class AbstractDao<T> implements Dao<T> {
     }
 
     @Override
-    public <T> List<T> query(String sql, Mapper<T> mapper, Object... parameters) {
+    public <T> List<T> query(String sql, IMapper<T> mapper, Object... parameters) {
         List<T> results = new ArrayList<>();
         Connection connection = null;
         PreparedStatement statement = null;

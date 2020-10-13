@@ -1,12 +1,12 @@
 package com.citynow.dao.impl;
 
-import com.citynow.dao.RoleDao;
+import com.citynow.dao.IRoleDao;
 import com.citynow.mapper.impl.RoleMapper;
 import com.citynow.model.RoleModel;
 
 import java.util.List;
 
-public class RoleDaoImpl extends AbstractDao<RoleModel> implements RoleDao {
+public class RoleDaoImpl extends AbstractDao<RoleModel> implements IRoleDao {
 
 
     @Override

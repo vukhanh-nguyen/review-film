@@ -1,7 +1,7 @@
 package com.citynow.controller.user;
 
 import com.citynow.model.UserModel;
-import com.citynow.service.UserService;
+import com.citynow.service.IUserService;
 import com.citynow.service.impl.UserServiceImpl;
 import com.citynow.utils.SessionUtil;
 
@@ -15,7 +15,7 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/login"})
 public class LoginController extends HttpServlet {
 
-    UserService userService = new UserServiceImpl();
+    IUserService userService = new UserServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

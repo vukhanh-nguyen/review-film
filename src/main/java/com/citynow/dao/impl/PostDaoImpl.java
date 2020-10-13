@@ -1,12 +1,12 @@
 package com.citynow.dao.impl;
 
-import com.citynow.dao.PostDao;
+import com.citynow.dao.IPostDao;
 import com.citynow.mapper.impl.PostMapper;
 import com.citynow.model.PostModel;
 
 import java.util.List;
 
-public class PostDaoImpl extends AbstractDao<PostModel> implements PostDao {
+public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
 
     @Override
     public PostModel findOne(Long id) {

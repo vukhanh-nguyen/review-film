@@ -1,13 +1,12 @@
 package com.citynow.dao.impl;
 
-import com.citynow.dao.CommentDao;
-import com.citynow.dao.Dao;
+import com.citynow.dao.ICommentDao;
 import com.citynow.mapper.impl.CommetMapper;
 import com.citynow.model.CommentModel;
 
 import java.util.List;
 
-public class CommentDaoImpl extends AbstractDao<CommentModel> implements CommentDao {
+public class CommentDaoImpl extends AbstractDao<CommentModel> implements ICommentDao {
 
     @Override
     public Long save(CommentModel commentModel){

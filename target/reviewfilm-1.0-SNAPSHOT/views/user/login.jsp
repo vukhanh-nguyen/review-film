@@ -14,6 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign in - Review Film</title>
     <link href="<c:url value='/css/style.css'/>" rel="stylesheet">
+    <link rel="shortcut icon" href="<c:url value="/images/logo.ico"/>" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -24,14 +25,19 @@
 <body>
 <div class="wrapper">
     <c:if test="${not empty message}">
-        <c:if test="${message == 'fail'}">
-            <div class="alert alert-danger alert-custom">
-                FAIL
-            </div>
-        </c:if>
         <c:if test="${message == 'success'}">
             <div class="alert alert-success alert-custom">
                 Success
+            </div>
+        </c:if>
+        <c:if test="${message == 'not_permission'}">
+            <div class="alert alert-danger alert-custom">
+                You are not permission to access this page
+            </div>
+        </c:if>
+        <c:if test="${message == 'not_login'}">
+            <div class="alert alert-danger alert-custom">
+                Please login to access this page
             </div>
         </c:if>
     </c:if>

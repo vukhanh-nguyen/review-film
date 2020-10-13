@@ -1,6 +1,6 @@
 package com.citynow.controller.user;
 
-import com.citynow.service.UserService;
+import com.citynow.service.IUserService;
 import com.citynow.service.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
@@ -13,7 +13,7 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/profile"})
 public class ProfileController extends HttpServlet {
 
-    UserService userService = new UserServiceImpl();
+    IUserService userService = new UserServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

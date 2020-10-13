@@ -2,6 +2,8 @@ package com.citynow.filter;
 
 
 import com.citynow.model.UserModel;
+import com.citynow.service.IPostService;
+import com.citynow.service.impl.PostServiceImpl;
 import com.citynow.utils.SessionUtil;
 
 import javax.servlet.*;
@@ -12,6 +14,9 @@ import java.io.IOException;
 
 @WebFilter({"/*"})
 public class Authentication implements Filter {
+
+    IPostService postService = new PostServiceImpl();
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -24,22 +29,70 @@ public class Authentication implements Filter {
         String url = request.getRequestURI();
         UserModel model = (UserModel) SessionUtil.getInstance().getValue(request, "LOGIN");
         if (url.startsWith("/admin")) {
+            // Filter account admin
             if (model != null) {
                 if (model.getRole().getCode().equals("ADMIN")) {
+                    // ADMIN accept to access
                     chain.doFilter(servletRequest, servletResponse);
                 } else if (model.getRole().getCode().equals("USER")) {
-                    response.sendRedirect(request.getContextPath()+"/login");
+                    // USER not accept
+                    response.sendRedirect(request.getContextPath()+"/login?message=not_permission");
                 }
             } else {
-                response.sendRedirect(request.getContextPath()+"/login");
+                // NOT LOGIN redirect to login page
+                response.sendRedirect(request.getContextPath()+"/login?message=not_login");
             }
-        } else if (url.startsWith("/create-post") || url.startsWith("/list-posts") || url.startsWith("/profile")) {
+        } else if ( url.startsWith("/list-posts")) {
+            // CHECK LOGIN
             if (model != null){
+                // LOGIN accept to access
                 chain.doFilter(servletRequest, servletResponse);
-            }else{
-                response.sendRedirect(request.getContextPath()+"/login");
+            }else {
+                // NOT LOGIN redirect to login page
+                response.sendRedirect(request.getContextPath()+"/login?message=not_login");
             }
-        } else {
+        } else if ( url.startsWith("/profile")) {
+            // Check login
+            if (model != null){
+                try{
+                    // LOGIN
+                    Long id = Long.parseLong(request.getParameter("id"));
+                    if (model.getId().equals(id)){
+                        // CHECK INFOR USER -> TRUE accept to access
+                        chain.doFilter(servletRequest, servletResponse);
+                    }else{
+                        // CHECK INFOR USER -> FALSE redirect to login page
+                        response.sendRedirect(request.getContextPath()+"/login?message=not_permission");
+                    }
+                }catch (Exception e){
+                    response.sendRedirect(request.getContextPath()+"/home");
+                }
+            }else {
+                // NOT LOGIN redirect to login page
+                response.sendRedirect(request.getContextPath()+"/login?message=not_login");
+            }
+        } else if ( url.startsWith("/post") ) {
+            // Check login
+            if (model != null){
+                try{
+                    Long id = Long.parseLong(request.getParameter("id"));
+                    Long idUserPost = postService.findOne(id).getUser().getId();
+                    if (model.getId().equals(idUserPost)){
+                        // CHECK INFOR USER -> TRUE accept to access
+                        chain.doFilter(servletRequest, servletResponse);
+                    }else{
+                        // CHECK INFOR USER -> FALSE redirect to login page
+                        response.sendRedirect(request.getContextPath()+"/login?message=not_permission");
+                    }
+                }catch (Exception e){
+                    chain.doFilter(servletRequest, servletResponse);
+                }
+            }else {
+                // NOT LOGIN redirect to login page
+                response.sendRedirect(request.getContextPath()+"/login?message=not_login");
+            }
+        } else{
+            // Accept to access without login
             chain.doFilter(servletRequest, servletResponse);
         }
     }

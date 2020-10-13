@@ -1,24 +1,18 @@
 package com.citynow.service.impl;
 
-import com.citynow.dao.RoleDao;
-import com.citynow.dao.UserDao;
+import com.citynow.dao.IRoleDao;
+import com.citynow.dao.IUserDao;
 import com.citynow.dao.impl.RoleDaoImpl;
 import com.citynow.dao.impl.UserDaoImpl;
 import com.citynow.model.UserModel;
-import com.citynow.service.UserService;
-import com.citynow.utils.ConvertUtil;
-import org.apache.commons.io.FileUtils;
+import com.citynow.service.IUserService;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Base64;
+import java.util.List;
 
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements IUserService {
 
-    UserDao userDao = new UserDaoImpl();
-    RoleDao roleDao = new RoleDaoImpl();
+    IUserDao userDao = new UserDaoImpl();
+    IRoleDao roleDao = new RoleDaoImpl();
 
     @Override
     public void save(UserModel userModel) {
@@ -46,5 +40,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserModel findOne(Long id) {
         return userDao.findOne(id);
+    }
+
+    @Override
+    public List<UserModel> findAll() {
+        return userDao.findAll();
     }
 }

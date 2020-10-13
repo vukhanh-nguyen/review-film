@@ -1,12 +1,12 @@
 package com.citynow.dao.impl;
 
-import com.citynow.dao.VoteDao;
+import com.citynow.dao.IVoteDao;
 import com.citynow.mapper.impl.VoteMapper;
 import com.citynow.model.VoteModel;
 
 import java.util.List;
 
-public class VoteDaoImpl extends AbstractDao<VoteModel> implements VoteDao {
+public class VoteDaoImpl extends AbstractDao<VoteModel> implements IVoteDao {
 
     @Override
     public Long save(VoteModel voteModel) {

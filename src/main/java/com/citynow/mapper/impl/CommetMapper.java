@@ -1,6 +1,6 @@
 package com.citynow.mapper.impl;
 
-import com.citynow.mapper.Mapper;
+import com.citynow.mapper.IMapper;
 import com.citynow.model.CommentModel;
 import com.citynow.model.PostModel;
 import com.citynow.model.UserModel;
@@ -8,7 +8,7 @@ import com.citynow.model.UserModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CommetMapper implements Mapper<CommentModel> {
+public class CommetMapper implements IMapper<CommentModel> {
 
     public CommentModel map(ResultSet rs) {
         CommentModel commentModel = new CommentModel();

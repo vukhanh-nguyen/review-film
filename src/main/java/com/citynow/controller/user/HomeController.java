@@ -1,9 +1,8 @@
 package com.citynow.controller.user;
 
-import com.citynow.service.PostService;
+import com.citynow.service.IPostService;
 import com.citynow.service.impl.PostServiceImpl;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +13,7 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/home"})
 public class HomeController extends HttpServlet {
 
-    PostService postService = new PostServiceImpl();
+    IPostService postService = new PostServiceImpl();
 
     protected void doGet(HttpServletRequest req,
                          HttpServletResponse resp)

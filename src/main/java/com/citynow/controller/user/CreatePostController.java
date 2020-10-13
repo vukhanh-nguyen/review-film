@@ -1,5 +1,9 @@
 package com.citynow.controller.user;
 
+import com.citynow.model.PostModel;
+import com.citynow.service.IPostService;
+import com.citynow.service.impl.PostServiceImpl;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -7,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/create-post"})
+@WebServlet(urlPatterns = {"/post"})
 public class CreatePostController extends HttpServlet {
+
+    IPostService postService = new PostServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -16,6 +22,16 @@ public class CreatePostController extends HttpServlet {
         if (message != null) {
             req.setAttribute("message", message);
         }
-        req.getRequestDispatcher("/views/user/createPost.jsp").forward(req,resp);
+        Long id = -1L;
+        PostModel postModel = new PostModel();
+        try {
+            id = Long.parseLong(req.getParameter("id"));
+        } catch (Exception e) {
+        }
+        if (id != -1) {
+            postModel = postService.findOne(id);
+        }
+        req.setAttribute("post", postModel);
+        req.getRequestDispatcher("/views/user/post.jsp").forward(req, resp);
     }
 }

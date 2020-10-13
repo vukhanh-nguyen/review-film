@@ -1,14 +1,13 @@
 package com.citynow.api.user;
 
 import com.citynow.model.CommentModel;
-import com.citynow.service.CommentService;
-import com.citynow.service.PostService;
-import com.citynow.service.UserService;
+import com.citynow.service.ICommentService;
+import com.citynow.service.IPostService;
+import com.citynow.service.IUserService;
 import com.citynow.service.impl.CommentServiceImpl;
 import com.citynow.service.impl.PostServiceImpl;
 import com.citynow.service.impl.UserServiceImpl;
 import com.citynow.utils.ConvertUtil;
-import com.citynow.utils.SessionUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.ServletException;
@@ -22,11 +21,11 @@ import java.sql.Date;
 @WebServlet(urlPatterns = {"/api-comment"})
 public class CreateCommentAPI extends HttpServlet {
 
-    CommentService commentService = new CommentServiceImpl();
+    ICommentService commentService = new CommentServiceImpl();
 
-    UserService userService = new UserServiceImpl();
+    IUserService userService = new UserServiceImpl();
 
-    PostService postService = new PostServiceImpl();
+    IPostService postService = new PostServiceImpl();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

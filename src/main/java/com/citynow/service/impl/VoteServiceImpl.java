@@ -1,15 +1,15 @@
 package com.citynow.service.impl;
 
-import com.citynow.dao.VoteDao;
+import com.citynow.dao.IVoteDao;
 import com.citynow.dao.impl.VoteDaoImpl;
 import com.citynow.model.VoteModel;
-import com.citynow.service.VoteService;
+import com.citynow.service.IVoteService;
 
 import java.util.List;
 
-public class VoteServiceImpl implements VoteService {
+public class VoteServiceImpl implements IVoteService {
 
-    VoteDao voteDao = new VoteDaoImpl();
+    IVoteDao voteDao = new VoteDaoImpl();
 
     @Override
     public VoteModel save(VoteModel voteModel) {
