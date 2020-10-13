@@ -7,11 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/dang-ky"})
+@WebServlet(urlPatterns = {"/register"})
 public class RegisterController extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/views/user/register.jsp").forward(request,response);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String message = req.getParameter("message");
+        if (message != null) {
+            req.setAttribute("message", message);
+        }
+        req.getRequestDispatcher("/views/user/register.jsp").forward(req,resp);
     }
 }

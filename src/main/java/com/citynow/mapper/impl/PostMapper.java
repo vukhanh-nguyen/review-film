@@ -26,6 +26,8 @@ public class PostMapper implements Mapper<PostModel> {
                 UserModel user = new UserModel();
                 user.setId(rs.getLong("user_id"));
                 user.setFullname(rs.getString("fullname"));
+                user.setQuantityPost(rs.getLong("quantitypost"));
+                user.setQuantityUpvote(rs.getLong("quantityupvote"));
                 postModel.setUser(user);
             } catch (Exception e) {
             }

@@ -11,15 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/trang-chu"})
+@WebServlet(urlPatterns = {"/home"})
 public class HomeController extends HttpServlet {
 
     PostService postService = new PostServiceImpl();
 
-    protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response)
+    protected void doGet(HttpServletRequest req,
+                         HttpServletResponse resp)
             throws ServletException, IOException {
-        request.setAttribute("post", postService.findAll());
-        request.getRequestDispatcher("/views/user/home.jsp").forward(request,response);
+        req.setAttribute("post", postService.findAll());
+        req.getRequestDispatcher("/views/user/home.jsp").forward(req,resp);
     }
 }

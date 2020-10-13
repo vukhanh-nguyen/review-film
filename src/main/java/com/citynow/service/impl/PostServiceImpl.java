@@ -15,4 +15,14 @@ public class PostServiceImpl implements PostService {
     public List<PostModel> findAll() {
         return postDao.findAll();
     }
+
+    @Override
+    public PostModel findOne(Long id) {
+        return postDao.findOne(id);
+    }
+
+    @Override
+    public PostModel save(PostModel postModel) {
+        return postDao.findOne(postDao.save(postModel));
+    }
 }

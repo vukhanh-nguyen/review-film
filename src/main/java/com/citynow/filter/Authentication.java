@@ -22,13 +22,13 @@ public class Authentication implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String url = request.getRequestURI();
-        UserModel model = (UserModel) SessionUtil.getInstance().getValue(request, "USERMODEL");
+        UserModel model = (UserModel) SessionUtil.getInstance().getValue(request, "LOGIN");
         if (url.startsWith("/admin")) {
             if (model != null) {
                 if (model.getRole().getCode().equals("ADMIN")) {
                     chain.doFilter(servletRequest, servletResponse);
                 } else if (model.getRole().getCode().equals("USER")) {
-                    response.sendRedirect(request.getContextPath()+"/home");
+                    response.sendRedirect(request.getContextPath()+"/login");
                 }
             } else {
                 response.sendRedirect(request.getContextPath()+"/login");

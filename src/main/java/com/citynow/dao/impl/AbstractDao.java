@@ -14,14 +14,14 @@ public class AbstractDao<T> implements Dao<T> {
 
     public Connection getConnection() {
         try {
-            /*Class.forName(resource.getString("com.mysql.jdbc.Driver"));
-            String url = resource.getString("jdbc:mysql://localhost:3306/reviewfilm");
-            String user = resource.getString("root");
-            String password = resource.getString("robber1965");*/
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(resource.getString("driverName"));
+            String url = resource.getString("url");
+            String user = resource.getString("user");
+            String password = resource.getString("password");
+          /*  Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/reviewfilm";
             String user = "root";
-            String password = "robber1965";
+            String password = "robber1965";*/
             return DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             return null;

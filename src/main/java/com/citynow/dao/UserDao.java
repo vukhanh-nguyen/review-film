@@ -4,7 +4,8 @@ import com.citynow.model.UserModel;
 
 public interface UserDao extends Dao<UserModel> {
 
-    UserModel findByUserNameAndPasswordAndStatus(String userName, String password, Integer status);
+    UserModel findByUserNameAndPassword(String userName, String password);
+    UserModel findOne(Long id);
     Long save(UserModel userModel);
     void update(UserModel userModel);
 }

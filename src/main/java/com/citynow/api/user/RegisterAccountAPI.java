@@ -19,13 +19,13 @@ public class RegisterAccountAPI extends HttpServlet {
 
     UserService userService = new UserServiceImpl();
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        request.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json");
-        UserModel userModel = mapper.readValue(ConvertUtil.convertJsonToString(request.getReader()), UserModel.class);
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("application/json");
+        UserModel userModel = mapper.readValue(ConvertUtil.convertJsonToString(req.getReader()), UserModel.class);
         userService.save(userModel);
-        request.getRequestDispatcher("/views/user/home.jsp");
+        req.getRequestDispatcher("/views/user/home.jsp");
     }
 }

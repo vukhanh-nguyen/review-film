@@ -301,8 +301,20 @@ select[multiple] option {
   -ms-transition: opacity ease-out 0.2s 0.1s;
   transition: opacity ease-out 0.2s 0.1s; }
 
+.alert-custom {
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  font-weight: 500;
+  width: 85%;
+  line-height: 2;
+  padding: 0.75rem 2.5rem !important; }
+
 .content-collapse {
   padding-top: 5rem; }
+.content-collapse a {
+  color: #333; }
+.content-collapse a:hover {
+  color: #333; }
 .content-collapse__item {
   border: 0.1rem solid #333;
   border-radius: 1rem;
@@ -329,8 +341,7 @@ select[multiple] option {
 .content-collapse__item--subtitle {
   justify-content: flex-end;
   display: flex;
-  height: 50%;
-  margin-top: 3rem; }
+  height: 50%; }
 .content-collapse__item--subtitle > p {
   margin: 1rem 3rem;
   font-size: 1.8rem;
@@ -479,7 +490,8 @@ select[multiple] option {
   border-radius: 1rem;
   padding: 2rem 1rem;
   max-height: 55rem;
-  overflow-y: auto; }
+  overflow-y: auto;
+  min-height: 20rem; }
 .comment-box__new {
   margin-left: -2rem;
   margin-bottom: 2rem; }
@@ -495,6 +507,11 @@ select[multiple] option {
 .comment-box__item__content {
   width: 25rem;
   font-size: 1.4rem; }
+.comment-box--disable {
+  text-align: center;
+  padding-top: 20%;
+  background-image: linear-gradient(rgba(119, 119, 119, 0.05), rgba(119, 119, 119, 0.1));
+  font-size: 1.6rem; }
 
 .information {
   border: 0.1rem solid #777;
@@ -523,7 +540,7 @@ select[multiple] option {
   width: 100%;
   background-color: #66a5ad;
   margin-bottom: 3rem; }
-.heading-wrap img {
+.heading-wrap .logo {
   height: 15rem;
   width: auto; }
 .heading-wrap .navigation {
@@ -532,6 +549,18 @@ select[multiple] option {
   margin-top: 5%; }
 .heading-wrap .navigation a {
   display: block; }
+.heading-wrap .profile-nav {
+  float: right;
+  margin-top: 3.5rem;
+  font-size: 2.6rem;
+  margin-right: 3rem; }
+.heading-wrap .profile-nav img {
+  height: 5rem;
+  width: 5rem; }
+.heading-wrap .profile-nav a {
+  font-size: 1.5rem; }
+.heading-wrap .profile-nav .dropdown-toggle::after {
+  color: #333; }
 
 .content-wrap--left {
   float: left;
@@ -559,7 +588,7 @@ select[multiple] option {
   margin: 0 auto; }
 
 .title {
-  margin-top: -3rem; }
+  margin-top: -1.5rem; }
 
 .wrapper {
   display: flex;
@@ -568,7 +597,8 @@ select[multiple] option {
   justify-content: center;
   width: 100%;
   min-height: 100%;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   padding: 20px;
   background-image: linear-gradient(to right bottom, rgba(86, 186, 237, 0.1), rgba(57, 172, 231, 0.2)), url("/images/bgLogin.jpg");
   background-repeat: no-repeat;
@@ -594,12 +624,12 @@ select[multiple] option {
   width: 90%;
   font-size: 1.4rem; }
 
-.content-wrap {
+.create-post-wrap {
   margin: 0 auto;
   padding: 0 25rem;
   width: 100%;
   margin-bottom: 5rem; }
-.content-wrap input {
+.create-post-wrap input {
   width: 100% !important; }
 
 .detail-post-wrap {

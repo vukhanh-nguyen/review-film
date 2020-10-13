@@ -37,4 +37,14 @@ public class UserServiceImpl implements UserService {
 
         return;
     }
+
+    @Override
+    public UserModel fineOneByUsernameAndPassword(String username, String password) {
+        return userDao.findByUserNameAndPassword(username, password);
+    }
+
+    @Override
+    public UserModel findOne(Long id) {
+        return userDao.findOne(id);
+    }
 }

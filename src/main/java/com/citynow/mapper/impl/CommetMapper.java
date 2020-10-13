@@ -2,6 +2,7 @@ package com.citynow.mapper.impl;
 
 import com.citynow.mapper.Mapper;
 import com.citynow.model.CommentModel;
+import com.citynow.model.PostModel;
 import com.citynow.model.UserModel;
 
 import java.sql.ResultSet;
@@ -21,6 +22,13 @@ public class CommetMapper implements Mapper<CommentModel> {
                 user.setId(rs.getLong("user_id"));
                 user.setFullname(rs.getString("fullname"));
                 commentModel.setUser(user);
+            } catch (Exception e) {
+            }
+            try {
+                PostModel post = new PostModel();
+                post.setId(rs.getLong("post_id"));
+                post.setTitle(rs.getString("post.title"));
+                commentModel.setPost(post);
             } catch (Exception e) {
             }
             return commentModel;

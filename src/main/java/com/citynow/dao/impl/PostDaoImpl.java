@@ -10,8 +10,10 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements PostDao {
 
     @Override
     public PostModel findOne(Long id) {
-        String sql = "SELECT * FROM post WHERE id = ?";
-        List<PostModel> postModels = query(sql, new PostMapper(), id);
+        StringBuilder sql = new StringBuilder("SELECT * ");
+        sql.append(" FROM POST, USER ");
+        sql.append(" WHERE POST.user_id = USER.id AND post.id = ?");
+        List<PostModel> postModels = query(sql.toString(), new PostMapper(), id);
         return postModels.isEmpty() ? null : postModels.get(0);
     }
 
@@ -43,7 +45,9 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements PostDao {
 
     @Override
     public List<PostModel> findAll() {
-        String sql = "SELECT * FROM post";
-        return query(sql, new PostMapper());
+        StringBuilder sql = new StringBuilder("SELECT * ");
+        sql.append(" FROM POST, USER ");
+        sql.append(" WHERE POST.user_id = USER.id");
+        return query(sql.toString(), new PostMapper());
     }
 }
