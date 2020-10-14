@@ -111,10 +111,10 @@
                                             <td class="col-2 u-color-yellow u-bold">Pending</td>
                                         </c:if>
                                         <td class="col-2">
-                                            <c:url var="detailPost" value="/detail-post">
+                                            <c:url var="post" value="/post">
                                                 <c:param name="id" value="${item.id}"/>
                                             </c:url>
-                                            <a href="${detailPost}" class="cbutton cbutton--blue cbutton--small">EDIT</a>
+                                            <a href="${post}" class="cbutton cbutton--blue cbutton--small">EDIT</a>
                                         </td>
                                     </tr>
                                 </c:forEach>

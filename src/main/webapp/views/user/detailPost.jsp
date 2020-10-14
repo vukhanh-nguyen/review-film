@@ -123,12 +123,14 @@
                         <p><span class="u-bold">Dislike:</span> <span class="u-color-red">${post.downvote}</span>
                         </p>
                     </div>
-                    <div class="box-detail-post__row--right">
-                        <div class="box-detail-post__row--icon">
-                            <i id="like" class="fas fa-thumbs-up"><span class="badge badge-success">+1</span></i>
-                            <i id="dislike" class="fas fa-thumbs-down"><span class="badge badge-danger">+1</span></i>
+                    <c:if test="${sessionScope.LOGIN != null}">
+                        <div class="box-detail-post__row--right">
+                            <div class="box-detail-post__row--icon">
+                                <i id="like" class="fas fa-thumbs-up"><span class="badge badge-success">+1</span></i>
+                                <i id="dislike" class="fas fa-thumbs-down"><span class="badge badge-danger">+1</span></i>
+                            </div>
                         </div>
-                    </div>
+                    </c:if>
                 </div>
             </div>
         </div>

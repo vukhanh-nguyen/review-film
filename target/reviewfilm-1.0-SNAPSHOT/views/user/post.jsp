@@ -111,9 +111,18 @@
                     <label class="new-post__label" for="filmName">Film Name</label>
                     <input class="input" type="text" id="filmName" name="filmName" autocomplete="off"
                            value="${post.filmName}">
-                    <label class="new-post__label" for="postRate">Rate</label>
-                    <input class="input" type="text" id="postRate" name="postRate" autocomplete="off"
-                           value="${post.postRate}">
+                    <label class="new-post__label">Rate</label>
+                    <div class="select">
+                        <select id="standard-select">
+                            <c:forEach begin="0" end="10" varStatus="loop">
+                                <option value="${loop.index}"
+                                        <c:if test="${loop.index == post.postRate}">selected="selected"</c:if>>
+                                        ${loop.index}
+                                </option>
+                            </c:forEach>
+                        </select>
+                        <span class="focus"></span>
+                    </div>
                     <label class="new-post__label" for="postReview">Review</label>
                     <textarea class="input" id="postReview" name="postReview">${post.postReview}</textarea>
                 </form>
@@ -181,7 +190,7 @@
                 window.location.href = "${createPost}?id=" + result.id + "&message=success";
             },
             error: function (error) {
-                window.location.href = "${createPost}?id=" + error.id + "&message=fail_edit";
+                window.location.href = window.location.href + "&message=fail_edit";
             }
         });
     }

@@ -11,5 +11,7 @@ public interface IPostDao {
     void update(PostModel postModel);
     void delete(Long id);
     List<PostModel> findAll();
+    List<PostModel> findAllByStatus(int status);
     List<PostModel> findAllByUserId(Long userId);
+    List<PostModel> findAllByUserIdAndStatus(Long userId, int postStatus);
 }

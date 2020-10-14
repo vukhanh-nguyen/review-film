@@ -52,10 +52,26 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
     }
 
     @Override
+    public List<PostModel> findAllByStatus(int status) {
+        StringBuilder sql = new StringBuilder("SELECT * ");
+        sql.append(" FROM POST, USER ");
+        sql.append(" WHERE POST.user_id = USER.id AND post.status = ?");
+        return query(sql.toString(), new PostMapper(), status);
+    }
+
+    @Override
     public List<PostModel> findAllByUserId(Long userId) {
         StringBuilder sql = new StringBuilder("SELECT * ");
         sql.append(" FROM POST, USER ");
         sql.append(" WHERE POST.user_id = USER.id AND user.id = ?");
         return query(sql.toString(), new PostMapper(), userId);
+    }
+
+    @Override
+    public List<PostModel> findAllByUserIdAndStatus(Long userId, int postStatus) {
+        StringBuilder sql = new StringBuilder("SELECT * ");
+        sql.append(" FROM POST, USER ");
+        sql.append(" WHERE POST.user_id = USER.id AND user.id = ? AND post.status = ?");
+        return query(sql.toString(), new PostMapper(), userId, postStatus);
     }
 }

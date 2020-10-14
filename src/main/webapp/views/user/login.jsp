@@ -7,7 +7,7 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<c:url var="APIRegister" value="/api-register"/>
+<c:url var="APIRegister" value="/api-user"/>
 <html>
 <head>
     <meta charset="UTF-8">

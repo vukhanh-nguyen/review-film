@@ -7,13 +7,14 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:url var="APIRegister" value="/api-user"/>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - Review Film</title>
     <link href="<c:url value='/css/style.css'/>" rel="stylesheet">
-    <link rel="shortcut icon" href="<c:url value="/images/logo.ico"/>" />
+    <link rel="shortcut icon" href="<c:url value="/images/logo.ico"/>"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -39,17 +40,20 @@
                                     <c:url var="profile" value="/profile">
                                         <c:param name="id" value="${sessionScope.LOGIN.id}"/>
                                     </c:url>
-                                    <a class="dropdown-item" href="#${profile}">Profile</a>
+                                    <a class="dropdown-item" href="${profile}">Profile</a>
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
                                 </div>
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="https://www.cccd.edu/_assets/images/Departments/NoProfile.png" width="40" height="40" class="rounded-circle">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="https://www.cccd.edu/_assets/images/Departments/NoProfile.png" width="40"
+                                         height="40" class="rounded-circle">
                                 </a>
                             </li>
                         </ul>
                     </div>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </nav>
@@ -64,6 +68,16 @@
     </div>
 </div>
 <div class="information-wrap">
+    <c:if test="${message == 'fail_update'}">
+        <div class="alert alert-danger alert-custom">
+            FAIL TO UPDATE PROFILE
+        </div>
+    </c:if>
+    <c:if test="${message == 'success'}">
+        <div class="alert alert-success alert-custom">
+            UPDATE PROFILE SUCCESS
+        </div>
+    </c:if>
     <div class="row mb-5">
         <a href="index.html" class="cbutton cbutton--blue cbutton--big">List Posts</a>
     </div>
@@ -71,30 +85,107 @@
     <div class="information">
         <div class="row">
             <div class="col-4">
-                <div class="information__avatar">
-                    <img src="<c:url value="/images/bgLogin.jpg"/>" alt="">
-                    <a href="index.html" class="cbutton cbutton--blue cbutton--medium">Change Avatar</a>
+                <div class="information__avatar image-preview" id="imagePreview">
+                    <img src="" alt="Image Preview"
+                         class="image-preview-image">
+                    <span class="image-preview-default-text"
+                          style="display: flex;align-items: center; justify-content: center;font-weight: bold; color: #CCCCCC">Image Preview</span>
+                    <input type="file" id="InputImages" class="input"/>
+                    <%--<img src="<c:url value="/images/bgLogin.jpg"/>" alt="">
+                    <a href="index.html" class="cbutton cbutton--blue cbutton--medium">Change Avatar</a>--%>
                 </div>
             </div>
             <div class="col-8">
-                <form class="information__info">
+                <form id="informationForm" class="information__info">
                     <label for="name">Full Name</label>
-                    <input class="input input--big" type="text" id="name" name="name" value="${profileuser.fullname}">
+                    <input class="input input--big" type="text" id="name" name="fullname" value="${profileuser.fullname}">
                     <label for="email">Email</label>
                     <input class="input input--big" type="text" id="email" name="email"
                            value="${profileuser.email}">
                     <label for="dob">Date of Birth</label>
-                    <input class="input input--big" type="text" id="dob" name="dob" value="${profileuser.dateOfBirth}">
+                    <input class="input input--big" type="text" id="dob" name="dateOfBirth" value="${profileuser.dateOfBirth}">
                     <label for="phone">Phone</label>
                     <input class="input input--big" type="text" id="phone" name="phone" value="${profileuser.phone}">
                     <div class="information__btn">
                         <a href="index.html" class="cbutton cbutton--blue cbutton--small">Khôi phục</a>
-                        <a href="index.html" class="cbutton cbutton--green cbutton--small">Lưu</a>
+                        <a id="saveProfile" class="cbutton cbutton--green cbutton--small">Lưu</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+
+    const inpFile = document.getElementById("InputImages");
+    const previewContainer = document.getElementById("imagePreview");
+    const previewImage = previewContainer.querySelector(".image-preview-image");
+    const previewDefaultText = previewContainer.querySelector(".image-preview-default-text");
+
+    inpFile.addEventListener("change", function () {
+        const file = this.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            previewDefaultText.style.display = "none";
+            previewImage.style.display = "block";
+
+            reader.addEventListener("load", function () {
+                previewImage.setAttribute("src", this.result);
+            });
+
+            reader.readAsDataURL(file);
+        } else {
+            previewDefaultText.style.display = null;
+            previewImage.style.display = null;
+            previewImage.setAttribute("src", "");
+        }
+    });
+
+
+    $('#saveProfile').click(function (e) {
+        e.preventDefault();
+        var data = {};
+        var formData = $('#informationForm').serializeArray();
+        data["id"] = '${sessionScope.LOGIN.id}';
+
+        $.each(formData, function (i, v) {
+            data["" + v.name + ""] = v.value;
+        });
+
+        var files = $('#InputImages')[0].files[0];
+        if (files !== undefined) {
+            var reader = new FileReader();
+
+            reader.onload = function (ev) {
+                data["avatar"] = ev.target.result;
+                updateProfile(data);
+            };
+            reader.readAsDataURL(files);
+        }else{
+            updateProfile(data);
+        }
+
+    });
+
+    function updateProfile(data) {
+        $.ajax({
+            url: '${APIRegister}',
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                window.location.href = window.location.href + "&message=success";
+            },
+            error: function (error){
+                window.location.href = window.location.href + "&message=fail_update";
+            }
+        });
+    }
+
+
+</script>
 </body>
 </html>

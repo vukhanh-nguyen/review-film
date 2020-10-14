@@ -28,6 +28,9 @@ public class CommentServiceImpl implements ICommentService {
 
     @Override
     public CommentModel save(CommentModel commentModel) {
+        if (commentModel.getContent() == null || commentModel.getContent().trim().equals("")){
+            throw new NullPointerException("Value is null");
+        }
         return commentDao.findOne(commentDao.save(commentModel));
     }
 }

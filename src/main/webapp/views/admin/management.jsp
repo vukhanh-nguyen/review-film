@@ -7,14 +7,15 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<c:url var="APIRegister" value="/api-register"/>
+<c:url var="APIRegister" value="/api-user"/>
+<c:url var="APIAdminPost" value="/admin-api-post"/>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Management - Review Film</title>
     <link href="<c:url value='/css/style.css'/>" rel="stylesheet">
-    <link rel="shortcut icon" href="<c:url value="/images/logo.ico"/>" />
+    <link rel="shortcut icon" href="<c:url value="/images/logo.ico"/>"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -45,13 +46,16 @@
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
                                 </div>
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="https://www.cccd.edu/_assets/images/Departments/NoProfile.png" width="40" height="40" class="rounded-circle">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="https://www.cccd.edu/_assets/images/Departments/NoProfile.png" width="40"
+                                         height="40" class="rounded-circle">
                                 </a>
                             </li>
                         </ul>
                     </div>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </nav>
@@ -100,13 +104,17 @@
                                             <td class="col-2 u-color-green u-bold">Approved</td>
                                         </c:if>
                                         <c:if test="${item.status == 0}">
-                                            <td class="col-2 u-color-yellow u-bold">Pending</td>
+                                            <td class="col-2">
+                                                <a onclick="approvePost(${item.id}, 1)"
+                                                   class="cbutton cbutton--yellow cbutton--small">Pending</a>
+                                            </td>
                                         </c:if>
                                         <td class="col-2">
                                             <c:url var="detailPost" value="/detail-post">
                                                 <c:param name="id" value="${item.id}"/>
                                             </c:url>
-                                            <a href="${detailPost}" class="cbutton cbutton--blue cbutton--small">VIEW</a>
+                                            <a href="${detailPost}"
+                                               class="cbutton cbutton--blue cbutton--small">VIEW</a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -154,5 +162,20 @@
         </div>
     </div>
 </div>
+<script>
+    function approvePost(id, status) {
+        $.ajax({
+            url: '${APIAdminPost}',
+            type: 'POST',
+            data: {"id": id, "status": status},
+            success: function (result) {
+                location.reload()
+            },
+            error: function (error) {
+                location.reload()
+            }
+        });
+    }
+</script>
 </body>
 </html>

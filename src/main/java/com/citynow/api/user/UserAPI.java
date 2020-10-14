@@ -6,14 +6,15 @@ import com.citynow.service.impl.UserServiceImpl;
 import com.citynow.utils.ConvertUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/api-register"})
-public class RegisterAccountAPI extends HttpServlet {
+@WebServlet(urlPatterns = {"/api-user"})
+public class UserAPI extends HttpServlet {
 
     IUserService userService = new UserServiceImpl();
 
@@ -25,5 +26,15 @@ public class RegisterAccountAPI extends HttpServlet {
         UserModel userModel = mapper.readValue(ConvertUtil.convertJsonToString(req.getReader()), UserModel.class);
         userService.save(userModel);
         req.getRequestDispatcher("/views/user/home.jsp");
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("application/json");
+        UserModel userModel = mapper.readValue(ConvertUtil.convertJsonToString(req.getReader()), UserModel.class);
+        userService.update(userModel);
+        mapper.writeValue(resp.getOutputStream(), userService.findOne(userModel.getId()));
     }
 }

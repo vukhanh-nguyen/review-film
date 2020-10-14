@@ -3,7 +3,9 @@ package com.citynow.api.user;
 import com.citynow.model.PostModel;
 import com.citynow.model.UserModel;
 import com.citynow.service.IPostService;
+import com.citynow.service.IUserService;
 import com.citynow.service.impl.PostServiceImpl;
+import com.citynow.service.impl.UserServiceImpl;
 import com.citynow.utils.ConvertUtil;
 import com.citynow.utils.SessionUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +23,8 @@ public class CreatePostAPI extends HttpServlet {
 
     IPostService postService = new PostServiceImpl();
 
+    IUserService userService = new UserServiceImpl();
+
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         ObjectMapper mapper = new ObjectMapper();
@@ -37,6 +41,11 @@ public class CreatePostAPI extends HttpServlet {
             return;
         }
         postModel = postService.save(postModel);
+
+        /*UserModel userModel = userService.findOne(postModel.getUser().getId());
+        Long quantityPost = userModel.getQuantityPost() + 1L;
+        userModel.setQuantityPost(quantityPost);
+        userService.update(userModel);*/
         mapper.writeValue(resp.getOutputStream(), postModel);
     }
 

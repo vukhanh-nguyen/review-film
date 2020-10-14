@@ -21,8 +21,8 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
     @Override
     public UserModel findOne(Long id) {
         StringBuilder sql = new StringBuilder("SELECT * ");
-        sql.append(" FROM USER ");
-        sql.append(" WHERE id = ?");
+        sql.append(" FROM USER, ROLE ");
+        sql.append(" WHERE USER.role_id = role.id AND user.id = ?");
         List<UserModel> users = query(sql.toString(), new UserMapper(), id);
         return users.isEmpty() ? null : users.get(0);
     }
@@ -45,7 +45,7 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
         sql.append(" fullname = ?, email = ?, avatar = ?,");
         sql.append(" dateofbirth = ?, phone = ?, quantitypost = ? , quantityupvote = ?  , status = ? , role_id = ? WHERE id = ?");
         update(sql.toString(), userModel.getUsername(), userModel.getPassword(), userModel.getFullname(), userModel.getEmail(),
-                ConvertUtil.convertStringToBytes(userModel.getAvatar()), userModel.getDateOfBirth(),
+                userModel.getAvatar(), userModel.getDateOfBirth(),
                 userModel.getPhone(), userModel.getQuantityPost(), userModel.getQuantityUpvote(), userModel.getStatus(), userModel.getId(),
                 userModel.getRole().getId());
     }

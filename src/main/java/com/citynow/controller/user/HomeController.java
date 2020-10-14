@@ -1,5 +1,6 @@
 package com.citynow.controller.user;
 
+import com.citynow.constant.Constant;
 import com.citynow.service.IPostService;
 import com.citynow.service.impl.PostServiceImpl;
 
@@ -18,7 +19,7 @@ public class HomeController extends HttpServlet {
     protected void doGet(HttpServletRequest req,
                          HttpServletResponse resp)
             throws ServletException, IOException {
-        req.setAttribute("post", postService.findAll());
+        req.setAttribute("post", postService.findAllByStatus(Constant.POST_APPROVE_STATUS));
         req.getRequestDispatcher("/views/user/home.jsp").forward(req,resp);
     }
 }

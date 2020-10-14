@@ -18,8 +18,18 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
+    public List<PostModel> findAllByStatus(int status) {
+        return postDao.findAllByStatus(status);
+    }
+
+    @Override
     public List<PostModel> findAllByUserId(Long userId) {
         return postDao.findAllByUserId(userId);
+    }
+
+    @Override
+    public List<PostModel> findAllByUserIdAndStatus(Long userId, int postStatus) {
+        return postDao.findAllByUserIdAndStatus(userId, postStatus);
     }
 
     @Override
@@ -29,15 +39,23 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public PostModel save(PostModel postModel) {
+        if (postModel.getFilmName().equals("") || postModel.getPostReview().equals("") || postModel.getTitle().equals("")){
+            throw new NullPointerException("Value is null");
+        }
         return postDao.findOne(postDao.save(postModel));
     }
 
     @Override
     public PostModel update(PostModel postModel) {
+        if (postModel.getFilmName().equals("") || postModel.getPostReview().equals("") || postModel.getTitle().equals("")){
+            throw new NullPointerException("Value is null");
+        }
         PostModel oldPost = postDao.findOne(postModel.getId());
         postModel.setUpvote(oldPost.getUpvote());
         postModel.setDownvote(oldPost.getDownvote());
-        postModel.setStatus(oldPost.getStatus());
+        if (postModel.getStatus() == 0){
+            postModel.setStatus(oldPost.getStatus());
+        }
         UserModel userModel = new UserModel();
         userModel.setId(oldPost.getUser().getId());
         postModel.setUser(userModel);

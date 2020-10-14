@@ -17,6 +17,10 @@ public class ProfileController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String message = req.getParameter("message");
+        if (message != null) {
+            req.setAttribute("message", message);
+        }
         Long idUser = Long.parseLong(req.getParameter("id"));
         req.setAttribute("profileuser", userService.findOne(idUser));
         req.getRequestDispatcher("/views/user/profile.jsp").forward(req,resp);

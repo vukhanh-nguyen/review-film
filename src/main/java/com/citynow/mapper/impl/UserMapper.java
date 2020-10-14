@@ -16,7 +16,7 @@ public class UserMapper implements IMapper<UserModel> {
         try {
             user.setId(rs.getLong("id"));
             user.setUsername(rs.getString("username"));
-            //user.setPassword(rs.getString("password"));
+            user.setPassword(rs.getString("password"));
             user.setFullname(rs.getString("fullname"));
             user.setEmail(rs.getString("email"));
             if(rs.getBytes("avatar") == null){

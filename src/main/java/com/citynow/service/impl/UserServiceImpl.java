@@ -22,14 +22,21 @@ public class UserServiceImpl implements IUserService {
         // 0 = Block
         // -1 = Ban
         userModel.setStatus(1);
-        userModel.setAvatar(null);
         userModel.setQuantityUpvote(0L);
         userModel.setQuantityPost(0L);
-
-
         userDao.save(userModel);
+    }
 
-        return;
+    @Override
+    public void update(UserModel userModel) {
+        UserModel oldUser = userDao.findOne(userModel.getId());
+        userModel.setQuantityPost(oldUser.getQuantityPost());
+        userModel.setRole(oldUser.getRole());
+        userModel.setQuantityUpvote(oldUser.getQuantityUpvote());
+        userModel.setStatus(oldUser.getStatus());
+        userModel.setUsername(oldUser.getUsername());
+        userModel.setPassword(oldUser.getPassword());
+        userDao.update(userModel);
     }
 
     @Override
