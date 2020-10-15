@@ -11,4 +11,5 @@ public interface IVoteService {
     List<VoteModel> findAllByUserId(Long userId);
     VoteModel findOneByUserIdAndPostId(Long userId, Long postId);
     Long countTotalVoteByPostIdAndAction(Long postId, int action);
+    void delete(Long id);
 }

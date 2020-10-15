@@ -17,7 +17,8 @@
     <link href="<c:url value='/css/style.css'/>" rel="stylesheet">
     <link rel="shortcut icon" href="<c:url value="/images/logo.ico"/>"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
@@ -39,26 +40,35 @@
                     <div class="collapse navbar-collapse" id="navbar-list-4">
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <div class="dropdown-menu" style="right: 0;left: inherit;"
+                                     aria-labelledby="navbarDropdownMenuLink">
                                     <c:url var="profile" value="/profile">
                                         <c:param name="id" value="${sessionScope.LOGIN.id}"/>
                                     </c:url>
+                                    <c:if test="${sessionScope.LOGIN.role.id == 1}">
+                                        <a class="dropdown-item" href="<c:url value="/admin-management"/>">Admin
+                                            Management</a>
+                                    </c:if>
                                     <a class="dropdown-item" href="${profile}">Profile</a>
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
                                 </div>
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <c:if test="${not empty sessionScope.LOGIN.avatar}">
-                                        <img src="<c:out value="${sessionScope.LOGIN.avatar}"/>" width="40" height="40" class="rounded-circle">
+                                        <img src="<c:out value="${sessionScope.LOGIN.avatar}"/>" width="40" height="40"
+                                             class="rounded-circle">
                                     </c:if>
                                     <c:if test="${empty sessionScope.LOGIN.avatar}">
-                                        <img src="https://www.cccd.edu/_assets/images/Departments/NoProfile.png" width="40" height="40" class="rounded-circle">
+                                        <img src="<c:url value="/images/NoProfile.png"/>" width="40" height="40"
+                                             class="rounded-circle">
                                     </c:if>
                                 </a>
                             </li>
                         </ul>
                     </div>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </nav>
@@ -91,9 +101,11 @@
                     ${post.user.fullname}
                 </div>
                 <div class="box-avatar__action">
-                    <p><span class="u-bold">Total Posts:</span> <span class="u-color-blue">${post.user.quantityPost}</span>
+                    <p><span class="u-bold">Total Posts:</span> <span
+                            class="u-color-blue">${post.user.quantityPost}</span>
                     </p>
-                    <p><span class="u-bold">Total Likes:</span> <span class="u-color-green">${post.user.quantityUpvote}</span>
+                    <p><span class="u-bold">Total Likes:</span> <span
+                            class="u-color-green">${post.user.quantityUpvote}</span>
                     </p>
                 </div>
             </div>
@@ -137,8 +149,23 @@
                     <c:if test="${sessionScope.LOGIN != null}">
                         <div class="box-detail-post__row--right">
                             <div class="box-detail-post__row--icon">
-                                <i onclick="vote(${post.id}, 1)" id="like" class="fas fa-thumbs-up"><span class="badge badge-success">+1</span></i>
-                                <i onclick="vote(${post.id}, 0)" id="dislike" class="fas fa-thumbs-down"><span class="badge badge-danger">+1</span></i>
+                                <c:if test="${not empty vote}">
+                                    <c:if test="${vote.actionVote == 1}">
+                                        <i onclick="deleteVote(${post.id})" id="like"
+                                           class="fas fa-thumbs-up u-color-green"><span class="badge">+1</span></i>
+                                        <i onclick="vote(${post.id}, 0)" id="dislike" class="fas fa-thumbs-down"></i>
+                                    </c:if>
+                                    <c:if test="${vote.actionVote == 0}">
+                                        <i onclick="vote(${post.id}, 1)" id="like" class="fas fa-thumbs-up"></i>
+                                        <i onclick="deleteVote(${post.id})" id="dislike"
+                                           class="fas fa-thumbs-down u-color-red"><span class="badge">+1</span></i>
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${empty vote}">
+                                    <i onclick="vote(${post.id}, 1)" id="like" class="fas fa-thumbs-up"></i>
+                                    <i onclick="vote(${post.id}, 0)" id="dislike" class="fas fa-thumbs-down"></i>
+                                </c:if>
+
                             </div>
                         </div>
                     </c:if>
@@ -149,7 +176,8 @@
             <c:if test="${sessionScope.LOGIN != null}">
                 <div class="comment-box">
                     <div class="comment-box__new">
-                        <input id="typeComment" style="margin-left:2rem" class="input" type="text" id="title" name="title" autocomplete="off" placeholder="Type to comment">
+                        <input id="typeComment" style="margin-left:2rem" class="input" type="text" id="title"
+                               name="title" autocomplete="off" placeholder="Type to comment">
                         <a id="comment" href="#" class="cbutton cbutton--blue cbutton--small">Comment</a>
                     </div>
                     <c:forEach var="item" items="${comments}">
@@ -205,11 +233,25 @@
             }
         });
     }
+
     function vote(idPost, statusVote) {
         $.ajax({
             url: '${voteAPI}',
             type: 'POST',
             data: {"idPost": idPost, "statusVote": statusVote},
+            success: function (result) {
+                location.reload()
+            },
+            error: function (error) {
+                location.reload()
+            }
+        });
+    }
+
+    function deleteVote(idPost) {
+        $.ajax({
+            url: '<c:url value="/api-vote"/>' + "?idpost=" + idPost,
+            type: 'DELETE',
             success: function (result) {
                 location.reload()
             },

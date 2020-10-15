@@ -30,6 +30,7 @@ public class Authentication implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String url = request.getRequestURI();
         UserModel model = (UserModel) SessionUtil.getInstance().getValue(request, "LOGIN");
+
         if (url.startsWith("/admin")) {
             // Filter account admin
             if (model != null) {
@@ -59,7 +60,7 @@ public class Authentication implements Filter {
                 try {
                     // LOGIN
                     Long id = Long.parseLong(request.getParameter("id"));
-                    if (model.getId().equals(id)) {
+                    if (model.getId().equals(id) || model.getRole().getCode().equals("ADMIN")) {
                         // CHECK INFOR USER -> TRUE accept to access
                         chain.doFilter(servletRequest, servletResponse);
                     } else {

@@ -36,4 +36,9 @@ public class VoteServiceImpl implements IVoteService {
     public Long countTotalVoteByPostIdAndAction(Long postId, int action) {
         return voteDao.countTotalVoteByPostIdAndAction(postId, action);
     }
+
+    @Override
+    public void delete(Long id) {
+        voteDao.delete(id);
+    }
 }

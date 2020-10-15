@@ -57,4 +57,10 @@ public class VoteDaoImpl extends AbstractDao<VoteModel> implements IVoteDao {
         sql.append("  WHERE vote.post_id = ? and actionvote = ? ");
         return Long.valueOf(count(sql.toString(), postId, action));
     }
+
+    @Override
+    public void delete(Long id) {
+        String sql = "DELETE FROM VOTE WHERE id = ?";
+        update(sql, id);
+    }
 }

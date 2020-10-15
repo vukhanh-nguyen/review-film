@@ -36,10 +36,13 @@
                     <div class="collapse navbar-collapse" id="navbar-list-4">
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <div class="dropdown-menu" style="right: 0;left: inherit;" aria-labelledby="navbarDropdownMenuLink">
                                     <c:url var="profile" value="/profile">
                                         <c:param name="id" value="${sessionScope.LOGIN.id}"/>
                                     </c:url>
+                                    <c:if test="${sessionScope.LOGIN.role.id == 1}">
+                                        <a class="dropdown-item" href="<c:url value="/admin-management"/>">Admin Management</a>
+                                    </c:if>
                                     <a class="dropdown-item" href="${profile}">Profile</a>
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>

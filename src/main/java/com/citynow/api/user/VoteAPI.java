@@ -62,4 +62,29 @@ public class VoteAPI extends HttpServlet {
         author.setQuantityUpvote(userService.countTotalLikedByUserId(author.getId()));
         userService.update(author);
     }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        UserModel model = (UserModel) SessionUtil.getInstance().getValue(req, "LOGIN");
+        Long idPost = Long.parseLong(req.getParameter("idpost"));
+        PostModel postModel = postService.findOne(idPost);
+
+
+        // Change vote
+        VoteModel voteModel = voteService.findOneByUserIdAndPostId(model.getId(), idPost);
+        voteService.delete(voteModel.getId());
+
+        // Change post (total vote)
+        Long totalVoteLike = voteService.countTotalVoteByPostIdAndAction(idPost, Constant.VOTE_LIKE);
+        Long totalVoteDislike = voteService.countTotalVoteByPostIdAndAction(idPost, Constant.VOTE_DISLIKE);
+        postModel.setUpvote(totalVoteLike);
+        postModel.setDownvote(totalVoteDislike);
+        postService.update(postModel);
+
+        // Change user vote (total vote of user write this post)
+        UserModel author = userService.findOne(postModel.getUser().getId());
+        author.setQuantityUpvote(userService.countTotalLikedByUserId(author.getId()));
+        userService.update(author);
+    }
 }

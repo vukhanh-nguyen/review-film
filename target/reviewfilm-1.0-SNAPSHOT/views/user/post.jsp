@@ -40,16 +40,18 @@
                     <div class="collapse navbar-collapse" id="navbar-list-4">
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <div class="dropdown-menu" style="right: 0;left: inherit;" aria-labelledby="navbarDropdownMenuLink">
                                     <c:url var="profile" value="/profile">
                                         <c:param name="id" value="${sessionScope.LOGIN.id}"/>
                                     </c:url>
+                                    <c:if test="${sessionScope.LOGIN.role.id == 1}">
+                                        <a class="dropdown-item" href="<c:url value="/admin-management"/>">Admin Management</a>
+                                    </c:if>
                                     <a class="dropdown-item" href="${profile}">Profile</a>
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
                                 </div>
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <c:if test="${not empty sessionScope.LOGIN.avatar}">
                                         <img src="<c:out value="${sessionScope.LOGIN.avatar}"/>" width="40" height="40" class="rounded-circle">
                                     </c:if>
@@ -60,8 +62,7 @@
                             </li>
                         </ul>
                     </div>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4"
-                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </nav>

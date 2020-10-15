@@ -12,4 +12,5 @@ public interface IVoteDao {
     VoteModel findOne(Long id);
     VoteModel findOneByUserIdAndPostId(Long userId, Long postId);
     Long countTotalVoteByPostIdAndAction(Long postId, int action);
+    void delete(Long id);
 }
