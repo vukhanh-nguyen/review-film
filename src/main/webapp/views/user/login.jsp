@@ -40,6 +40,11 @@
                 Please login to access this page
             </div>
         </c:if>
+        <c:if test="${message == 'wrong-account'}">
+            <div class="alert alert-danger alert-custom">
+                Account not exist. Please try again
+            </div>
+        </c:if>
     </c:if>
     <div id="formContent">
         <!-- Logo -->

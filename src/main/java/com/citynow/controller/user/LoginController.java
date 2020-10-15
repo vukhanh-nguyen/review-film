@@ -23,25 +23,27 @@ public class LoginController extends HttpServlet {
         if (message != null) {
             req.setAttribute("message", message);
         }
-        req.getRequestDispatcher("/views/user/login.jsp").forward(req,resp);
+        req.getRequestDispatcher("/views/user/login.jsp").forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
+    protected void doPost(HttpServletRequest req,
+                          HttpServletResponse resp)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
         UserModel model = userService.fineOneByUsernameAndPassword(username, password);
         if (model != null) {
-            SessionUtil.getInstance().putValue(request, "LOGIN", model);
+            SessionUtil.getInstance().putValue(req, "LOGIN", model);
             if (model.getRole().getCode().equals("USER")) {
-                response.sendRedirect(request.getContextPath()+"/home");
+                resp.sendRedirect(req.getContextPath() + "/home");
             } else if (model.getRole().getCode().equals("ADMIN")) {
-                response.sendRedirect(request.getContextPath()+"/admin-management");
+                resp.sendRedirect(req.getContextPath() + "/admin-management");
             }
         } else {
-            response.sendRedirect(request.getContextPath()+"/login");
+            //resp.sendRedirect(req.getContextPath() + "/login");
+            req.setAttribute("message", "wrong-account");
+            req.getRequestDispatcher("/views/user/login.jsp").forward(req, resp);
         }
     }
 }
