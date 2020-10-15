@@ -40,14 +40,18 @@
                                     <c:url var="profile" value="/profile">
                                         <c:param name="id" value="${sessionScope.LOGIN.id}"/>
                                     </c:url>
-                                    <a class="dropdown-item" href="#${profile}">Profile</a>
+                                    <a class="dropdown-item" href="${profile}">Profile</a>
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
                                 </div>
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="https://www.cccd.edu/_assets/images/Departments/NoProfile.png" width="40"
-                                         height="40" class="rounded-circle">
+                                    <c:if test="${not empty sessionScope.LOGIN.avatar}">
+                                        <img src="<c:out value="${sessionScope.LOGIN.avatar}"/>" width="40" height="40" class="rounded-circle">
+                                    </c:if>
+                                    <c:if test="${empty sessionScope.LOGIN.avatar}">
+                                        <img src="<c:url value="/images/NoProfile.png"/>" width="40" height="40" class="rounded-circle">
+                                    </c:if>
                                 </a>
                             </li>
                         </ul>
@@ -136,7 +140,12 @@
                                     <tr class="d-flex">
                                         <th class="col-1">${item.post.id}</th>
                                         <td class="col-7">${item.post.title}</td>
-                                        <td class="col-2">${item.actionvote}</td>
+                                        <c:if test="${item.actionvote == 1}">
+                                            <td class="col-2 u-color-green u-bold">Liked</td>
+                                        </c:if>
+                                        <c:if test="${item.actionvote == 0}">
+                                            <td class="col-2 u-color-yellow u-bold">Disliked</td>
+                                        </c:if>
                                         <td class="col-2">
                                             <c:url var="detailPost" value="/detail-post">
                                                 <c:param name="id" value="${item.post.id}"/>

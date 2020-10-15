@@ -46,8 +46,12 @@
                                 </div>
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="https://www.cccd.edu/_assets/images/Departments/NoProfile.png" width="40"
-                                         height="40" class="rounded-circle">
+                                    <c:if test="${not empty sessionScope.LOGIN.avatar}">
+                                        <img src="<c:out value="${sessionScope.LOGIN.avatar}"/>" width="40" height="40" class="rounded-circle">
+                                    </c:if>
+                                    <c:if test="${empty sessionScope.LOGIN.avatar}">
+                                        <img src="<c:url value="/images/NoProfile.png"/>" width="40" height="40" class="rounded-circle">
+                                    </c:if>
                                 </a>
                             </li>
                         </ul>
@@ -86,10 +90,19 @@
         <div class="row">
             <div class="col-4">
                 <div class="information__avatar image-preview" id="imagePreview">
-                    <img src="" alt="Image Preview"
-                         class="image-preview-image">
-                    <span class="image-preview-default-text"
-                          style="display: flex;align-items: center; justify-content: center;font-weight: bold; color: #CCCCCC">Image Preview</span>
+                    <c:if test="${empty profileuser.avatar}">
+                        <img src="/images/NoProfile.png" alt="Image Preview"
+                             class="image-preview-image">
+                        <span class="image-preview-default-text"
+                              style="display: flex;align-items: center; justify-content: center;font-weight: bold; color: #CCCCCC">Image Preview</span>
+                    </c:if>
+                    <c:if test="${not empty profileuser.avatar}">
+                        <img src="<c:out value="${profileuser.avatar}"/>" alt="Image Preview"
+                             class="image-preview-image" style="display: block;width: 100%">
+                        <span class="image-preview-default-text"
+                              style="display: none;align-items: center; justify-content: center;font-weight: bold; color: #CCCCCC">Image Preview</span>
+                    </c:if>
+
                     <input type="file" id="InputImages" class="input"/>
                     <%--<img src="<c:url value="/images/bgLogin.jpg"/>" alt="">
                     <a href="index.html" class="cbutton cbutton--blue cbutton--medium">Change Avatar</a>--%>

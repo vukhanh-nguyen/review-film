@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:url var="createCommentAPI" value="/api-comment"/>
+<c:url var="voteAPI" value="/api-vote"/>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -47,7 +48,12 @@
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
                                 </div>
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="https://www.cccd.edu/_assets/images/Departments/NoProfile.png" width="40" height="40" class="rounded-circle">
+                                    <c:if test="${not empty sessionScope.LOGIN.avatar}">
+                                        <img src="<c:out value="${sessionScope.LOGIN.avatar}"/>" width="40" height="40" class="rounded-circle">
+                                    </c:if>
+                                    <c:if test="${empty sessionScope.LOGIN.avatar}">
+                                        <img src="https://www.cccd.edu/_assets/images/Departments/NoProfile.png" width="40" height="40" class="rounded-circle">
+                                    </c:if>
                                 </a>
                             </li>
                         </ul>
@@ -74,7 +80,12 @@
         <div class="col-2">
             <div class="box-avatar">
                 <div class="box-avatar__avatar">
-                    <img src="<c:url value="/images/bgLogin.jpg"/>" alt="">
+                    <c:if test="${not empty post.user.avatar}">
+                        <img src="<c:out value="${post.user.avatar}"/>" alt="">
+                    </c:if>
+                    <c:if test="${empty post.user.avatar}">
+                        <img src="<c:url value="/images/NoProfile.png"/>" alt="">
+                    </c:if>
                 </div>
                 <div class="box-avatar__name">
                     ${post.user.fullname}
@@ -126,8 +137,8 @@
                     <c:if test="${sessionScope.LOGIN != null}">
                         <div class="box-detail-post__row--right">
                             <div class="box-detail-post__row--icon">
-                                <i id="like" class="fas fa-thumbs-up"><span class="badge badge-success">+1</span></i>
-                                <i id="dislike" class="fas fa-thumbs-down"><span class="badge badge-danger">+1</span></i>
+                                <i onclick="vote(${post.id}, 1)" id="like" class="fas fa-thumbs-up"><span class="badge badge-success">+1</span></i>
+                                <i onclick="vote(${post.id}, 0)" id="dislike" class="fas fa-thumbs-down"><span class="badge badge-danger">+1</span></i>
                             </div>
                         </div>
                     </c:if>
@@ -144,7 +155,12 @@
                     <c:forEach var="item" items="${comments}">
                         <div class="comment-box__item">
                             <div class="comment-box__item__logo">
-                                <img src="<c:url value="/images/bgLogin.jpg"/>" alt="">
+                                <c:if test="${not empty item.user.avatar}">
+                                    <img src="<c:out value="${item.user.avatar}"/>" alt="">
+                                </c:if>
+                                <c:if test="${empty item.user.avatar}">
+                                    <img src="<c:url value="/images/NoProfile.png"/>" alt="">
+                                </c:if>
                             </div>
                             <div class="comment-box__item__content">
                                 <p><span class="u-bold">${item.user.fullname}</span> <span>${item.content}</span>
@@ -186,6 +202,19 @@
             },
             error: function (error) {
                 alert("Không hợp lệ");
+            }
+        });
+    }
+    function vote(idPost, statusVote) {
+        $.ajax({
+            url: '${voteAPI}',
+            type: 'POST',
+            data: {"idPost": idPost, "statusVote": statusVote},
+            success: function (result) {
+                location.reload()
+            },
+            error: function (error) {
+                location.reload()
             }
         });
     }

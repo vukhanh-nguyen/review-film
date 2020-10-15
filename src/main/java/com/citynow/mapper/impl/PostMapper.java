@@ -28,6 +28,7 @@ public class PostMapper implements IMapper<PostModel> {
                 user.setFullname(rs.getString("fullname"));
                 user.setQuantityPost(rs.getLong("quantitypost"));
                 user.setQuantityUpvote(rs.getLong("quantityupvote"));
+                user.setAvatar(rs.getString("avatar"));
                 postModel.setUser(user);
             } catch (Exception e) {
             }

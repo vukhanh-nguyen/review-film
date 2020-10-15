@@ -17,7 +17,23 @@ public class VoteServiceImpl implements IVoteService {
     }
 
     @Override
+    public VoteModel update(VoteModel voteModel) {
+        voteDao.update(voteModel);
+        return voteDao.findOne(voteModel.getId());
+    }
+
+    @Override
     public List<VoteModel> findAllByUserId(Long userId) {
         return voteDao.findAllByUserId(userId);
+    }
+
+    @Override
+    public VoteModel findOneByUserIdAndPostId(Long userId, Long postId) {
+        return voteDao.findOneByUserIdAndPostId(userId, postId);
+    }
+
+    @Override
+    public Long countTotalVoteByPostIdAndAction(Long postId, int action) {
+        return voteDao.countTotalVoteByPostIdAndAction(postId, action);
     }
 }

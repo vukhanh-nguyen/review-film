@@ -23,7 +23,7 @@ public class DetailPostController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long idPost = Long.parseLong(req.getParameter("id"));
         req.setAttribute("post", postService.findOne(idPost));
-        req.setAttribute("comments", commentService.findALlByPostId(idPost));
+        req.setAttribute("comments", commentService.findAllByPostId(idPost));
         req.getRequestDispatcher("/views/user/detailPost.jsp").forward(req,resp);
     }
 }

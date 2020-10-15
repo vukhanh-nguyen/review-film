@@ -35,9 +35,9 @@ public class CreatePostAPI extends HttpServlet {
         postModel.setDownvote(0L);
         postModel.setUpvote(0L);
         postModel.setDateModified(new Date(System.currentTimeMillis()));
-        try{
+        try {
             postModel.setUser((UserModel) SessionUtil.getInstance().getValue(req, "LOGIN"));
-        }catch (Exception e){
+        } catch (Exception e) {
             return;
         }
         postModel = postService.save(postModel);
@@ -56,6 +56,13 @@ public class CreatePostAPI extends HttpServlet {
         resp.setContentType("application/json");
         PostModel postModel = mapper.readValue(ConvertUtil.convertJsonToString(req.getReader()), PostModel.class);
         postModel.setDateModified(new Date(System.currentTimeMillis()));
+
+        PostModel oldPost = postService.findOne(postModel.getId());
+        postModel.setUpvote(oldPost.getUpvote());
+        postModel.setDownvote(oldPost.getDownvote());
+        postModel.setStatus(oldPost.getStatus());
+        postModel.setUser(oldPost.getUser());
+
         postModel = postService.update(postModel);
         mapper.writeValue(resp.getOutputStream(), postModel);
     }

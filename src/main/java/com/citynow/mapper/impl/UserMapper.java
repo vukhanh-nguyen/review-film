@@ -19,11 +19,7 @@ public class UserMapper implements IMapper<UserModel> {
             user.setPassword(rs.getString("password"));
             user.setFullname(rs.getString("fullname"));
             user.setEmail(rs.getString("email"));
-            if(rs.getBytes("avatar") == null){
-
-            }else{
-                user.setAvatar(ConvertUtil.convertBytesToString(rs.getBytes("avatar")));
-            }
+            user.setAvatar(rs.getString("avatar"));
             user.setDateOfBirth(rs.getDate("dateofbirth"));
             user.setPhone(rs.getString("phone"));
             user.setQuantityPost(rs.getLong("quantitypost"));

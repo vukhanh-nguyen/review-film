@@ -50,8 +50,12 @@
                                 </div>
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="https://www.cccd.edu/_assets/images/Departments/NoProfile.png" width="40"
-                                         height="40" class="rounded-circle">
+                                    <c:if test="${not empty sessionScope.LOGIN.avatar}">
+                                        <img src="<c:out value="${sessionScope.LOGIN.avatar}"/>" width="40" height="40" class="rounded-circle">
+                                    </c:if>
+                                    <c:if test="${empty sessionScope.LOGIN.avatar}">
+                                        <img src="<c:url value="/images/NoProfile.png"/>" width="40" height="40" class="rounded-circle">
+                                    </c:if>
                                 </a>
                             </li>
                         </ul>

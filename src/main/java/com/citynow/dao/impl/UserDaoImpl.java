@@ -29,6 +29,9 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
 
     @Override
     public Long save(UserModel userModel) {
+        if (userModel.getAvatar() == null){
+            userModel.setAvatar("");
+        }
         StringBuilder sql = new StringBuilder("INSERT INTO user (username, password,");
         sql.append(" fullname, email, dateofbirth, phone, quantitypost, quantityupvote, status, role_id)");
         sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
@@ -41,6 +44,9 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
 
     @Override
     public void update(UserModel userModel) {
+        if (userModel.getAvatar() == null){
+            userModel.setAvatar("");
+        }
         StringBuilder sql = new StringBuilder("UPDATE user SET username = ?, password = ?,");
         sql.append(" fullname = ?, email = ?, avatar = ?,");
         sql.append(" dateofbirth = ?, phone = ?, quantitypost = ? , quantityupvote = ?  , status = ? , role_id = ? WHERE id = ?");
@@ -55,6 +61,14 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
         StringBuilder sql = new StringBuilder("SELECT * ");
         sql.append(" FROM USER WHERE role_id = 2");
         return query(sql.toString(), new UserMapper());
+    }
+
+    @Override
+    public Long countTotalLikedByUserId(Long userId) {
+        StringBuilder sql = new StringBuilder("SELECT count(*) ");
+        sql.append(" FROM POST, VOTE ");
+        sql.append(" WHERE vote.post_id = post.id and actionvote = 1 and post.user_id = ? ");
+        return Long.valueOf(count(sql.toString(), userId));
     }
 
 }

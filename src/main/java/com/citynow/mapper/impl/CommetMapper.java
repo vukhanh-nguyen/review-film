@@ -21,6 +21,7 @@ public class CommetMapper implements IMapper<CommentModel> {
                 UserModel user = new UserModel();
                 user.setId(rs.getLong("user_id"));
                 user.setFullname(rs.getString("fullname"));
+                user.setAvatar(rs.getString("avatar"));
                 commentModel.setUser(user);
             } catch (Exception e) {
             }

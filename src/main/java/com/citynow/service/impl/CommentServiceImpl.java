@@ -22,7 +22,7 @@ public class CommentServiceImpl implements ICommentService {
     }
 
     @Override
-    public List<CommentModel> findALlByPostId(Long postId) {
+    public List<CommentModel> findAllByPostId(Long postId) {
         return commentDao.findAllByPostId(postId);
     }
 

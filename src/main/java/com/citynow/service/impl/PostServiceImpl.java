@@ -50,15 +50,7 @@ public class PostServiceImpl implements IPostService {
         if (postModel.getFilmName().equals("") || postModel.getPostReview().equals("") || postModel.getTitle().equals("")){
             throw new NullPointerException("Value is null");
         }
-        PostModel oldPost = postDao.findOne(postModel.getId());
-        postModel.setUpvote(oldPost.getUpvote());
-        postModel.setDownvote(oldPost.getDownvote());
-        if (postModel.getStatus() == 0){
-            postModel.setStatus(oldPost.getStatus());
-        }
-        UserModel userModel = new UserModel();
-        userModel.setId(oldPost.getUser().getId());
-        postModel.setUser(userModel);
+
 
         postDao.update(postModel);
         return postDao.findOne(postModel.getId());

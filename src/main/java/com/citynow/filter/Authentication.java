@@ -1,6 +1,8 @@
 package com.citynow.filter;
 
 
+import com.citynow.constant.Constant;
+import com.citynow.model.PostModel;
 import com.citynow.model.UserModel;
 import com.citynow.service.IPostService;
 import com.citynow.service.impl.PostServiceImpl;
@@ -36,62 +38,77 @@ public class Authentication implements Filter {
                     chain.doFilter(servletRequest, servletResponse);
                 } else if (model.getRole().getCode().equals("USER")) {
                     // USER not accept
-                    response.sendRedirect(request.getContextPath()+"/login?message=not_permission");
+                    response.sendRedirect(request.getContextPath() + "/login?message=not_permission");
                 }
             } else {
                 // NOT LOGIN redirect to login page
-                response.sendRedirect(request.getContextPath()+"/login?message=not_login");
+                response.sendRedirect(request.getContextPath() + "/login?message=not_login");
             }
-        } else if ( url.startsWith("/list-posts")) {
+        } else if (url.startsWith("/list-posts") || url.startsWith("/api")) {
             // CHECK LOGIN
-            if (model != null){
+            if (model != null) {
                 // LOGIN accept to access
                 chain.doFilter(servletRequest, servletResponse);
-            }else {
+            } else {
                 // NOT LOGIN redirect to login page
-                response.sendRedirect(request.getContextPath()+"/login?message=not_login");
+                response.sendRedirect(request.getContextPath() + "/login?message=not_login");
             }
-        } else if ( url.startsWith("/profile")) {
+        } else if (url.startsWith("/profile")) {
             // Check login
-            if (model != null){
-                try{
+            if (model != null) {
+                try {
                     // LOGIN
                     Long id = Long.parseLong(request.getParameter("id"));
-                    if (model.getId().equals(id)){
+                    if (model.getId().equals(id)) {
                         // CHECK INFOR USER -> TRUE accept to access
                         chain.doFilter(servletRequest, servletResponse);
-                    }else{
+                    } else {
                         // CHECK INFOR USER -> FALSE redirect to login page
-                        response.sendRedirect(request.getContextPath()+"/login?message=not_permission");
+                        response.sendRedirect(request.getContextPath() + "/login?message=not_permission");
                     }
-                }catch (Exception e){
-                    response.sendRedirect(request.getContextPath()+"/home");
+                } catch (Exception e) {
+                    response.sendRedirect(request.getContextPath() + "/home");
                 }
-            }else {
+            } else {
                 // NOT LOGIN redirect to login page
-                response.sendRedirect(request.getContextPath()+"/login?message=not_login");
+                response.sendRedirect(request.getContextPath() + "/login?message=not_login");
             }
-        } else if ( url.startsWith("/post") ) {
+        } else if (url.startsWith("/post")) {
             // Check login
-            if (model != null){
-                try{
+            if (model != null) {
+                try {
                     Long id = Long.parseLong(request.getParameter("id"));
                     Long idUserPost = postService.findOne(id).getUser().getId();
-                    if (model.getId().equals(idUserPost)){
+
+                    if (model.getId().equals(idUserPost)) {
                         // CHECK INFOR USER -> TRUE accept to access
                         chain.doFilter(servletRequest, servletResponse);
-                    }else{
+                    } else {
                         // CHECK INFOR USER -> FALSE redirect to login page
-                        response.sendRedirect(request.getContextPath()+"/login?message=not_permission");
+                        response.sendRedirect(request.getContextPath() + "/login?message=not_permission");
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     chain.doFilter(servletRequest, servletResponse);
                 }
-            }else {
+            } else {
                 // NOT LOGIN redirect to login page
-                response.sendRedirect(request.getContextPath()+"/login?message=not_login");
+                response.sendRedirect(request.getContextPath() + "/login?message=not_login");
             }
-        } else{
+        } else if (url.startsWith("/detail-post")) {
+            try {
+                Long id = Long.parseLong(request.getParameter("id"));
+                PostModel postModel = postService.findOne(id);
+
+                if (postModel.getStatus() == Constant.POST_APPROVE_STATUS) {
+                    // CHECK INFOR USER -> TRUE accept to access
+                    chain.doFilter(servletRequest, servletResponse);
+                } else {
+                    // CHECK INFOR USER -> FALSE redirect to login page
+                    response.sendRedirect(request.getContextPath() + "/home");
+                }
+            } catch (Exception e) {
+            }
+        } else {
             // Accept to access without login
             chain.doFilter(servletRequest, servletResponse);
         }

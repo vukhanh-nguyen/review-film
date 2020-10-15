@@ -7,36 +7,24 @@ import com.citynow.dao.impl.UserDaoImpl;
 import com.citynow.model.UserModel;
 import com.citynow.service.IUserService;
 
+import java.sql.Date;
 import java.util.List;
 
 public class UserServiceImpl implements IUserService {
 
     IUserDao userDao = new UserDaoImpl();
-    IRoleDao roleDao = new RoleDaoImpl();
 
     @Override
-    public void save(UserModel userModel) {
-        userModel.setRole(roleDao.findOne(2L));
-
-        // 1 = Active
-        // 0 = Block
-        // -1 = Ban
-        userModel.setStatus(1);
-        userModel.setQuantityUpvote(0L);
-        userModel.setQuantityPost(0L);
-        userDao.save(userModel);
+    public UserModel save(UserModel userModel) {
+        return userDao.findOne(userDao.save(userModel));
     }
 
     @Override
-    public void update(UserModel userModel) {
+    public UserModel update(UserModel userModel) {
         UserModel oldUser = userDao.findOne(userModel.getId());
-        userModel.setQuantityPost(oldUser.getQuantityPost());
-        userModel.setRole(oldUser.getRole());
-        userModel.setQuantityUpvote(oldUser.getQuantityUpvote());
-        userModel.setStatus(oldUser.getStatus());
-        userModel.setUsername(oldUser.getUsername());
-        userModel.setPassword(oldUser.getPassword());
+
         userDao.update(userModel);
+        return userDao.findOne(userModel.getId());
     }
 
     @Override
@@ -52,5 +40,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<UserModel> findAll() {
         return userDao.findAll();
+    }
+
+    @Override
+    public Long countTotalLikedByUserId(Long userId) {
+        return userDao.countTotalLikedByUserId(userId);
     }
 }

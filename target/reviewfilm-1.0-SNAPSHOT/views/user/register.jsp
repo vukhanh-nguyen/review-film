@@ -76,8 +76,8 @@
     });
     function register(data) {
         $.ajax({
-            url: location.origin + "/api-register",
-            //url: ${APIRegister},
+            //url: location.origin + "/api-register",
+            url: '${APIRegister}',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(data),

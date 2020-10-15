@@ -10,7 +10,6 @@ public class UserModel {
     private String fullname;
     private String email;
     private String avatar;
-    private byte[] avatarByte;
     private Date dateOfBirth;
     private String phone;
     private Long quantityPost;
@@ -114,11 +113,4 @@ public class UserModel {
         this.role = role;
     }
 
-    public byte[] getAvatarByte() {
-        return avatarByte;
-    }
-
-    public void setAvatarByte(byte[] avatarByte) {
-        this.avatarByte = avatarByte;
-    }
 }

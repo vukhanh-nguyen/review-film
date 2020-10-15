@@ -26,6 +26,7 @@
     <div class="row">
         <div class="col-8">
             <a href="<c:url value="/home"/>">
+
                 <img class="logo" src="<c:url value="/images/logo.png"/>" alt="">
             </a>
         </div>
@@ -44,7 +45,12 @@
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
                                 </div>
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="https://www.cccd.edu/_assets/images/Departments/NoProfile.png" width="40" height="40" class="rounded-circle">
+                                    <c:if test="${not empty sessionScope.LOGIN.avatar}">
+                                        <img src="<c:out value="${sessionScope.LOGIN.avatar}"/>" width="40" height="40" class="rounded-circle">
+                                    </c:if>
+                                    <c:if test="${empty sessionScope.LOGIN.avatar}">
+                                        <img src="<c:url value="/images/NoProfile.png"/>" width="40" height="40" class="rounded-circle">
+                                    </c:if>
                                 </a>
                             </li>
                         </ul>
@@ -103,7 +109,12 @@
                         <div class="content-collapse__item">
                             <div class=" content-collapse__item--left">
                                 <div class="content-collapse__item--avatar">
-                                    <img src="<c:url value="/images/bgLogin.jpg"/>" alt="">
+                                    <c:if test="${not empty item.user.avatar}">
+                                        <img src="<c:out value="${item.user.avatar}"/>" alt="avatar">
+                                    </c:if>
+                                    <c:if test="${empty item.user.avatar}">
+                                        <img src="<c:url value="/images/NoProfile.png"/>" alt="">
+                                    </c:if>
                                 </div>
                                 <div class="content-collapse__item--textavatar">
                                         ${item.user.fullname}

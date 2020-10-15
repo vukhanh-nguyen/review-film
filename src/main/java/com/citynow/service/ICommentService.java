@@ -8,6 +8,6 @@ public interface ICommentService {
 
     List<CommentModel> findAll();
     List<CommentModel> findAllByUserId(Long userId);
-    List<CommentModel> findALlByPostId(Long postId);
+    List<CommentModel> findAllByPostId(Long postId);
     CommentModel save(CommentModel commentModel);
 }
