@@ -6,6 +6,7 @@ import com.citynow.dao.impl.RoleDaoImpl;
 import com.citynow.dao.impl.UserDaoImpl;
 import com.citynow.model.UserModel;
 import com.citynow.service.IUserService;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Date;
 import java.util.List;
@@ -16,20 +17,22 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserModel save(UserModel userModel) {
+
         return userDao.findOne(userDao.save(userModel));
     }
 
     @Override
     public UserModel update(UserModel userModel) {
-        UserModel oldUser = userDao.findOne(userModel.getId());
+        //UserModel oldUser = userDao.findOne(userModel.getId());
+        //userModel.setPassword(BCrypt.hashpw(userModel.getPassword(),BCrypt.gensalt()));
 
         userDao.update(userModel);
         return userDao.findOne(userModel.getId());
     }
 
     @Override
-    public UserModel fineOneByUsernameAndPassword(String username, String password) {
-        return userDao.findByUserNameAndPassword(username, password);
+    public UserModel fineOneByUsername(String username) {
+        return userDao.findByUserName(username);
     }
 
     @Override

@@ -8,7 +8,7 @@ public interface IUserService {
 
     UserModel save(UserModel userModel);
     UserModel update(UserModel userModel);
-    UserModel fineOneByUsernameAndPassword(String username, String password);
+    UserModel fineOneByUsername(String username);
     UserModel findOne(Long id);
     List<UserModel> findAll();
     Long countTotalLikedByUserId(Long userId);

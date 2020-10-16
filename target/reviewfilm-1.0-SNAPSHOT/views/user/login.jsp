@@ -42,7 +42,7 @@
         </c:if>
         <c:if test="${message == 'wrong-account'}">
             <div class="alert alert-danger alert-custom">
-                Account not exist. Please try again
+                Username or password is not correct. Please try again
             </div>
         </c:if>
     </c:if>

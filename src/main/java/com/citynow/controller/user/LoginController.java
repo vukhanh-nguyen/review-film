@@ -4,6 +4,7 @@ import com.citynow.model.UserModel;
 import com.citynow.service.IUserService;
 import com.citynow.service.impl.UserServiceImpl;
 import com.citynow.utils.SessionUtil;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,7 +33,11 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
-        UserModel model = userService.fineOneByUsernameAndPassword(username, password);
+
+        UserModel model = userService.fineOneByUsername(username);
+        if (model != null && !BCrypt.checkpw(password,model.getPassword())){
+            model = null;
+        }
         if (model != null) {
             SessionUtil.getInstance().putValue(req, "LOGIN", model);
             if (model.getRole().getCode().equals("USER")) {

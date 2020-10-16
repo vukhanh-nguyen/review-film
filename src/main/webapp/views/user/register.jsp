@@ -69,7 +69,7 @@
         var formData = $('#registerForm').serializeArray();
         $.each(formData, function (i, v) {
             if (v.name !== "passwordAgain"){
-                data[""+v.name+""] = v.value;
+                data[""+v.name+""] = v.value.toString();
             }
         });
         register(data);
@@ -86,6 +86,7 @@
                 window.location.href = "${login}?message=success";
             },
             error: function (error) {
+                console.log(error);
                 window.location.href = "${register}?message=fail";
             }
         });

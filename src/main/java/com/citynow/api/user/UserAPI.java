@@ -8,6 +8,7 @@ import com.citynow.service.impl.RoleServiceImpl;
 import com.citynow.service.impl.UserServiceImpl;
 import com.citynow.utils.ConvertUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,6 +39,7 @@ public class UserAPI extends HttpServlet {
         userModel.setQuantityPost(0L);
         userModel.setDateOfBirth(new Date(System.currentTimeMillis()));
         userModel.setPhone("");
+        userModel.setPassword(BCrypt.hashpw(userModel.getPassword(),BCrypt.gensalt()));
 
         userModel = userService.save(userModel);
         mapper.writeValue(resp.getOutputStream(), userModel);
@@ -49,7 +51,26 @@ public class UserAPI extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
         UserModel userModel = mapper.readValue(ConvertUtil.convertJsonToString(req.getReader()), UserModel.class);
+
+        UserModel oldUser = userService.findOne(userModel.getId());
+        //oldUser = mapper.readValue(ConvertUtil.convertJsonToString(req.getReader()), UserModel.class);
+        userModel.setUsername(oldUser.getUsername());
+        if (userModel.getRole() == null){
+            userModel.setRole(oldUser.getRole());
+        }
+        if (userModel.getPassword() == null){
+            userModel.setPassword(oldUser.getPassword());
+        }
+        if (userModel.getQuantityPost() == null){
+            userModel.setQuantityPost(oldUser.getQuantityPost());
+        }
+        if (userModel.getQuantityUpvote() == null){
+            userModel.setQuantityUpvote(oldUser.getQuantityUpvote());
+        }
+
         userModel = userService.update(userModel);
-        mapper.writeValue(resp.getOutputStream(), userModel);
+        if (userModel.getId() != null){
+            mapper.writeValue(resp.getOutputStream(), userModel);
+        }
     }
 }

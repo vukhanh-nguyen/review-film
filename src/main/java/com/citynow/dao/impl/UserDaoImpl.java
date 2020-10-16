@@ -10,11 +10,11 @@ import java.util.List;
 public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
 
     @Override
-    public UserModel findByUserNameAndPassword(String userName, String password) {
+    public UserModel findByUserName(String userName) {
         StringBuilder sql = new StringBuilder("SELECT * FROM user ");
         sql.append(" INNER JOIN role ON role.id = user.role_id");
-        sql.append(" WHERE username = ? AND password = ?");
-        List<UserModel> users = query(sql.toString(), new UserMapper(), userName, password);
+        sql.append(" WHERE username = ?");
+        List<UserModel> users = query(sql.toString(), new UserMapper(), userName);
         return users.isEmpty() ? null : users.get(0);
     }
 
@@ -53,7 +53,7 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
         update(sql.toString(), userModel.getUsername(), userModel.getPassword(), userModel.getFullname(), userModel.getEmail(),
                 userModel.getAvatar(), userModel.getDateOfBirth(),
                 userModel.getPhone(), userModel.getQuantityPost(), userModel.getQuantityUpvote(), userModel.getStatus(), userModel.getId(),
-                userModel.getRole().getId());
+                userModel.getRole().getId(), userModel.getId());
     }
 
     @Override

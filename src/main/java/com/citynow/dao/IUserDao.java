@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IUserDao {
 
-    UserModel findByUserNameAndPassword(String userName, String password);
+    UserModel findByUserName(String userName);
     UserModel findOne(Long id);
     Long save(UserModel userModel);
     void update(UserModel userModel);
