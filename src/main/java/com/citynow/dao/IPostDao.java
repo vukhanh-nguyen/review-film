@@ -12,6 +12,8 @@ public interface IPostDao {
     void delete(Long id);
     List<PostModel> findAll();
     List<PostModel> findAllByStatus(int status);
+    List<PostModel> findAllByStatus(int status, int page, int limit, String sort);
     List<PostModel> findAllByUserId(Long userId);
     List<PostModel> findAllByUserIdAndStatus(Long userId, int postStatus);
+    int countByStatus(int status);
 }

@@ -23,6 +23,11 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
+    public List<PostModel> findAllByStatus(int status, int page, int limit, String sort) {
+        return postDao.findAllByStatus(status, page, limit, sort);
+    }
+
+    @Override
     public List<PostModel> findAllByUserId(Long userId) {
         return postDao.findAllByUserId(userId);
     }
@@ -39,7 +44,7 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public PostModel save(PostModel postModel) {
-        if (postModel.getFilmName().equals("") || postModel.getPostReview().equals("") || postModel.getTitle().equals("")){
+        if (postModel.getFilmName().equals("") || postModel.getPostReview().equals("") || postModel.getTitle().equals("")) {
             throw new NullPointerException("Value is null");
         }
         return postDao.findOne(postDao.save(postModel));
@@ -47,12 +52,17 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public PostModel update(PostModel postModel) {
-        if (postModel.getFilmName().equals("") || postModel.getPostReview().equals("") || postModel.getTitle().equals("")){
+        if (postModel.getFilmName().equals("") || postModel.getPostReview().equals("") || postModel.getTitle().equals("")) {
             throw new NullPointerException("Value is null");
         }
 
 
         postDao.update(postModel);
         return postDao.findOne(postModel.getId());
+    }
+
+    @Override
+    public int countByStatus(int status) {
+        return postDao.countByStatus(status);
     }
 }

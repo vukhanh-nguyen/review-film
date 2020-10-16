@@ -49,7 +49,7 @@
     <div id="formContent">
         <!-- Logo -->
         <div class="logo-wrap">
-            <a href="<c:url value="/home"/>">
+            <a href="<c:url value="/home?page=1&limit=5"/>">
                 <img class="logo" src="<c:url value="/images/logo.png"/>" alt="">
             </a>
         </div>

@@ -70,5 +70,4 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
         sql.append(" WHERE vote.post_id = post.id and actionvote = 1 and post.user_id = ? ");
         return Long.valueOf(count(sql.toString(), userId));
     }
-
 }

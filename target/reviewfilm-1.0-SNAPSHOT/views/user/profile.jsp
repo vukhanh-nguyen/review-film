@@ -26,7 +26,7 @@
 <div class="heading-wrap">
     <div class="row">
         <div class="col-8">
-            <a href="<c:url value="/home"/>">
+            <a href="<c:url value="/home?page=1&limit=5"/>">
                 <img class="logo" src="<c:url value="/images/logo.png"/>" alt="">
             </a>
         </div>
@@ -91,7 +91,7 @@
         </div>
     </c:if>
     <div class="row mb-5">
-        <a href="<c:url value="/home"/>" class="cbutton cbutton--blue cbutton--big">List Posts</a>
+        <a href="<c:url value="/home?page=1&limit=5"/>" class="cbutton cbutton--blue cbutton--big">List Posts</a>
     </div>
     <p class="heading-primary">Your Profile</p>
     <div class="information">
