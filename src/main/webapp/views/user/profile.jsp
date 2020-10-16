@@ -36,29 +36,36 @@
                     <div class="collapse navbar-collapse" id="navbar-list-4">
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
-                                <div class="dropdown-menu" style="right: 0;left: inherit;" aria-labelledby="navbarDropdownMenuLink">
+                                <div class="dropdown-menu" style="right: 0;left: inherit;"
+                                     aria-labelledby="navbarDropdownMenuLink">
                                     <c:url var="profile" value="/profile">
                                         <c:param name="id" value="${sessionScope.LOGIN.id}"/>
                                     </c:url>
                                     <c:if test="${sessionScope.LOGIN.role.id == 1}">
-                                        <a class="dropdown-item" href="<c:url value="/admin-management"/>">Admin Management</a>
+                                        <a class="dropdown-item" href="<c:url value="/admin-management"/>">Admin
+                                            Management</a>
                                     </c:if>
                                     <a class="dropdown-item" href="${profile}">Profile</a>
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
+                                    <a class="dropdown-item" href="<c:url value="/change-password"/>">Change Password</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
                                 </div>
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <c:if test="${not empty sessionScope.LOGIN.avatar}">
-                                        <img src="<c:out value="${sessionScope.LOGIN.avatar}"/>" width="40" height="40" class="rounded-circle">
+                                        <img src="<c:out value="${sessionScope.LOGIN.avatar}"/>" width="40" height="40"
+                                             class="rounded-circle">
                                     </c:if>
                                     <c:if test="${empty sessionScope.LOGIN.avatar}">
-                                        <img src="<c:url value="/images/NoProfile.png"/>" width="40" height="40" class="rounded-circle">
+                                        <img src="<c:url value="/images/NoProfile.png"/>" width="40" height="40"
+                                             class="rounded-circle">
                                     </c:if>
                                 </a>
                             </li>
                         </ul>
                     </div>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </nav>
@@ -84,7 +91,7 @@
         </div>
     </c:if>
     <div class="row mb-5">
-        <a href="index.html" class="cbutton cbutton--blue cbutton--big">List Posts</a>
+        <a href="<c:url value="/home"/>" class="cbutton cbutton--blue cbutton--big">List Posts</a>
     </div>
     <p class="heading-primary">Your Profile</p>
     <div class="information">
@@ -112,12 +119,14 @@
             <div class="col-8">
                 <form id="informationForm" class="information__info">
                     <label for="name">Full Name</label>
-                    <input class="input input--big" type="text" id="name" name="fullname" value="${profileuser.fullname}">
+                    <input class="input input--big" type="text" id="name" name="fullname"
+                           value="${profileuser.fullname}">
                     <label for="email">Email</label>
                     <input class="input input--big" type="text" id="email" name="email"
                            value="${profileuser.email}">
                     <label for="dob">Date of Birth</label>
-                    <input class="input input--big" type="text" id="dob" name="dateOfBirth" value="${profileuser.dateOfBirth}">
+                    <input class="input input--big" type="text" id="dob" name="dateOfBirth"
+                           value="${profileuser.dateOfBirth}">
                     <label for="phone">Phone</label>
                     <input class="input input--big" type="text" id="phone" name="phone" value="${profileuser.phone}">
                     <div class="information__btn">
@@ -177,7 +186,7 @@
                 updateProfile(data);
             };
             reader.readAsDataURL(files);
-        }else{
+        } else {
             updateProfile(data);
         }
 
@@ -191,10 +200,10 @@
             data: JSON.stringify(data),
             dataType: 'json',
             success: function (result) {
-                window.location.href = window.location.href + "&message=success";
+                window.location.href = '<c:url value="/profile"/>' + "?id=" + result.id + "&message=success";
             },
-            error: function (error){
-                window.location.href = window.location.href + "&message=fail_update";
+            error: function (error) {
+                window.location.href = '<c:url value="/profile"/>' + "?id=" + error.id + "&message=fail_update";
             }
         });
     }

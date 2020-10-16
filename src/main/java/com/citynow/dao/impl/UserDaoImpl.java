@@ -52,7 +52,7 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
         sql.append(" dateofbirth = ?, phone = ?, quantitypost = ? , quantityupvote = ?  , status = ? , role_id = ? WHERE id = ?");
         update(sql.toString(), userModel.getUsername(), userModel.getPassword(), userModel.getFullname(), userModel.getEmail(),
                 userModel.getAvatar(), userModel.getDateOfBirth(),
-                userModel.getPhone(), userModel.getQuantityPost(), userModel.getQuantityUpvote(), userModel.getStatus(), userModel.getId(),
+                userModel.getPhone(), userModel.getQuantityPost(), userModel.getQuantityUpvote(), userModel.getStatus(),
                 userModel.getRole().getId(), userModel.getId());
     }
 

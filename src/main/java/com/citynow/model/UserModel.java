@@ -113,4 +113,42 @@ public class UserModel {
         this.role = role;
     }
 
+    public void setValue(UserModel userModel){
+        if (this.id == null){
+            this.id = userModel.getId();
+        }
+        if (this.username == null){
+            this.username = userModel.getUsername();
+        }
+        if (this.password == null){
+            this.password = userModel.getPassword();
+        }
+        if (this.fullname == null){
+            this.fullname = userModel.getFullname();
+        }
+        if (this.email == null){
+            this.email = userModel.getEmail();
+        }
+        if (this.avatar == null){
+            this.avatar = userModel.getAvatar();
+        }
+        if (this.dateOfBirth == null){
+            this.dateOfBirth = userModel.getDateOfBirth();
+        }
+        if (this.phone == null){
+            this.phone = userModel.getPhone();
+        }
+        if (this.quantityPost == null){
+            this.quantityPost = userModel.getQuantityPost();
+        }
+        if (this.quantityUpvote == null){
+            this.quantityUpvote = userModel.getQuantityUpvote();
+        }
+        if (this.role.getId() == null){
+            this.role = userModel.getRole();
+        }
+        if (this.status == 0){
+            this.status = userModel.getStatus();
+        }
+    }
 }
