@@ -20,6 +20,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
     </script>
+
 </head>
 <body>
 <div class="heading-wrap">
@@ -93,18 +94,18 @@
             <!-- Filter -->
             <div class="content-wrap--right">
                 <div class="select">
-                    <select id="standard-select">
-                        <option value="Option 1" selected>Sort by Date increase <span class="u-color-green u-bold">&uarr;</span>
+                    <select id="standard-select" onchange="filterHome(this)">
+                        <option value="date-asc" selected>Sort by Date increase <span class="u-color-green u-bold">&uarr;</span>
                         </option>
-                        <option value="Option 2">Sort by Date decrease <span class="u-color-green u-bold">&darr;</span>
+                        <option value="date-desc">Sort by Date decrease <span class="u-color-green u-bold">&darr;</span>
                         </option>
-                        <option value="Option 3">Sort by Like increase <span class="u-color-green u-bold">&uarr;</span>
+                        <option value="like-asc">Sort by Like increase <span class="u-color-green u-bold">&uarr;</span>
                         </option>
-                        <option value="Option 4">Sort by Like decrease <span class="u-color-green u-bold">&darr;</span>
+                        <option value="like-desc">Sort by Like decrease <span class="u-color-green u-bold">&darr;</span>
                         </option>
-                        <option value="Option 5">Sort by Dislike increase <span
+                        <option value="dislike-asc">Sort by Dislike increase <span
                                 class="u-color-green u-bold">&uarr;</span></option>
-                        <option value="Option 6">Sort by Dislike decrease <span
+                        <option value="dislike-desc">Sort by Dislike decrease <span
                                 class="u-color-green u-bold">&darr;</span></option>
                     </select>
                     <span class="focus"></span>
@@ -256,6 +257,11 @@
 <script>
     var totalPages = ${totalPage};
     var currentPage = ${currentPage};
+    var urlParams = new URLSearchParams(window.location.search);
+    var pageSort = urlParams.get('page');
+    var limitSort = urlParams.get('limit');
+
+
     $(function () {
         window.pagObj = $('#pagination').twbsPagination({
             totalPages: totalPages,
@@ -264,7 +270,6 @@
             onPageClick: function (event, page) {
                 if (currentPage != page) {
                     var limit = 5;
-                    var page = page;
                     var sort = '${sort}';
 
                     if (sort == " ") {
@@ -276,7 +281,13 @@
             }
         });
     });
+
     /*Pagination*/
+    function filterHome(obj) {
+        var sortValue = obj.value;
+
+       window.location = '<c:url value="/home"/>' + "?page=" + pageSort + "&limit=" + limitSort + "&sort=" + sortValue;
+    }
 
 
 </script>

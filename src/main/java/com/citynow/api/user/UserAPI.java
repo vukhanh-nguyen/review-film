@@ -31,12 +31,13 @@ public class UserAPI extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        String oldPassword = req.getParameter("oldpassword");
-        /*ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
         UserModel userModel = mapper.readValue(ConvertUtil.convertJsonToString(req.getReader()), UserModel.class);
-        userModel.setRole(roleService.findOne(Constant.ROLE_USER));
+        UserModel oldUser = userService.findOne(userModel.getId());
+        userModel.setValue(oldUser);
+      /*  userModel.setRole(roleService.findOne(Constant.ROLE_USER));
 
         userModel.setAvatar("");
         userModel.setStatus(Constant.USER_ACTIVE_STATUS);
@@ -44,18 +45,25 @@ public class UserAPI extends HttpServlet {
         userModel.setQuantityPost(0L);
         userModel.setDateOfBirth(new Date(System.currentTimeMillis()));
         userModel.setPhone("");
-        userModel.setPassword(BCrypt.hashpw(userModel.getPassword(), BCrypt.gensalt()));
+        userModel.setPassword(BCrypt.hashpw(userModel.getPassword(), BCrypt.gensalt()));*/
 
         userModel = userService.save(userModel);
-        mapper.writeValue(resp.getOutputStream(), userModel);*/
+        mapper.writeValue(resp.getOutputStream(), userModel);
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         ObjectMapper mapper = new ObjectMapper();
-        JSONObject  dataJson = new JSONObject(ConvertUtil.convertJsonToString(new BufferedReader(new InputStreamReader(req.getInputStream()))));
-        String oldPassword = dataJson.getString("oldpassword");
+        req.setCharacterEncoding("UTF-8");
+        //BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(req.getInputStream()));
+        //BufferedReader bufferedReader = new BufferedReader(req.getReader());
+        String json = ConvertUtil.convertJsonToString(req.getReader());
+        JSONObject  dataJson = new JSONObject(json);
+        String oldPassword = null;
+        try{
+            oldPassword = dataJson.getString("oldpassword");
+        }catch (Exception e) {}
         UserModel userModel;
         if (oldPassword != null) {
             // Change password
@@ -70,12 +78,13 @@ public class UserAPI extends HttpServlet {
             //update profile
             req.setCharacterEncoding("UTF-8");
             resp.setContentType("application/json");
-            userModel = mapper.readValue(ConvertUtil.convertJsonToString(req.getReader()), UserModel.class);
+            //userModel = mapper.readValue(ConvertUtil.convertJsonToString(req.getReader()), UserModel.class);
+            userModel = mapper.readValue(json, UserModel.class);
             UserModel oldUser = userService.findOne(userModel.getId());
             userModel.setValue(oldUser);
             userModel = userService.update(userModel);
+            SessionUtil.getInstance().putValue(req, "LOGIN", userModel);
             mapper.writeValue(resp.getOutputStream(), userModel);
         }
-
     }
 }
