@@ -90,6 +90,11 @@
             UPDATE PROFILE SUCCESS
         </div>
     </c:if>
+    <c:if test="${message == 'not_permission'}">
+        <div class="alert alert-danger alert-custom">
+            You are not permission for this action
+        </div>
+    </c:if>
     <div class="row mb-5">
         <a href="<c:url value="/home?page=1&limit=5"/>" class="cbutton cbutton--blue cbutton--big">List Posts</a>
     </div>
@@ -171,7 +176,7 @@
         e.preventDefault();
         var data = {};
         var formData = $('#informationForm').serializeArray();
-        data["id"] = '${sessionScope.LOGIN.id}';
+        data["id"] = '${profileuser.id}';
 
         $.each(formData, function (i, v) {
             data["" + v.name + ""] = v.value;
@@ -199,8 +204,13 @@
             contentType: 'application/json',
             data: JSON.stringify(data),
             dataType: 'json',
+
             success: function (result) {
-                window.location.href = '<c:url value="/profile"/>' + "?id=" + result.id + "&message=success";
+                if (result == "{}"){
+                    window.location.href = '<c:url value="/profile"/>' + "?id=" + ${profileuser.id} + "&message=not_permission";
+                }else{
+                    window.location.href = '<c:url value="/profile"/>' + "?id=" + result.id + "&message=success";
+                }
             },
             error: function (error) {
                 window.location.href = '<c:url value="/profile"/>' + "?id=" + error.id + "&message=fail_update";

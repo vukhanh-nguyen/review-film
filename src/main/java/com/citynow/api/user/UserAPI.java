@@ -54,32 +54,41 @@ public class UserAPI extends HttpServlet {
         ObjectMapper mapper = new ObjectMapper();
 
         req.setCharacterEncoding("UTF-8");
+
         String json = ConvertUtil.convertJsonToString(req.getReader());
         JSONObject  dataJson = new JSONObject(json);
         String oldPassword = null;
+        Long id = -1L;
         try{
             oldPassword = dataJson.getString("oldpassword");
         }catch (Exception e) {}
+        try{
+            id = dataJson.getLong("id");
+        }catch (Exception e) {}
         UserModel userModel;
-        if (oldPassword != null) {
-            // Change password
-            userModel = (UserModel) SessionUtil.getInstance().getValue(req, "LOGIN");
-            if (userModel != null && BCrypt.checkpw(oldPassword,userModel.getPassword())){
-                String newPassword = dataJson.getString("newpassword");
-                userModel.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+        if (id.equals(model.getId())){
+            if (oldPassword != null) {
+                // Change password
+                userModel = (UserModel) SessionUtil.getInstance().getValue(req, "LOGIN");
+                if (userModel != null && BCrypt.checkpw(oldPassword,userModel.getPassword())){
+                    String newPassword = dataJson.getString("newpassword");
+                    userModel.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+                    userModel = userService.update(userModel);
+                    mapper.writeValue(resp.getOutputStream(), userModel);
+                }
+            } else {
+                //update profile
+                req.setCharacterEncoding("UTF-8");
+                resp.setContentType("application/json");
+                userModel = mapper.readValue(json, UserModel.class);
+                UserModel oldUser = userService.findOne(userModel.getId());
+                userModel.setValue(oldUser);
                 userModel = userService.update(userModel);
+                SessionUtil.getInstance().putValue(req, "LOGIN", userModel);
                 mapper.writeValue(resp.getOutputStream(), userModel);
             }
-        } else {
-            //update profile
-            req.setCharacterEncoding("UTF-8");
-            resp.setContentType("application/json");
-            userModel = mapper.readValue(json, UserModel.class);
-            UserModel oldUser = userService.findOne(userModel.getId());
-            userModel.setValue(oldUser);
-            userModel = userService.update(userModel);
-            SessionUtil.getInstance().putValue(req, "LOGIN", userModel);
-            mapper.writeValue(resp.getOutputStream(), userModel);
+        }else{
+            mapper.writeValue(resp.getOutputStream(), "{}");
         }
     }
 }
