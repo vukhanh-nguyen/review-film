@@ -89,7 +89,8 @@
             <!-- Toolbar -->
             <!-- Search-->
             <div class="content-wrap--left">
-                <input class="input" type="text" id="search" class="m-2" name="search" placeholder="Search">
+                <input class="input" onkeypress="if(event.key === 'Enter') search()" type="text" id="search-input"
+                       class="m-2" name="search" placeholder="Search">
             </div>
             <!-- Filter -->
             <div class="content-wrap--right">
@@ -225,6 +226,8 @@
     var pageSort = urlParams.get('page');
     var limitSort = urlParams.get('limit');
 
+    var searchText = '${search}';
+    var limit = 5;
 
     $(function () {
         window.pagObj = $('#pagination').twbsPagination({
@@ -233,14 +236,32 @@
             startPage: currentPage,
             onPageClick: function (event, page) {
                 if (currentPage != page) {
-                    var limit = 5;
                     var sort = '${sort}';
 
                     if (sort == " ") {
-                        window.location = '<c:url value="/home"/>' + "?page=" + page + "&limit=" + limit;
+                        if (searchText == "") {
+                            window.location = '<c:url value="/home"/>' + "?page=" + page + "&limit=" + limit;
+                        } else {
+                            window.location = '<c:url value="/home"/>' + "?page=" + page + "&limit=" + limit + "&search=" + searchText;
+                        }
                     } else {
-                        window.location = '<c:url value="/home"/>' + "?page=" + page + "&limit=" + limit + "&sort=" + sort;
+                        if (searchText == "") {
+                            window.location = '<c:url value="/home"/>' + "?page=" + page + "&limit=" + limit + "&sort=" + sort;
+                        } else {
+                            window.location = '<c:url value="/home"/>' + "?page=" + page + "&limit=" + limit + "&sort=" + sort + "&search=" + searchText;
+                        }
                     }
+                    /*if (sort == " ") {
+                        window.location = '
+
+
+                    <c:url value="/home"/>' + "?page=" + page + "&limit=" + limit;
+                    } else {
+                        window.location = '
+
+
+                    <c:url value="/home"/>' + "?page=" + page + "&limit=" + limit + "&sort=" + sort;
+                    }*/
                 }
             }
         });
@@ -255,9 +276,24 @@
         if (limitSort == null) {
             limitSort = 5;
         }
-        window.location = '<c:url value="/home"/>' + "?page=" + pageSort + "&limit=" + limitSort + "&sort=" + sortValue;
+        if (searchText == null) {
+            window.location = '<c:url value="/home"/>' + "?page=" + pageSort + "&limit=" + limitSort + "&sort=" + sortValue;
+        } else {
+            window.location = '<c:url value="/home"/>' + "?page=" + pageSort + "&limit=" + limitSort + "&sort=" + sortValue + "&search=" + searchText;
+        }
     }
 
+    // Search
+    function search() {
+        var searchText = $('#search-input').val();
+
+        if (searchText == "") {
+            window.location = '<c:url value="/home"/>' + "?page=" + currentPage + "&limit=" + limit;
+        } else {
+            window.location = '<c:url value="/home"/>' + "?page=" + currentPage + "&limit=" + limit + "&search=" + searchText;
+        }
+
+    }
 </script>
 <script src="<c:url value="/js/pagination.js"/>"></script>
 </body>

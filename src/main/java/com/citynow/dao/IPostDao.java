@@ -13,12 +13,13 @@ public interface IPostDao {
     List<PostModel> findAll();
     List<PostModel> findAll(int page, int limit);
     List<PostModel> findAllByStatus(int status);
-    List<PostModel> findAllByStatus(int status, int page, int limit, String sort);
+    List<PostModel> findAllByStatus(int status,String search, int page, int limit, String sort);
     List<PostModel> findAllByUserId(Long userId);
     List<PostModel> findAllByUserId(Long userId, int page, int limit);
     List<PostModel> findAllByUserIdAndStatus(Long userId, int postStatus);
     List<PostModel> findAllTopByStatus(int top, int status);
     int countByStatus(int status);
+    int countByStatusAndSearch(int status,String search);
     int countByUserId(Long userId);
     int count();
 }

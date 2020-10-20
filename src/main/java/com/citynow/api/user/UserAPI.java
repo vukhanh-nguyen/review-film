@@ -50,11 +50,10 @@ public class UserAPI extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        UserModel model = (UserModel) SessionUtil.getInstance().getValue(req, "LOGIN");
         ObjectMapper mapper = new ObjectMapper();
+
         req.setCharacterEncoding("UTF-8");
-        //BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(req.getInputStream()));
-        //BufferedReader bufferedReader = new BufferedReader(req.getReader());
         String json = ConvertUtil.convertJsonToString(req.getReader());
         JSONObject  dataJson = new JSONObject(json);
         String oldPassword = null;
@@ -75,7 +74,6 @@ public class UserAPI extends HttpServlet {
             //update profile
             req.setCharacterEncoding("UTF-8");
             resp.setContentType("application/json");
-            //userModel = mapper.readValue(ConvertUtil.convertJsonToString(req.getReader()), UserModel.class);
             userModel = mapper.readValue(json, UserModel.class);
             UserModel oldUser = userService.findOne(userModel.getId());
             userModel.setValue(oldUser);

@@ -28,8 +28,8 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public List<PostModel> findAllByStatus(int status, int page, int limit, String sort) {
-        return postDao.findAllByStatus(status, page, limit, sort);
+    public List<PostModel> findAllByStatus(int status, String search, int page, int limit, String sort) {
+        return postDao.findAllByStatus(status, search, page, limit, sort);
     }
 
     @Override
@@ -84,6 +84,11 @@ public class PostServiceImpl implements IPostService {
     @Override
     public int countByStatus(int status) {
         return postDao.countByStatus(status);
+    }
+
+    @Override
+    public int countByStatusAndSearch(int status, String search) {
+        return postDao.countByStatusAndSearch(status, search);
     }
 
     @Override

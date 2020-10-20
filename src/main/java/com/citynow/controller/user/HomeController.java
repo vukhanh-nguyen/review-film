@@ -29,6 +29,7 @@ public class HomeController extends HttpServlet {
         // Pagination
         int page = 1;
         int limit = 5;
+        String search = "";
         try {
             if (req.getParameter("page") != null) {
                 page = Integer.parseInt(req.getParameter("page"));
@@ -36,17 +37,25 @@ public class HomeController extends HttpServlet {
             if (req.getParameter("limit") != null) {
                 limit = Integer.parseInt(req.getParameter("limit"));
             }
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
+        try {
+            if (req.getParameter("search") != null) {
+                search = req.getParameter("search");
+            }
+
+        } catch (Exception e) {
+        }
         int totalPage;
         String sort = req.getParameter("sort");
         if (sort == null) {
             sort = "date-desc";
         }
 
-        List<PostModel> listResult = postService.findAllByStatus(Constant.POST_APPROVE_STATUS, page, limit, sort);
+        List<PostModel> listResult = postService.findAllByStatus(Constant.POST_APPROVE_STATUS, search, page, limit, sort);
         List<UserModel> TopReviewers = userService.findTopByQuantityLike(3);
         List<PostModel> TopPosts = postService.findAllTopByStatus(3, Constant.POST_APPROVE_STATUS);
-        totalPage = (int) Math.ceil((double) postService.countByStatus(Constant.POST_APPROVE_STATUS) / limit);
+        totalPage = (int) Math.ceil((double) postService.countByStatusAndSearch(Constant.POST_APPROVE_STATUS, search) / limit);
 
         req.setAttribute("post", listResult);
         req.setAttribute("topReviewers", TopReviewers);
@@ -54,6 +63,7 @@ public class HomeController extends HttpServlet {
         req.setAttribute("totalPage", totalPage);
         req.setAttribute("currentPage", page);
         req.setAttribute("sort", sort);
+        req.setAttribute("search", search);
 
         req.getRequestDispatcher("/views/user/home.jsp").forward(req, resp);
     }

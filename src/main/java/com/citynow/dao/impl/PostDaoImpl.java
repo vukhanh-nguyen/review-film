@@ -74,7 +74,7 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
     }
 
     @Override
-    public List<PostModel> findAllByStatus(int status, int page, int limit, String sort) {
+    public List<PostModel> findAllByStatus(int status, String search, int page, int limit, String sort) {
 
         StringBuilder sql = new StringBuilder(" ");
 
@@ -82,30 +82,40 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
             sql.append(" SELECT * ");
             sql.append(" FROM POST, USER ");
             sql.append(" WHERE POST.user_id = USER.id AND post.status = ?");
+            sql.append(" and (LOWER(post.title) LIKE CONCAT(\"%\",  LOWER(?), \"%\") or  ");
+            sql.append(" LOWER(post.postreview) LIKE CONCAT(\"%\",  LOWER(?), \"%\")) ");
             sql.append(" ORDER BY post.datemodified asc, post.id asc");
             sql.append(" LIMIT ? OFFSET ?");
         } else if (sort.equals("like-asc")) {
             sql.append(" SELECT * ");
             sql.append(" FROM POST, USER ");
             sql.append(" WHERE POST.user_id = USER.id AND post.status = ?");
-            sql.append(" ORDER BY post.upvote asc, post.id asc");
+            sql.append(" and (LOWER(post.title) LIKE CONCAT(\"%\",  LOWER(?), \"%\") or  ");
+            sql.append(" LOWER(post.postreview) LIKE CONCAT(\"%\",  LOWER(?), \"%\")) ");
+            sql.append(" ORDER BY post.upvote asc, post.id desc");
             sql.append(" LIMIT ? OFFSET ?");
         } else if (sort.equals("like-desc")) {
             sql.append(" SELECT * ");
             sql.append(" FROM POST, USER ");
             sql.append(" WHERE POST.user_id = USER.id AND post.status = ?");
+            sql.append(" and (LOWER(post.title) LIKE CONCAT(\"%\",  LOWER(?), \"%\") or  ");
+            sql.append(" LOWER(post.postreview) LIKE CONCAT(\"%\",  LOWER(?), \"%\")) ");
             sql.append(" ORDER BY post.upvote desc, post.id desc");
             sql.append(" LIMIT ? OFFSET ?");
         } else if (sort.equals("dislike-asc")) {
             sql.append(" SELECT * ");
             sql.append(" FROM POST, USER ");
             sql.append(" WHERE POST.user_id = USER.id AND post.status = ?");
-            sql.append(" ORDER BY post.downvote asc, post.id asc");
+            sql.append(" and (LOWER(post.title) LIKE CONCAT(\"%\",  LOWER(?), \"%\") or  ");
+            sql.append(" LOWER(post.postreview) LIKE CONCAT(\"%\",  LOWER(?), \"%\")) ");
+            sql.append(" ORDER BY post.downvote asc, post.id desc");
             sql.append(" LIMIT ? OFFSET ?");
         } else if (sort.equals("dislike-desc")) {
             sql.append(" SELECT * ");
             sql.append(" FROM POST, USER ");
             sql.append(" WHERE POST.user_id = USER.id AND post.status = ?");
+            sql.append(" and (LOWER(post.title) LIKE CONCAT(\"%\",  LOWER(?), \"%\") or  ");
+            sql.append(" LOWER(post.postreview) LIKE CONCAT(\"%\",  LOWER(?), \"%\")) ");
             sql.append(" ORDER BY post.downvote desc, post.id desc");
             sql.append(" LIMIT ? OFFSET ?");
         } else {
@@ -113,6 +123,8 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
             sql.append(" SELECT * ");
             sql.append(" FROM POST, USER ");
             sql.append(" WHERE POST.user_id = USER.id AND post.status = ?");
+            sql.append(" and (LOWER(post.title) LIKE CONCAT(\"%\",  LOWER(?), \"%\") or  ");
+            sql.append(" LOWER(post.postreview) LIKE CONCAT(\"%\",  LOWER(?), \"%\")) ");
             sql.append(" ORDER BY post.datemodified desc, post.id desc");
             sql.append(" LIMIT ? OFFSET ?");
         }
@@ -120,7 +132,7 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
         // offset = (page -1 ) * limit (MySQL count from 0)
         // limit = limit - 1
         int offset = (page - 1) * limit;
-        return query(sql.toString(), new PostMapper(), status, limit, offset);
+        return query(sql.toString(), new PostMapper(), status, search, search, limit, offset);
     }
 
     @Override
@@ -168,6 +180,16 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
         sql.append(" FROM POST ");
         sql.append(" WHERE post.status= ? ");
         return count(sql.toString(), status);
+    }
+
+    @Override
+    public int countByStatusAndSearch(int status, String search) {
+        StringBuilder sql = new StringBuilder("SELECT count(*) ");
+        sql.append(" FROM POST ");
+        sql.append(" WHERE post.status= ? ");
+        sql.append(" and (LOWER(post.title) LIKE CONCAT(\"%\",  LOWER(?), \"%\") or  ");
+        sql.append(" LOWER(post.postreview) LIKE CONCAT(\"%\",  LOWER(?), \"%\")) ");
+        return count(sql.toString(), status, search, search);
     }
 
     @Override
