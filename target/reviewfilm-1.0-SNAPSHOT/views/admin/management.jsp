@@ -126,6 +126,9 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
+                            <div class="pagination-wrap">
+                                <ul class="pagination" id="paginationPostManagement"></ul>
+                            </div>
                         </div>
                         <div class="content-2">
                             <table class="table table-bordered u-center-text">
@@ -161,6 +164,9 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
+                            <div class="pagination-wrap">
+                                <ul class="pagination" id="paginationUserManagement"></ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -168,7 +174,10 @@
         </div>
     </div>
 </div>
-<script>
+<script src="<c:url value="/template/paging/jquery.twbsPagination.js"/>"></script>
+<script type="text/javascript">
+
+    // Post pending -> Approve
     function approvePost(id, status) {
         $.ajax({
             url: '${APIAdminPost}',
@@ -182,6 +191,43 @@
             }
         });
     }
+
+
+    // Pagination post management
+    var totalPagePost = ${totalPagePost};
+    var currentPagePost = ${currentPagePost};
+
+    // Pagination user management
+    var totalPageUser = ${totalPageUser};
+    var currentPageUser = ${currentPageUser};
+
+
+    $(function () {
+        window.pagObj = $('#paginationPostManagement').twbsPagination({
+            totalPages: totalPagePost,
+            visiblePages: 5,
+            startPage: currentPagePost,
+            onPageClick: function (event, page) {
+                if (currentPagePost != page) {
+                    window.location = '<c:url value="/admin-management"/>' + "?page_post=" + page + "&page_user=" + currentPageUser;
+                }
+            }
+        });
+    });
+
+    $(function () {
+        window.pagObj = $('#paginationUserManagement').twbsPagination({
+            totalPages: totalPageUser,
+            visiblePages: 5,
+            startPage: currentPageUser,
+            onPageClick: function (event, page) {
+                if (currentPageUser != page) {
+                    window.location = '<c:url value="/admin-management"/>' + "?page_post=" + currentPagePost + "&page_user=" + page;
+                }
+            }
+        });
+    });
 </script>
+<script src="<c:url value="/js/pagination.js"/>"></script>
 </body>
 </html>

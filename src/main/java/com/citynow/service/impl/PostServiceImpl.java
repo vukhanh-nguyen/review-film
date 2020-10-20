@@ -18,6 +18,11 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
+    public List<PostModel> findAll(int page, int limit) {
+        return postDao.findAll(page, limit);
+    }
+
+    @Override
     public List<PostModel> findAllByStatus(int status) {
         return postDao.findAllByStatus(status);
     }
@@ -33,8 +38,18 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
+    public List<PostModel> findAllByUserId(Long userId, int page, int limit) {
+        return postDao.findAllByUserId(userId, page, limit);
+    }
+
+    @Override
     public List<PostModel> findAllByUserIdAndStatus(Long userId, int postStatus) {
         return postDao.findAllByUserIdAndStatus(userId, postStatus);
+    }
+
+    @Override
+    public List<PostModel> findAllTopByStatus(int top, int postStatus) {
+        return postDao.findAllTopByStatus(top, postStatus);
     }
 
     @Override
@@ -62,7 +77,17 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
+    public int count() {
+        return postDao.count();
+    }
+
+    @Override
     public int countByStatus(int status) {
         return postDao.countByStatus(status);
+    }
+
+    @Override
+    public int countByUserId(Long userId) {
+        return postDao.countByUserId(userId);
     }
 }

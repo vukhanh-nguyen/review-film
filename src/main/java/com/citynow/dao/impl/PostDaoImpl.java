@@ -52,6 +52,20 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
     }
 
     @Override
+    public List<PostModel> findAll(int page, int limit) {
+        StringBuilder sql = new StringBuilder(" SELECT * ");
+        sql.append(" FROM POST, USER ");
+        sql.append(" WHERE POST.user_id = USER.id");
+        sql.append(" ORDER BY post.datemodified asc, post.id asc");
+        sql.append(" LIMIT ? OFFSET ?");
+
+        // offset = (page -1 ) * limit (MySQL count from 0)
+        // limit = limit - 1
+        int offset = (page - 1) * limit;
+        return query(sql.toString(), new PostMapper(), limit, offset);
+    }
+
+    @Override
     public List<PostModel> findAllByStatus(int status) {
         StringBuilder sql = new StringBuilder("SELECT * ");
         sql.append(" FROM POST, USER ");
@@ -64,37 +78,37 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
 
         StringBuilder sql = new StringBuilder(" ");
 
-        if (sort.equals("date-asc")){
+        if (sort.equals("date-asc")) {
             sql.append(" SELECT * ");
             sql.append(" FROM POST, USER ");
             sql.append(" WHERE POST.user_id = USER.id AND post.status = ?");
             sql.append(" ORDER BY post.datemodified asc, post.id asc");
             sql.append(" LIMIT ? OFFSET ?");
-        } else if (sort.equals("like-asc")){
+        } else if (sort.equals("like-asc")) {
             sql.append(" SELECT * ");
             sql.append(" FROM POST, USER ");
             sql.append(" WHERE POST.user_id = USER.id AND post.status = ?");
             sql.append(" ORDER BY post.upvote asc, post.id asc");
             sql.append(" LIMIT ? OFFSET ?");
-        }else if (sort.equals("like-desc")){
+        } else if (sort.equals("like-desc")) {
             sql.append(" SELECT * ");
             sql.append(" FROM POST, USER ");
             sql.append(" WHERE POST.user_id = USER.id AND post.status = ?");
             sql.append(" ORDER BY post.upvote desc, post.id desc");
             sql.append(" LIMIT ? OFFSET ?");
-        }else if (sort.equals("dislike-asc")){
+        } else if (sort.equals("dislike-asc")) {
             sql.append(" SELECT * ");
             sql.append(" FROM POST, USER ");
             sql.append(" WHERE POST.user_id = USER.id AND post.status = ?");
             sql.append(" ORDER BY post.downvote asc, post.id asc");
             sql.append(" LIMIT ? OFFSET ?");
-        }else if (sort.equals("dislike-desc")){
+        } else if (sort.equals("dislike-desc")) {
             sql.append(" SELECT * ");
             sql.append(" FROM POST, USER ");
             sql.append(" WHERE POST.user_id = USER.id AND post.status = ?");
             sql.append(" ORDER BY post.downvote desc, post.id desc");
             sql.append(" LIMIT ? OFFSET ?");
-        }else{
+        } else {
             // date- desc (Post new)
             sql.append(" SELECT * ");
             sql.append(" FROM POST, USER ");
@@ -118,6 +132,19 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
     }
 
     @Override
+    public List<PostModel> findAllByUserId(Long userId, int page, int limit) {
+        StringBuilder sql = new StringBuilder(" SELECT * ");
+        sql.append(" FROM POST, USER ");
+        sql.append(" WHERE POST.user_id = USER.id AND user.id = ? ");
+        sql.append(" LIMIT ? OFFSET ?");
+
+        // offset = (page -1 ) * limit (MySQL count from 0)
+        // limit = limit - 1
+        int offset = (page - 1) * limit;
+        return query(sql.toString(), new PostMapper(), userId, limit, offset);
+    }
+
+    @Override
     public List<PostModel> findAllByUserIdAndStatus(Long userId, int postStatus) {
         StringBuilder sql = new StringBuilder("SELECT * ");
         sql.append(" FROM POST, USER ");
@@ -126,10 +153,35 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
     }
 
     @Override
+    public List<PostModel> findAllTopByStatus(int top, int status) {
+        StringBuilder sql = new StringBuilder("SELECT * ");
+        sql.append(" FROM POST, USER ");
+        sql.append(" WHERE POST.user_id = USER.id AND post.status = ? ");
+        sql.append(" order by post.upvote desc, post.id desc ");
+        sql.append(" limit ? ");
+        return query(sql.toString(), new PostMapper(), status, top);
+    }
+
+    @Override
     public int countByStatus(int status) {
         StringBuilder sql = new StringBuilder("SELECT count(*) ");
         sql.append(" FROM POST ");
         sql.append(" WHERE post.status= ? ");
         return count(sql.toString(), status);
+    }
+
+    @Override
+    public int countByUserId(Long userId) {
+        StringBuilder sql = new StringBuilder("SELECT count(*) ");
+        sql.append(" FROM POST ");
+        sql.append(" WHERE post.user_id = ? ");
+        return count(sql.toString(), userId);
+    }
+
+    @Override
+    public int count() {
+        StringBuilder sql = new StringBuilder("SELECT count(*) ");
+        sql.append(" FROM POST ");
+        return count(sql.toString());
     }
 }

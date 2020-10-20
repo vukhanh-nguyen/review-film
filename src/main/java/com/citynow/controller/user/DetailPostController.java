@@ -30,11 +30,31 @@ public class DetailPostController extends HttpServlet {
         Long idPost = Long.parseLong(req.getParameter("id"));
 
         UserModel model = (UserModel) SessionUtil.getInstance().getValue(req, "LOGIN");
-        if (model != null){
-            req.setAttribute("vote", voteService.findOneByUserIdAndPostId(model.getId(),idPost));
+        if (model != null) {
+            req.setAttribute("vote", voteService.findOneByUserIdAndPostId(model.getId(), idPost));
         }
+
+        int limit = 5;
+        int page = 1;
+        int totalPage;
+        try {
+            if (req.getParameter("page") != null) {
+                page = Integer.parseInt(req.getParameter("page"));
+            }
+        }catch (Exception e){}
+        totalPage = (int) Math.ceil((double) commentService.countAllByPostId(idPost) / limit);
+
+        req.setAttribute("totalPage", totalPage);
+        req.setAttribute("currentPage", page);
+
         req.setAttribute("post", postService.findOne(idPost));
-        req.setAttribute("comments", commentService.findAllByPostId(idPost));
-        req.getRequestDispatcher("/views/user/detailPost.jsp").forward(req,resp);
+        req.setAttribute("comments", commentService.findAllByPostId(idPost, page, limit));
+
+        req.getRequestDispatcher("/views/user/detailPost.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/views/user/detailPost.jsp").forward(req, resp);
     }
 }

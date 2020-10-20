@@ -16,11 +16,11 @@
     <title>Detail Post - Review Film</title>
     <link href="<c:url value='/css/style.css'/>" rel="stylesheet">
     <link rel="shortcut icon" href="<c:url value="/images/logo.ico"/>"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
           integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
     </script>
@@ -51,7 +51,8 @@
                                     </c:if>
                                     <a class="dropdown-item" href="${profile}">Profile</a>
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
-                                    <a class="dropdown-item" href="<c:url value="/change-password"/>">Change Password</a>
+                                    <a class="dropdown-item" href="<c:url value="/change-password"/>">Change
+                                        Password</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
                                 </div>
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
@@ -197,6 +198,9 @@
                             </div>
                         </div>
                     </c:forEach>
+                    <div class="pagination-wrap">
+                        <ul class="pagination" id="pagination"></ul>
+                    </div>
                 </div>
             </c:if>
             <c:if test="${sessionScope.LOGIN == null}">
@@ -209,6 +213,7 @@
         </div>
     </div>
 </div>
+<script src="<c:url value="/template/paging/jquery.twbsPagination.js"/>"></script>
 <script type="text/javascript">
     $('#comment').click(function (e) {
         e.preventDefault();
@@ -219,6 +224,7 @@
         addComment(data);
     });
 
+    // Comment
     function addComment(data) {
         $.ajax({
             url: '${createCommentAPI}',
@@ -235,6 +241,7 @@
         });
     }
 
+    // Vote (Like or dislike)
     function vote(idPost, statusVote) {
         $.ajax({
             url: '${voteAPI}',
@@ -249,6 +256,7 @@
         });
     }
 
+    // Unvote
     function deleteVote(idPost) {
         $.ajax({
             url: '<c:url value="/api-vote"/>' + "?idpost=" + idPost,
@@ -260,7 +268,30 @@
                 location.reload()
             }
         });
+
     }
+
+    // Pagination comment
+
+
+    var totalPages = ${totalPage};
+    var currentPage = ${currentPage};
+
+    $(function () {
+        window.pagObj = $('#pagination').twbsPagination({
+            totalPages: totalPages,
+            visiblePages: 3,
+            startPage: currentPage,
+            onPageClick: function (event, page) {
+                if (currentPage != page) {
+                    window.location = '<c:url value="/detail-post"/>' + "?id=" + ${post.id} +"&page=" + page;
+                }
+            }
+        });
+    });
+
+
 </script>
+<script src="<c:url value="/js/pagination.js"/>"></script>
 </body>
 </html>

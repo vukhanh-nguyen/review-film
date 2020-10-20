@@ -11,5 +11,8 @@ public interface IUserService {
     UserModel fineOneByUsername(String username);
     UserModel findOne(Long id);
     List<UserModel> findAll();
+    List<UserModel> findAll(int page, int limit);
+    List<UserModel> findTopByQuantityLike(int top);
     Long countTotalLikedByUserId(Long userId);
+    int count();
 }

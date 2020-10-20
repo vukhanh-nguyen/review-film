@@ -27,10 +27,20 @@ public class CommentServiceImpl implements ICommentService {
     }
 
     @Override
+    public List<CommentModel> findAllByPostId(Long postId, int page, int limit) {
+        return commentDao.findAllByPostId(postId, page, limit);
+    }
+
+    @Override
     public CommentModel save(CommentModel commentModel) {
-        if (commentModel.getContent() == null || commentModel.getContent().trim().equals("")){
+        if (commentModel.getContent() == null || commentModel.getContent().trim().equals("")) {
             throw new NullPointerException("Value is null");
         }
         return commentDao.findOne(commentDao.save(commentModel));
+    }
+
+    @Override
+    public int countAllByPostId(Long postId) {
+        return commentDao.countAllByPostId(postId);
     }
 }

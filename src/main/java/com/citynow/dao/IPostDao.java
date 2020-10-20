@@ -11,9 +11,14 @@ public interface IPostDao {
     void update(PostModel postModel);
     void delete(Long id);
     List<PostModel> findAll();
+    List<PostModel> findAll(int page, int limit);
     List<PostModel> findAllByStatus(int status);
     List<PostModel> findAllByStatus(int status, int page, int limit, String sort);
     List<PostModel> findAllByUserId(Long userId);
+    List<PostModel> findAllByUserId(Long userId, int page, int limit);
     List<PostModel> findAllByUserIdAndStatus(Long userId, int postStatus);
+    List<PostModel> findAllTopByStatus(int top, int status);
     int countByStatus(int status);
+    int countByUserId(Long userId);
+    int count();
 }

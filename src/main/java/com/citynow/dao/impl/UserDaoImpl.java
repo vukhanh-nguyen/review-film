@@ -64,10 +64,38 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
     }
 
     @Override
+    public List<UserModel> findAll(int page, int limit) {
+        StringBuilder sql = new StringBuilder(" SELECT * ");
+        sql.append(" FROM USER WHERE role_id = 2 ");
+        sql.append(" LIMIT ? OFFSET ?");
+
+        // offset = (page -1 ) * limit (MySQL count from 0)
+        // limit = limit - 1
+        int offset = (page - 1) * limit;
+        return query(sql.toString(), new UserMapper(), limit, offset);
+    }
+
+    @Override
+    public List<UserModel> findTopByQuantityLike(int top) {
+        StringBuilder sql = new StringBuilder("SELECT * ");
+        sql.append(" FROM USER ");
+        sql.append(" ORDER BY user.quantityupvote DESC ");
+        sql.append(" LIMIT ? ");
+        return query(sql.toString(), new UserMapper(), top);
+    }
+
+    @Override
     public Long countTotalLikedByUserId(Long userId) {
         StringBuilder sql = new StringBuilder("SELECT count(*) ");
         sql.append(" FROM POST, VOTE ");
         sql.append(" WHERE vote.post_id = post.id and actionvote = 1 and post.user_id = ? ");
         return Long.valueOf(count(sql.toString(), userId));
+    }
+
+    @Override
+    public int count() {
+        StringBuilder sql = new StringBuilder("SELECT count(*) ");
+        sql.append(" FROM USER ");
+        return count(sql.toString());
     }
 }

@@ -11,5 +11,8 @@ public interface IUserDao {
     Long save(UserModel userModel);
     void update(UserModel userModel);
     List<UserModel> findAll();
+    List<UserModel> findAll(int page, int limit);
+    List<UserModel> findTopByQuantityLike(int top);
     Long countTotalLikedByUserId(Long userId);
+    int count();
 }

@@ -33,6 +33,19 @@ public class VoteDaoImpl extends AbstractDao<VoteModel> implements IVoteDao {
     }
 
     @Override
+    public List<VoteModel> findAllByUserId(Long userId, int page, int limit) {
+        StringBuilder sql = new StringBuilder("SELECT * ");
+        sql.append(" FROM VOTE, USER, POST ");
+        sql.append("  WHERE vote.post_id = post.id and vote.user_id = user.id and user.id = ?");
+        sql.append(" LIMIT ? OFFSET ?");
+
+        // offset = (page -1 ) * limit (MySQL count from 0)
+        // limit = limit - 1
+        int offset = (page - 1) * limit;
+        return query(sql.toString(), new VoteMapper(), userId, limit, offset);
+    }
+
+    @Override
     public VoteModel findOne(Long id) {
         StringBuilder sql = new StringBuilder("SELECT * ");
         sql.append(" FROM VOTE, USER, POST ");
@@ -62,5 +75,13 @@ public class VoteDaoImpl extends AbstractDao<VoteModel> implements IVoteDao {
     public void delete(Long id) {
         String sql = "DELETE FROM VOTE WHERE id = ?";
         update(sql, id);
+    }
+
+    @Override
+    public int countByUserId(Long userId) {
+        StringBuilder sql = new StringBuilder("SELECT count(*) ");
+        sql.append(" FROM vote ");
+        sql.append(" WHERE vote.user_id = ? ");
+        return count(sql.toString(), userId);
     }
 }

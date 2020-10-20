@@ -28,6 +28,11 @@ public class VoteServiceImpl implements IVoteService {
     }
 
     @Override
+    public List<VoteModel> findAllByUserId(Long userId, int page, int limit) {
+        return voteDao.findAllByUserId(userId, page,limit);
+    }
+
+    @Override
     public VoteModel findOneByUserIdAndPostId(Long userId, Long postId) {
         return voteDao.findOneByUserIdAndPostId(userId, postId);
     }
@@ -40,5 +45,10 @@ public class VoteServiceImpl implements IVoteService {
     @Override
     public void delete(Long id) {
         voteDao.delete(id);
+    }
+
+    @Override
+    public int countByUserId(Long userId) {
+        return voteDao.countByUserId(userId);
     }
 }

@@ -24,6 +24,8 @@ public class LoginController extends HttpServlet {
         if (message != null) {
             req.setAttribute("message", message);
         }
+
+        //resp.sendRedirect(req.getContextPath() + "/home");
         req.getRequestDispatcher("/views/user/login.jsp").forward(req, resp);
     }
 

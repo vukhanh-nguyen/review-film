@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List Posts - Review Film</title>
     <link href="<c:url value='/css/style.css'/>" rel="stylesheet">
-    <link rel="shortcut icon" href="<c:url value="/images/logo.ico"/>" />
+    <link rel="shortcut icon" href="<c:url value="/images/logo.ico"/>"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -36,30 +36,37 @@
                     <div class="collapse navbar-collapse" id="navbar-list-4">
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
-                                <div class="dropdown-menu" style="right: 0;left: inherit;" aria-labelledby="navbarDropdownMenuLink">
+                                <div class="dropdown-menu" style="right: 0;left: inherit;"
+                                     aria-labelledby="navbarDropdownMenuLink">
                                     <c:url var="profile" value="/profile">
                                         <c:param name="id" value="${sessionScope.LOGIN.id}"/>
                                     </c:url>
                                     <c:if test="${sessionScope.LOGIN.role.id == 1}">
-                                        <a class="dropdown-item" href="<c:url value="/admin-management"/>">Admin Management</a>
+                                        <a class="dropdown-item" href="<c:url value="/admin-management"/>">Admin
+                                            Management</a>
                                     </c:if>
                                     <a class="dropdown-item" href="${profile}">Profile</a>
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
-                                    <a class="dropdown-item" href="<c:url value="/change-password"/>">Change Password</a>
+                                    <a class="dropdown-item" href="<c:url value="/change-password"/>">Change
+                                        Password</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
                                 </div>
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <c:if test="${not empty sessionScope.LOGIN.avatar}">
-                                        <img src="<c:out value="${sessionScope.LOGIN.avatar}"/>" width="40" height="40" class="rounded-circle">
+                                        <img src="<c:out value="${sessionScope.LOGIN.avatar}"/>" width="40" height="40"
+                                             class="rounded-circle">
                                     </c:if>
                                     <c:if test="${empty sessionScope.LOGIN.avatar}">
-                                        <img src="<c:url value="/images/NoProfile.png"/>" width="40" height="40" class="rounded-circle">
+                                        <img src="<c:url value="/images/NoProfile.png"/>" width="40" height="40"
+                                             class="rounded-circle">
                                     </c:if>
                                 </a>
                             </li>
                         </ul>
                     </div>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </nav>
@@ -89,9 +96,9 @@
         <div class="row">
             <div class="col-12">
                 <div class="tabs">
-                    <input id="tab-1" type="radio" name="radio-set" class="tab-selector-1" checked="checked" />
+                    <input id="tab-1" type="radio" name="radio-set" class="tab-selector-1" checked="checked"/>
                     <label for="tab-1" class="tab-label-1">Your Posts</label>
-                    <input id="tab-2" type="radio" name="radio-set" class="tab-selector-2" />
+                    <input id="tab-2" type="radio" name="radio-set" class="tab-selector-2"/>
                     <label for="tab-2" class="tab-label-2">Posts Interacted</label>
                     <div class="clear-shadow"></div>
                     <div class="content">
@@ -126,6 +133,9 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
+                            <div class="pagination-wrap">
+                                <ul class="pagination" id="paginationUrPost"></ul>
+                            </div>
                         </div>
                         <div class="content-2">
                             <table class="table table-bordered u-center-text">
@@ -152,12 +162,16 @@
                                             <c:url var="detailPost" value="/detail-post">
                                                 <c:param name="id" value="${item.post.id}"/>
                                             </c:url>
-                                            <a href="${detailPost}" class="cbutton cbutton--blue cbutton--small">VIEW</a>
+                                            <a href="${detailPost}"
+                                               class="cbutton cbutton--blue cbutton--small">VIEW</a>
                                         </td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
                             </table>
+                            <div class="pagination-wrap">
+                                <ul class="pagination" id="paginationUrInteracted"></ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -165,5 +179,47 @@
         </div>
     </div>
 </div>
+<script src="<c:url value="/template/paging/jquery.twbsPagination.js"/>"></script>
+<script type="text/javascript">
+
+
+    // Pagination your post
+    var totalPagesUrPost = ${totalPageUrPost};
+    var currentPageUrPost = ${currentPageUrPost};
+
+    // Pagination your interacted
+    var totalPageUrInteracted = ${totalPageUrInteracted};
+    var currentPageUrInteracted = ${currentPageUrInteracted};
+
+
+    $(function () {
+        window.pagObj = $('#paginationUrPost').twbsPagination({
+            totalPages: totalPagesUrPost,
+            visiblePages: 5,
+            startPage: currentPageUrPost,
+            onPageClick: function (event, page) {
+                if (currentPageUrPost != page) {
+                    window.location = '<c:url value="/list-posts"/>' + "?page_ur_post=" + page + "&page_ur_interacted=" + currentPageUrInteracted;
+                }
+            }
+        });
+    });
+
+
+    $(function () {
+        window.pagObj = $('#paginationUrInteracted').twbsPagination({
+            totalPages: totalPageUrInteracted,
+            visiblePages: 5,
+            startPage: currentPageUrInteracted,
+            onPageClick: function (event, page) {
+                if (currentPageUrInteracted != page) {
+                    window.location = '<c:url value="/list-posts"/>' + "?page_ur_post=" + currentPageUrPost + "&page_ur_interacted=" + page;
+                }
+            }
+        });
+    });
+
+</script>
+<script src="<c:url value="/js/pagination.js"/>"></script>
 </body>
 </html>

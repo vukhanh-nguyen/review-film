@@ -95,17 +95,23 @@
             <div class="content-wrap--right">
                 <div class="select">
                     <select id="standard-select" onchange="filterHome(this)">
-                        <option value="date-asc" selected>Sort by Date increase <span class="u-color-green u-bold">&uarr;</span>
+                        <option value="date-asc" <c:if test="${sort == 'date-asc'}">selected="selected"</c:if>>Sort by
+                            Date increase <span class="u-color-green u-bold">&uarr;</span>
                         </option>
-                        <option value="date-desc">Sort by Date decrease <span class="u-color-green u-bold">&darr;</span>
+                        <option value="date-desc" <c:if test="${sort == 'date-desc'}">selected="selected"</c:if>>Sort by
+                            Date decrease <span class="u-color-green u-bold">&darr;</span>
                         </option>
-                        <option value="like-asc">Sort by Like increase <span class="u-color-green u-bold">&uarr;</span>
+                        <option value="like-asc" <c:if test="${sort == 'like-asc'}">selected="selected"</c:if>>Sort by
+                            Like increase <span class="u-color-green u-bold">&uarr;</span>
                         </option>
-                        <option value="like-desc">Sort by Like decrease <span class="u-color-green u-bold">&darr;</span>
+                        <option value="like-desc" <c:if test="${sort == 'like-desc'}">selected="selected"</c:if>>Sort by
+                            Like decrease <span class="u-color-green u-bold">&darr;</span>
                         </option>
-                        <option value="dislike-asc">Sort by Dislike increase <span
+                        <option value="dislike-asc" <c:if test="${sort == 'dislike-asc'}">selected="selected"</c:if>>
+                            Sort by Dislike increase <span
                                 class="u-color-green u-bold">&uarr;</span></option>
-                        <option value="dislike-desc">Sort by Dislike decrease <span
+                        <option value="dislike-desc" <c:if test="${sort == 'dislike-desc'}">selected="selected"</c:if>>
+                            Sort by Dislike decrease <span
                                 class="u-color-green u-bold">&darr;</span></option>
                     </select>
                     <span class="focus"></span>
@@ -160,63 +166,33 @@
                     Top Reviewers
                 </div>
                 <div class="rank-reviewers">
-                    <div class="rank-reviewers__item">
-                        <div class="rank-reviewers__item--left">
-                            <div class="rank-reviewers__item--avatar">
-                                <img src="<c:url value="/images/logo.png"/>" alt="">
+                    <c:forEach var="item" items="${topReviewers}">
+                        <div class="rank-reviewers__item">
+                            <div class="rank-reviewers__item--left">
+                                <div class="rank-reviewers__item--avatar">
+                                    <c:if test="${not empty item.avatar}">
+                                        <img src="<c:out value="${item.avatar}"/>" alt="">
+                                    </c:if>
+                                    <c:if test="${empty item.avatar}">
+                                        <img src="<c:url value="/images/NoProfile.png"/>" alt="">
+                                    </c:if>
+                                </div>
+                            </div>
+                            <div class="rank-reviewers__item--right">
+                                <div class="rank-reviewers__item--title">
+                                        ${item.fullname}
+                                </div>
+                                <div class="rank-reviewers__item--subtitle">
+                                    <p><span class="u-bold">Total Posts:</span> <span
+                                            class="u-color-green">${item.quantityPost}</span>
+                                    </p>
+                                    <p><span class="u-bold">Total likes:</span> <span
+                                            class="u-color-blue">${item.quantityUpvote}</span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                        <div class="rank-reviewers__item--right">
-                            <div class="rank-reviewers__item--title">
-                                Nguyễn Vũ Khánh
-                            </div>
-                            <div class="rank-reviewers__item--subtitle">
-                                <p><span class="u-bold">Total Posts:</span> <span
-                                        class="u-color-green">50</span>
-                                </p>
-                                <p><span class="u-bold">Total likes:</span> <span class="u-color-red">21</span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="rank-reviewers__item">
-                        <div class="rank-reviewers__item--left">
-                            <div class="rank-reviewers__item--avatar">
-                                <img src=".<c:url value="/images/logo.png"/>" alt="">
-                            </div>
-                        </div>
-                        <div class="rank-reviewers__item--right">
-                            <div class="rank-reviewers__item--title">
-                                Nguyễn Vũ Khánh
-                            </div>
-                            <div class="rank-reviewers__item--subtitle">
-                                <p><span class="u-bold">Số bài viết:</span> <span
-                                        class="u-color-green">50</span>
-                                </p>
-                                <p><span class="u-bold">Lượt vote:</span> <span class="u-color-red">21</span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="rank-reviewers__item">
-                        <div class="rank-reviewers__item--left">
-                            <div class="rank-reviewers__item--avatar">
-                                <img src="<c:url value="/images/logo.png"/>" alt="">
-                            </div>
-                        </div>
-                        <div class="rank-reviewers__item--right">
-                            <div class="rank-reviewers__item--title">
-                                Nguyễn Vũ Khánh
-                            </div>
-                            <div class="rank-reviewers__item--subtitle">
-                                <p><span class="u-bold">Số bài viết:</span> <span
-                                        class="u-color-green">50</span>
-                                </p>
-                                <p><span class="u-bold">Lượt vote:</span> <span class="u-color-red">21</span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                    </c:forEach>
                 </div>
             </div>
             <div class="row">
@@ -224,30 +200,17 @@
                     Top Posts
                 </div>
                 <div class="rank-posts">
-                    <div class="rank-posts__item">
-                        <div class="rank-posts__item--title">
-                            <span>#1: </span><span>Tiêu đề bài viết</span>
+                    <c:forEach var="item" items="${topPosts}">
+                        <div class="rank-posts__item">
+                            <div class="rank-posts__item--title">
+                                <span>#${item.id}: </span><span>${item.title}</span>
+                            </div>
+                            <div class="rank-posts__item--subtitle">
+                                <p><span class="u-bold">Total Likes:</span> <span
+                                        class="u-color-green">${item.upvote}</span></p>
+                            </div>
                         </div>
-                        <div class="rank-posts__item--subtitle">
-                            <p><span class="u-bold">Lượt vote:</span> <span class="u-color-green">21</span></p>
-                        </div>
-                    </div>
-                    <div class="rank-posts__item">
-                        <div class="rank-posts__item--title">
-                            <span>#1: </span><span>Tiêu đề bài viết</span>
-                        </div>
-                        <div class="rank-posts__item--subtitle">
-                            <p><span class="u-bold">Lượt vote:</span> <span class="u-color-green">21</span></p>
-                        </div>
-                    </div>
-                    <div class="rank-posts__item">
-                        <div class="rank-posts__item--title">
-                            <span>#1: </span><span>Tiêu đề bài viết</span>
-                        </div>
-                        <div class="rank-posts__item--subtitle">
-                            <p><span class="u-bold">Lượt vote:</span> <span class="u-color-green">21</span></p>
-                        </div>
-                    </div>
+                    </c:forEach>
                 </div>
             </div>
         </div>
@@ -257,6 +220,7 @@
 <script>
     var totalPages = ${totalPage};
     var currentPage = ${currentPage};
+
     var urlParams = new URLSearchParams(window.location.search);
     var pageSort = urlParams.get('page');
     var limitSort = urlParams.get('limit');
@@ -285,10 +249,14 @@
     /*Pagination*/
     function filterHome(obj) {
         var sortValue = obj.value;
-
-       window.location = '<c:url value="/home"/>' + "?page=" + pageSort + "&limit=" + limitSort + "&sort=" + sortValue;
+        if (pageSort == null) {
+            pageSort = 1;
+        }
+        if (limitSort == null) {
+            limitSort = 5;
+        }
+        window.location = '<c:url value="/home"/>' + "?page=" + pageSort + "&limit=" + limitSort + "&sort=" + sortValue;
     }
-
 
 </script>
 <script src="<c:url value="/js/pagination.js"/>"></script>

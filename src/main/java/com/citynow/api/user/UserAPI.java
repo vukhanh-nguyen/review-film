@@ -27,8 +27,6 @@ public class UserAPI extends HttpServlet {
 
     IUserService userService = new UserServiceImpl();
 
-    IRoleService roleService = new RoleServiceImpl();
-
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         ObjectMapper mapper = new ObjectMapper();
@@ -46,7 +44,6 @@ public class UserAPI extends HttpServlet {
         userModel.setDateOfBirth(new Date(System.currentTimeMillis()));
         userModel.setPhone("");
         userModel.setPassword(BCrypt.hashpw(userModel.getPassword(), BCrypt.gensalt()));*/
-
         userModel = userService.save(userModel);
         mapper.writeValue(resp.getOutputStream(), userModel);
     }

@@ -46,7 +46,22 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public List<UserModel> findAll(int page, int limit) {
+        return userDao.findAll(page, limit);
+    }
+
+    @Override
+    public List<UserModel> findTopByQuantityLike(int top) {
+        return userDao.findTopByQuantityLike(top);
+    }
+
+    @Override
     public Long countTotalLikedByUserId(Long userId) {
         return userDao.countTotalLikedByUserId(userId);
+    }
+
+    @Override
+    public int count() {
+        return userDao.count();
     }
 }
