@@ -87,7 +87,11 @@
             data: JSON.stringify(data),
             dataType: 'json',
             success: function (result) {
-                window.location.href = '<c:url value="/change-password"/>' + "?message=success";
+                if (result == "{}"){
+                    window.location.href = '<c:url value="/change-password"/>' + "?message=fail";
+                }else{
+                    window.location.href = '<c:url value="/change-password"/>' + "?message=success";
+                }
             },
             error: function (error) {
                 window.location.href = '<c:url value="/change-password"/>' + "?message=fail";

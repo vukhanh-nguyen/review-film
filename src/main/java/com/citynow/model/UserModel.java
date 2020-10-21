@@ -1,5 +1,6 @@
 package com.citynow.model;
 
+import com.citynow.utils.ValidateUtil;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Date;
@@ -35,11 +36,8 @@ public class UserModel {
 
     public void setUsername(String username) {
 
-        String regex = "^[a-z0-9]+([_-]?[a-z0-9]?)*$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(username);
-        boolean matchFound = matcher.matches();
-        if(matchFound) {
+        boolean matchFound = ValidateUtil.validate("^[a-z0-9]+([_-]?[a-z0-9]?)*$", username);
+        if (matchFound) {
             this.username = username;
         } else {
             this.username = null;
@@ -52,15 +50,7 @@ public class UserModel {
 
     public void setPassword(String password) {
 
-        String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$&*]).{8,}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(password);
-        boolean matchFound = matcher.matches();
-        if(matchFound) {
-            this.password = BCrypt.hashpw(password, BCrypt.gensalt());
-        } else {
-            this.password = null;
-        }
+        this.password = password;
     }
 
     public String getFullname() {
@@ -76,11 +66,8 @@ public class UserModel {
     }
 
     public void setEmail(String email) {
-        String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(email);
-        boolean matchFound = matcher.matches();
-        if(matchFound) {
+        boolean matchFound = ValidateUtil.validate("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", email);
+        if (matchFound) {
             this.email = email;
         } else {
             this.email = null;
@@ -108,14 +95,11 @@ public class UserModel {
     }
 
     public void setPhone(String phone) {
-        String regex = "^\\+?\\d{1,3}?[- .]?\\(?(?:\\d{2,3})\\)?[- .]?\\d\\d\\d[- .]?\\d\\d\\d\\d$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(phone);
-        boolean matchFound = matcher.matches();
-        if(matchFound) {
+        boolean matchFound = ValidateUtil.validate("^\\+?\\d{1,3}?[- .]?\\(?(?:\\d{2,3})\\)?[- .]?\\d\\d\\d[- .]?\\d\\d\\d\\d$", phone);
+        if (matchFound) {
             this.phone = phone;
         } else {
-            this.phone = null;
+            this.phone = "";
         }
     }
 
@@ -151,41 +135,41 @@ public class UserModel {
         this.role = role;
     }
 
-    public void setValue(UserModel userModel){
-        if (this.id == null){
+    public void setValue(UserModel userModel) {
+        if (this.id == null) {
             this.id = userModel.getId();
         }
-        if (this.username == null){
+        if (this.username == null) {
             this.username = userModel.getUsername();
         }
-        if (this.password == null){
+        if (this.password == null) {
             this.password = userModel.getPassword();
         }
-        if (this.fullname == null){
+        if (this.fullname == null) {
             this.fullname = userModel.getFullname();
         }
-        if (this.email == null){
+        if (this.email == null) {
             this.email = userModel.getEmail();
         }
-        if (this.avatar == null){
+        if (this.avatar == null) {
             this.avatar = userModel.getAvatar();
         }
-        if (this.dateOfBirth == null){
+        if (this.dateOfBirth == null) {
             this.dateOfBirth = userModel.getDateOfBirth();
         }
-        if (this.phone == null){
+        if (this.phone == null) {
             this.phone = userModel.getPhone();
         }
-        if (this.quantityPost == null){
+        if (this.quantityPost == null) {
             this.quantityPost = userModel.getQuantityPost();
         }
-        if (this.quantityUpvote == null){
+        if (this.quantityUpvote == null) {
             this.quantityUpvote = userModel.getQuantityUpvote();
         }
-        if (this.role.getId() == null){
+        if (this.role.getId() == null) {
             this.role = userModel.getRole();
         }
-        if (this.status == 0){
+        if (this.status == 0) {
             this.status = userModel.getStatus();
         }
     }

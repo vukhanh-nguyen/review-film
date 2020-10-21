@@ -8,6 +8,7 @@ import com.citynow.service.impl.RoleServiceImpl;
 import com.citynow.service.impl.UserServiceImpl;
 import com.citynow.utils.ConvertUtil;
 import com.citynow.utils.SessionUtil;
+import com.citynow.utils.ValidateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
@@ -43,6 +44,15 @@ public class UserAPI extends HttpServlet {
         userModel.setQuantityPost(0L);
         userModel.setDateOfBirth(new Date(System.currentTimeMillis()));
         userModel.setPhone("");
+
+        boolean matchFound = ValidateUtil.validate("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$&*]).{8,}$", userModel.getPassword());
+        if (matchFound) {
+            userModel.setPassword(BCrypt.hashpw(userModel.getPassword(), BCrypt.gensalt()));
+        } else {
+            userModel.setPassword(null);
+        }
+
+
         mapper.writeValue(resp.getOutputStream(), userService.save(userModel));
     }
 
@@ -54,38 +64,43 @@ public class UserAPI extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
 
         String json = ConvertUtil.convertJsonToString(req.getReader());
-        JSONObject  dataJson = new JSONObject(json);
+        JSONObject dataJson = new JSONObject(json);
         String oldPassword = null;
         Long id = -1L;
-        try{
+        try {
             oldPassword = dataJson.getString("oldpassword");
-        }catch (Exception e) {}
-        try{
+        } catch (Exception e) {
+        }
+        try {
             id = dataJson.getLong("id");
-        }catch (Exception e) {}
+        } catch (Exception e) {
+        }
         UserModel userModel;
-        if (id.equals(model.getId())){
-            if (oldPassword != null) {
-                // Change password
-                userModel = (UserModel) SessionUtil.getInstance().getValue(req, "LOGIN");
-                if (userModel != null && BCrypt.checkpw(oldPassword,userModel.getPassword())){
-                    String newPassword = dataJson.getString("newpassword");
-                    userModel.setPassword(newPassword);
-                    userModel = userService.update(userModel);
-                    mapper.writeValue(resp.getOutputStream(), userModel);
+
+        if (oldPassword != null) {
+            // Change password
+            userModel = (UserModel) SessionUtil.getInstance().getValue(req, "LOGIN");
+            if (userModel != null && BCrypt.checkpw(oldPassword, userModel.getPassword())) {
+                String newPassword = dataJson.getString("newpassword");
+                boolean matchFound = ValidateUtil.validate("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$&*]).{8,}$", newPassword);
+                if (matchFound) {
+                    userModel.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+                    mapper.writeValue(resp.getOutputStream(), userService.update(userModel));
+                } else {
+                    mapper.writeValue(resp.getOutputStream(), "{}");
                 }
-            } else {
-                //update profile
-                req.setCharacterEncoding("UTF-8");
-                resp.setContentType("application/json");
-                userModel = mapper.readValue(json, UserModel.class);
-                UserModel oldUser = userService.findOne(userModel.getId());
-                userModel.setValue(oldUser);
-                userModel = userService.update(userModel);
-                SessionUtil.getInstance().putValue(req, "LOGIN", userModel);
-                mapper.writeValue(resp.getOutputStream(), userModel);
             }
-        }else{
+        } else if (id.equals(model.getId())) {
+            //update profile
+            req.setCharacterEncoding("UTF-8");
+            resp.setContentType("application/json");
+            userModel = mapper.readValue(json, UserModel.class);
+            UserModel oldUser = userService.findOne(userModel.getId());
+            userModel.setValue(oldUser);
+            userModel = userService.update(userModel);
+            SessionUtil.getInstance().putValue(req, "LOGIN", userModel);
+            mapper.writeValue(resp.getOutputStream(), userModel);
+        } else {
             mapper.writeValue(resp.getOutputStream(), "{}");
         }
     }
