@@ -45,7 +45,7 @@ public class Authentication implements Filter {
                 // NOT LOGIN redirect to login page
                 response.sendRedirect(request.getContextPath() + "/login?message=not_login");
             }
-        } else if (url.startsWith("/list-posts") || url.startsWith("/api") || url.startsWith("/change-password")) {
+        } else if (url.startsWith("/list-posts") || url.startsWith("/change-password")) {
             // CHECK LOGIN
             if (model != null) {
                 // LOGIN accept to access

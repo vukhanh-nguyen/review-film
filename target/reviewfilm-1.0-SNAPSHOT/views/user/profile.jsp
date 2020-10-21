@@ -135,7 +135,10 @@
                     <label for="phone">Phone</label>
                     <input class="input input--big" type="text" id="phone" name="phone" value="${profileuser.phone}">
                     <div class="information__btn">
-                        <a href="index.html" class="cbutton cbutton--blue cbutton--small">Khôi phục</a>
+                        <c:url var="profile_user" value="/profile">
+                            <c:param name="id" value="${profileuser.id}"/>
+                        </c:url>
+                        <a href="${profile_user}" class="cbutton cbutton--blue cbutton--small">Khôi phục</a>
                         <a id="saveProfile" class="cbutton cbutton--green cbutton--small">Lưu</a>
                     </div>
                 </form>

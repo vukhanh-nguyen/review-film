@@ -27,15 +27,15 @@ public class UserAPI extends HttpServlet {
 
     IUserService userService = new UserServiceImpl();
 
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
+    IRoleService roleService = new RoleServiceImpl();
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
         UserModel userModel = mapper.readValue(ConvertUtil.convertJsonToString(req.getReader()), UserModel.class);
-        UserModel oldUser = userService.findOne(userModel.getId());
-        userModel.setValue(oldUser);
-      /*  userModel.setRole(roleService.findOne(Constant.ROLE_USER));
+        userModel.setRole(roleService.findOne(Constant.ROLE_USER));
 
         userModel.setAvatar("");
         userModel.setStatus(Constant.USER_ACTIVE_STATUS);
@@ -43,9 +43,7 @@ public class UserAPI extends HttpServlet {
         userModel.setQuantityPost(0L);
         userModel.setDateOfBirth(new Date(System.currentTimeMillis()));
         userModel.setPhone("");
-        userModel.setPassword(BCrypt.hashpw(userModel.getPassword(), BCrypt.gensalt()));*/
-        userModel = userService.save(userModel);
-        mapper.writeValue(resp.getOutputStream(), userModel);
+        mapper.writeValue(resp.getOutputStream(), userService.save(userModel));
     }
 
     @Override
@@ -72,7 +70,7 @@ public class UserAPI extends HttpServlet {
                 userModel = (UserModel) SessionUtil.getInstance().getValue(req, "LOGIN");
                 if (userModel != null && BCrypt.checkpw(oldPassword,userModel.getPassword())){
                     String newPassword = dataJson.getString("newpassword");
-                    userModel.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+                    userModel.setPassword(newPassword);
                     userModel = userService.update(userModel);
                     mapper.writeValue(resp.getOutputStream(), userModel);
                 }

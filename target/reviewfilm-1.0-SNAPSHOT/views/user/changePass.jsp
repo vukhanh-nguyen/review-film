@@ -59,7 +59,7 @@
             <div id="formFooter">
             </div>
             <a id="change" class="cbutton cbutton--blue cbutton--big">Change</a>
-            <a href="#" class="cbutton cbutton--blue cbutton--medium">Reset</a>
+            <a href="<c:url value="/change-password"/>" class="cbutton cbutton--blue cbutton--medium">Reset</a>
         </form>
     </div>
 </div>

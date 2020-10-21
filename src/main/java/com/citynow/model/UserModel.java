@@ -1,6 +1,10 @@
 package com.citynow.model;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.sql.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserModel {
 
@@ -30,7 +34,16 @@ public class UserModel {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+
+        String regex = "^[a-z0-9]+([_-]?[a-z0-9]?)*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(username);
+        boolean matchFound = matcher.matches();
+        if(matchFound) {
+            this.username = username;
+        } else {
+            this.username = null;
+        }
     }
 
     public String getPassword() {
@@ -38,7 +51,16 @@ public class UserModel {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+
+        String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$&*]).{8,}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(password);
+        boolean matchFound = matcher.matches();
+        if(matchFound) {
+            this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+        } else {
+            this.password = null;
+        }
     }
 
     public String getFullname() {
@@ -54,7 +76,15 @@ public class UserModel {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        boolean matchFound = matcher.matches();
+        if(matchFound) {
+            this.email = email;
+        } else {
+            this.email = null;
+        }
     }
 
     public String getAvatar() {
@@ -78,7 +108,15 @@ public class UserModel {
     }
 
     public void setPhone(String phone) {
-        this.phone = phone;
+        String regex = "^\\+?\\d{1,3}?[- .]?\\(?(?:\\d{2,3})\\)?[- .]?\\d\\d\\d[- .]?\\d\\d\\d\\d$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(phone);
+        boolean matchFound = matcher.matches();
+        if(matchFound) {
+            this.phone = phone;
+        } else {
+            this.phone = null;
+        }
     }
 
     public Long getQuantityPost() {
