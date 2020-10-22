@@ -45,14 +45,22 @@ public class UserAPI extends HttpServlet {
         userModel.setDateOfBirth(new Date(System.currentTimeMillis()));
         userModel.setPhone("");
 
-        boolean matchFound = ValidateUtil.validate("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$&*]).{8,}$", userModel.getPassword());
-        if (matchFound) {
+        boolean regexPassword = ValidateUtil.validate("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$&*]).{8,}$",
+                userModel.getPassword());
+        if (regexPassword) {
             userModel.setPassword(BCrypt.hashpw(userModel.getPassword(), BCrypt.gensalt()));
         } else {
             userModel.setPassword(null);
         }
-
-
+        boolean regexUsername = ValidateUtil.validate("^[a-z0-9]+([_-]?[a-z0-9]?)*$", userModel.getUsername());
+        if (!regexUsername) {
+            userModel.setUsername(null);
+        }
+        boolean regexEmail = ValidateUtil.validate("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$",
+                userModel.getEmail());
+        if (!regexEmail) {
+            userModel.setEmail(null);
+        }
         mapper.writeValue(resp.getOutputStream(), userService.save(userModel));
     }
 
@@ -81,7 +89,7 @@ public class UserAPI extends HttpServlet {
             // Change password
             userModel = (UserModel) SessionUtil.getInstance().getValue(req, "LOGIN");
             if (userModel != null && BCrypt.checkpw(oldPassword, userModel.getPassword())) {
-                String newPassword = dataJson.getString("newpassword");
+                String newPassword = dataJson.getString("password");
                 boolean matchFound = ValidateUtil.validate("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$&*]).{8,}$", newPassword);
                 if (matchFound) {
                     userModel.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));

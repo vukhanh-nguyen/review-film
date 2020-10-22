@@ -90,7 +90,7 @@
             <!-- Search-->
             <div class="content-wrap--left">
                 <input class="input" onkeypress="if(event.key === 'Enter') search()" type="text" id="search-input"
-                       class="m-2" name="search" placeholder="Search">
+                       class="m-2" name="search" placeholder="Search" value="${search}">
             </div>
             <!-- Filter -->
             <div class="content-wrap--right">

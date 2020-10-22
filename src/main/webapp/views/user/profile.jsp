@@ -138,8 +138,8 @@
                         <c:url var="profile_user" value="/profile">
                             <c:param name="id" value="${profileuser.id}"/>
                         </c:url>
-                        <a href="${profile_user}" class="cbutton cbutton--blue cbutton--small">Khôi phục</a>
-                        <a id="saveProfile" class="cbutton cbutton--green cbutton--small">Lưu</a>
+                        <a href="${profile_user}" class="cbutton cbutton--blue cbutton--small">Reset</a>
+                        <a id="saveProfile" class="cbutton cbutton--green cbutton--small">Save</a>
                     </div>
                 </form>
             </div>

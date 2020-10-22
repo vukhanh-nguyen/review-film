@@ -20,6 +20,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
     </script>
+    <link rel="stylesheet" type="text/css"
+          href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
 </head>
 <body>
 <div class="wrapper">
@@ -35,7 +39,7 @@
             </div>
         </c:if>
     </c:if>
-    <div id="formContent">
+    <div id="formContent"  class="validate-form">
         <!-- Logo -->
         <div class="logo-wrap">
             <a href="<c:url value="/home?page=1&limit=5"/>">
@@ -50,12 +54,21 @@
 
         <!-- Login Form -->
         <form id="changePassword">
-            <input class="input" type="password" id="oldpassword" class="m-2" name="oldpassword"
-                   placeholder="Old Password">
-            <input class="input" type="password" id="password" class="m-2" name="newpassword"
-                   placeholder="New Password">
-            <input class="input" type="password" id="password-again" class="m-2" name="againpassword"
-                   placeholder="New Password Again">
+            <div class="validate-input"
+                 data-validate="Old Password is required">
+                <input class="input" type="password" id="oldpassword" class="m-2" name="oldpassword"
+                       placeholder="Old Password">
+            </div>
+            <div class="validate-input"
+                 data-validate="New Password is required: At least 8 character length, 1 UPPERCASE character, 1 SPECIAL character, 1 NUMERALS (0-9)">
+                <input class="input" type="password" id="password" class="m-2" name="password"
+                       placeholder="New Password">
+            </div>
+            <div class="validate-input"
+                 data-validate="New Password again not match">
+                <input class="input" type="password" id="password-again" class="m-2" name="passwordAgain"
+                       placeholder="New Password Again">
+            </div>
             <div id="formFooter">
             </div>
             <a id="change" class="cbutton cbutton--blue cbutton--big">Change</a>
@@ -63,20 +76,33 @@
         </form>
     </div>
 </div>
+<script src="<c:url value="/js/validate.js"/>"></script>
 <script type="text/javascript">
 
 
     $('#change').click(function (e) {
-        e.preventDefault();
-        var data = {};
-        var formData = $('#changePassword').serializeArray();
 
-        $.each(formData, function (i, v) {
-            data["" + v.name + ""] = v.value;
-        });
+        var input = $('.validate-input .input');
 
-        changePassword(data);
+        var check = true;
 
+        for (var i = 0; i < input.length; i++) {
+            if (validate(input[i]) == false) {
+                showValidate(input[i]);
+                check = false;
+            }
+        }
+        if (check === true) {
+            e.preventDefault();
+            var data = {};
+            var formData = $('#changePassword').serializeArray();
+
+            $.each(formData, function (i, v) {
+                data["" + v.name + ""] = v.value;
+            });
+
+            changePassword(data);
+        }
     });
 
     function changePassword(data) {

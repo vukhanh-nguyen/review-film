@@ -35,13 +35,7 @@ public class UserModel {
     }
 
     public void setUsername(String username) {
-
-        boolean matchFound = ValidateUtil.validate("^[a-z0-9]+([_-]?[a-z0-9]?)*$", username);
-        if (matchFound) {
-            this.username = username;
-        } else {
-            this.username = null;
-        }
+        this.username = username;
     }
 
     public String getPassword() {
@@ -49,7 +43,6 @@ public class UserModel {
     }
 
     public void setPassword(String password) {
-
         this.password = password;
     }
 
@@ -66,12 +59,7 @@ public class UserModel {
     }
 
     public void setEmail(String email) {
-        boolean matchFound = ValidateUtil.validate("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", email);
-        if (matchFound) {
-            this.email = email;
-        } else {
-            this.email = null;
-        }
+        this.email = email;
     }
 
     public String getAvatar() {
