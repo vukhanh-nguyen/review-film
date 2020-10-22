@@ -39,7 +39,7 @@
             </div>
         </c:if>
     </c:if>
-    <div id="formContent"  class="validate-form">
+    <div id="formContent"  >
         <!-- Logo -->
         <div class="logo-wrap">
             <a href="<c:url value="/home?page=1&limit=5"/>">
@@ -53,7 +53,7 @@
         </div>
 
         <!-- Login Form -->
-        <form id="changePassword">
+        <form id="changePassword" class="validate-form">
             <div class="validate-input"
                  data-validate="Old Password is required">
                 <input class="input" type="password" id="oldpassword" class="m-2" name="oldpassword"

@@ -20,6 +20,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
     </script>
+    <link rel="stylesheet" type="text/css"
+          href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
 </head>
 <body>
 <div class="wrapper">
@@ -58,18 +62,41 @@
             <h2 class="h3-heading-primary my-5">Login</h2>
         </div>
         <!-- Login Form -->
-        <form action="<c:url value="/login"/>" id="formLogin" method="POST">
-            <input class="input" type="text" id="username" class="m-2" name="username" placeholder="Username">
-            <input class="input" type="password" id="password" class="m-2" name="password" placeholder="Password">
+        <form action="<c:url value="/login"/>" id="formLogin" method="POST" class="validate-form">
+            <div class="validate-input"
+                 data-validate="Username is required">
+                <input class="input" type="text" id="username" class="m-2" name="username" placeholder="Username">
+            </div>
+            <div class="validate-input"
+                 data-validate="Password is required">
+                <input class="input" type="password" id="password" class="m-2" name="password" placeholder="Password">
+            </div>
             <div id="formFooter">
             </div>
-            <input type="submit" class="mb-5 cbutton cbutton--blue cbutton--big" value="LOGIN">
+            <input onclick="funcSubmit()" class="mb-5 cbutton cbutton--blue cbutton--big" value="LOGIN">
             <h2 class="h3-heading-secondary">You don't have an account ?</h2>
             <a href="<c:url value="/register"/>" class="cbutton cbutton--blue cbutton--big">Register</a>
         </form>
     </div>
 </div>
 </body>
+<script src="<c:url value="/js/validate.js"/>"></script>
 <script type="text/javascript">
+
+    function funcSubmit() {
+        var input = $('.validate-input .input');
+
+        var check = true;
+
+        for (var i = 0; i < input.length; i++) {
+            if (validate(input[i]) == false) {
+                showValidate(input[i]);
+                check = false;
+            }
+        }
+        if (check === true) {
+            document.getElementById("formLogin").submit();
+        }
+    }
 </script>
 </html>
