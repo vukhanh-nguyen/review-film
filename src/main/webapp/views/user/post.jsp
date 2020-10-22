@@ -23,7 +23,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
     </script>
-
+    <link rel="stylesheet" type="text/css"
+          href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
 </head>
 <body>
 <!-- CSS heading wrap ở file home.scss -->
@@ -40,30 +43,37 @@
                     <div class="collapse navbar-collapse" id="navbar-list-4">
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
-                                <div class="dropdown-menu" style="right: 0;left: inherit;" aria-labelledby="navbarDropdownMenuLink">
+                                <div class="dropdown-menu" style="right: 0;left: inherit;"
+                                     aria-labelledby="navbarDropdownMenuLink">
                                     <c:url var="profile" value="/profile">
                                         <c:param name="id" value="${sessionScope.LOGIN.id}"/>
                                     </c:url>
                                     <c:if test="${sessionScope.LOGIN.role.id == 1}">
-                                        <a class="dropdown-item" href="<c:url value="/admin-management"/>">Admin Management</a>
+                                        <a class="dropdown-item" href="<c:url value="/admin-management"/>">Admin
+                                            Management</a>
                                     </c:if>
                                     <a class="dropdown-item" href="${profile}">Profile</a>
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
-                                    <a class="dropdown-item" href="<c:url value="/change-password"/>">Change Password</a>
+                                    <a class="dropdown-item" href="<c:url value="/change-password"/>">Change
+                                        Password</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
                                 </div>
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <c:if test="${not empty sessionScope.LOGIN.avatar}">
-                                        <img src="<c:out value="${sessionScope.LOGIN.avatar}"/>" width="40" height="40" class="rounded-circle">
+                                        <img src="<c:out value="${sessionScope.LOGIN.avatar}"/>" width="40" height="40"
+                                             class="rounded-circle">
                                     </c:if>
                                     <c:if test="${empty sessionScope.LOGIN.avatar}">
-                                        <img src="<c:url value="/images/NoProfile.png"/>" width="40" height="40" class="rounded-circle">
+                                        <img src="<c:url value="/images/NoProfile.png"/>" width="40" height="40"
+                                             class="rounded-circle">
                                     </c:if>
                                 </a>
                             </li>
                         </ul>
                     </div>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </nav>
@@ -111,12 +121,20 @@
                         Create New Post
                     </div>
                 </c:if>
-                <form id="createPostForm" class="new-post__form">
+                <form id="createPostForm" class="new-post__form validate-form">
                     <label class="new-post__label" for="title">Title</label>
-                    <input class="input" type="text" id="title" name="title" autocomplete="off" value="${post.title}">
+                    <div class="validate-input"
+                         data-validate="Title is required">
+                        <input class="input" type="text" id="title" name="title" autocomplete="off"
+                               value="${post.title}">
+                    </div>
                     <label class="new-post__label" for="filmName">Film Name</label>
-                    <input class="input" type="text" id="filmName" name="filmName" autocomplete="off"
-                           value="${post.filmName}">
+                    <div class="validate-input"
+                         data-validate="Film Name is required">
+                        <input class="input" type="text" id="filmName" name="filmName" autocomplete="off"
+                               value="${post.filmName}">
+                    </div>
+
                     <label class="new-post__label">Rate</label>
                     <div class="select">
                         <select id="standard-select">
@@ -130,11 +148,15 @@
                         <span class="focus"></span>
                     </div>
                     <label class="new-post__label" for="postReview">Review</label>
-                    <textarea class="input" id="postReview" name="postReview">${post.postReview}</textarea>
+                    <div class="validate-input"
+                         data-validate="Review is required">
+                        <textarea class="input" id="postReview" name="postReview">${post.postReview}</textarea>
+                    </div>
+
                 </form>
                 <div class="new-post__btn">
-                    <a href="#" class="cbutton cbutton--blue cbutton--small">Reset</a>
-                    <a href="#" id="createPost" class="cbutton cbutton--green cbutton--small">Save</a>
+                    <a href="<c:url value="/post"/>" class="cbutton cbutton--blue cbutton--small">Reset</a>
+                    <a id="createPost" class="cbutton cbutton--green cbutton--small">Save</a>
                 </div>
             </div>
         </div>
@@ -142,6 +164,7 @@
 </div>
 
 <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
+<script src="<c:url value="/js/validate.js"/>"></script>
 <script type="text/javascript">
 
     var editor = "";
@@ -150,21 +173,38 @@
     });
 
     $('#createPost').click(function (e) {
-        e.preventDefault();
-        var data = {};
-        var formData = $('#createPostForm').serializeArray();
+        var input = $('.validate-input .input');
 
-        $.each(formData, function (i, v) {
-            data["" + v.name + ""] = v.value;
-        });
+        var check = true;
 
-        data["postReview"] = editor.getData();
-        var id = '${post.id}';
-        if (id == "") {
-            addNewPost(data);
-        } else {
-            data["id"] = id;
-            editPost(data);
+        for (var i = 0; i < input.length; i++) {
+            if ($(input[i]).attr('name') == 'postReview') {
+                if (editor.getData() == "") {
+                    showValidate(input[i]);
+                    check = false;
+                }
+            } else if (validate(input[i]) == false) {
+                showValidate(input[i]);
+                check = false;
+            }
+        }
+        if (check === true) {
+            e.preventDefault();
+            var data = {};
+            var formData = $('#createPostForm').serializeArray();
+
+            $.each(formData, function (i, v) {
+                data["" + v.name + ""] = v.value;
+            });
+
+            data["postReview"] = editor.getData();
+            var id = '${post.id}';
+            if (id == "") {
+                addNewPost(data);
+            } else {
+                data["id"] = id;
+                editPost(data);
+            }
         }
 
     });
