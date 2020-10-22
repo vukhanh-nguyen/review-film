@@ -21,6 +21,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
     </script>
+    <link rel="stylesheet" type="text/css"
+          href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
 </head>
 <body>
 <div class="heading-wrap">
@@ -122,18 +126,33 @@
                 </div>
             </div>
             <div class="col-8">
-                <form id="informationForm" class="information__info">
+                <form id="informationForm" class="information__info validate-form">
                     <label for="name">Full Name</label>
-                    <input class="input input--big" type="text" id="name" name="fullname"
-                           value="${profileuser.fullname}">
+                    <div class="validate-input"
+                         data-validate="Fullname is required">
+                        <input class="input input--big" type="text" id="name" name="fullname" autocomplete="off"
+                               value="${profileuser.fullname}">
+                    </div>
+
                     <label for="email">Email</label>
-                    <input class="input input--big" type="text" id="email" name="email"
-                           value="${profileuser.email}">
+                    <div class="validate-input" data-validate="Valid email is required: abc@xyz.com">
+                        <input class="input input--big" type="text" id="email" name="email"
+                               value="${profileuser.email}" autocomplete="off">
+                    </div>
+
                     <label for="dob">Date of Birth</label>
-                    <input class="input input--big" type="text" id="dob" name="dateOfBirth"
-                           value="${profileuser.dateOfBirth}">
+                    <div class="validate-input" data-validate="Date of Birth is required">
+                        <input class="input input--big" type="date" id="dob" name="dateOfBirth"
+                               value="${profileuser.dateOfBirth}">
+                    </div>
+
+
                     <label for="phone">Phone</label>
-                    <input class="input input--big" type="text" id="phone" name="phone" value="${profileuser.phone}">
+                    <div class="validate-input" data-validate="Valid phone is required: example +84123456789 or 0123456789">
+                        <input class="input input--big" type="text" id="phone" name="phone" value="${profileuser.phone}"
+                        autocomplete="off">
+                    </div>
+
                     <div class="information__btn">
                         <c:url var="profile_user" value="/profile">
                             <c:param name="id" value="${profileuser.id}"/>
@@ -146,6 +165,7 @@
         </div>
     </div>
 </div>
+<script src="<c:url value="/js/validate.js"/>"></script>
 <script type="text/javascript">
 
     const inpFile = document.getElementById("InputImages");
@@ -176,27 +196,40 @@
 
 
     $('#saveProfile').click(function (e) {
-        e.preventDefault();
-        var data = {};
-        var formData = $('#informationForm').serializeArray();
-        data["id"] = '${profileuser.id}';
+        var input = $('.validate-input .input');
 
-        $.each(formData, function (i, v) {
-            data["" + v.name + ""] = v.value;
-        });
+        var check = true;
 
-        var files = $('#InputImages')[0].files[0];
-        if (files !== undefined) {
-            var reader = new FileReader();
-
-            reader.onload = function (ev) {
-                data["avatar"] = ev.target.result;
-                updateProfile(data);
-            };
-            reader.readAsDataURL(files);
-        } else {
-            updateProfile(data);
+        for (var i = 0; i < input.length; i++) {
+            if (validate(input[i]) == false) {
+                showValidate(input[i]);
+                check = false;
+            }
         }
+        if (check === true) {
+            e.preventDefault();
+            var data = {};
+            var formData = $('#informationForm').serializeArray();
+            data["id"] = '${profileuser.id}';
+
+            $.each(formData, function (i, v) {
+                data["" + v.name + ""] = v.value;
+            });
+
+            var files = $('#InputImages')[0].files[0];
+            if (files !== undefined) {
+                var reader = new FileReader();
+
+                reader.onload = function (ev) {
+                    data["avatar"] = ev.target.result;
+                    updateProfile(data);
+                };
+                reader.readAsDataURL(files);
+            } else {
+                updateProfile(data);
+            }
+        }
+
 
     });
 

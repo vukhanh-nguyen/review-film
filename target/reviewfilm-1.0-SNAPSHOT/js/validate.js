@@ -46,6 +46,14 @@
                 return false;
             }
         }
+        else if($(input).attr('name') == 'phone'){
+            if($(input).val().trim() == null || $(input).val().trim() ==""){
+                return true;
+            }
+            if($(input).val().trim().match(/^\+?\d{1,3}?[- .]?\(?(?:\d{2,3})\)?[- .]?\d\d\d[- .]?\d\d\d\d$/) == null) {
+                return false;
+            }
+        }
         else {
             if($(input).val().trim() == ''){
                 return false;

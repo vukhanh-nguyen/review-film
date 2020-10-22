@@ -45,6 +45,7 @@ public class UserAPI extends HttpServlet {
         userModel.setDateOfBirth(new Date(System.currentTimeMillis()));
         userModel.setPhone("");
 
+        // Validate password
         boolean regexPassword = ValidateUtil.validate("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$&*]).{8,}$",
                 userModel.getPassword());
         if (regexPassword) {
@@ -52,10 +53,14 @@ public class UserAPI extends HttpServlet {
         } else {
             userModel.setPassword(null);
         }
+
+        // Validate username
         boolean regexUsername = ValidateUtil.validate("^[a-z0-9]+([_-]?[a-z0-9]?)*$", userModel.getUsername());
         if (!regexUsername) {
             userModel.setUsername(null);
         }
+
+        // Validate email
         boolean regexEmail = ValidateUtil.validate("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$",
                 userModel.getEmail());
         if (!regexEmail) {
@@ -105,6 +110,20 @@ public class UserAPI extends HttpServlet {
             userModel = mapper.readValue(json, UserModel.class);
             UserModel oldUser = userService.findOne(userModel.getId());
             userModel.setValue(oldUser);
+
+            // Validate email
+            boolean regexEmail = ValidateUtil.validate("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$",
+                    userModel.getEmail());
+            if (!regexEmail) {
+                userModel.setEmail(null);
+            }
+
+            // Validate phone
+            boolean regexPhone = ValidateUtil.validate("^\\+?\\d{1,3}?[- .]?\\(?(?:\\d{2,3})\\)?[- .]?\\d\\d\\d[- .]?\\d\\d\\d\\d$",
+                    userModel.getPhone());
+            if (!regexPhone && userModel.getPhone() != "") {
+                userModel.setEmail(null);
+            }
             userModel = userService.update(userModel);
             SessionUtil.getInstance().putValue(req, "LOGIN", userModel);
             mapper.writeValue(resp.getOutputStream(), userModel);
