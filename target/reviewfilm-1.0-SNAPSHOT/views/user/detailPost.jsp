@@ -24,6 +24,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
     </script>
+    <link rel="stylesheet" type="text/css"
+          href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
 </head>
 <body>
 <!-- CSS heading wrap ở file home.scss -->
@@ -177,10 +181,14 @@
         <div class="col-3">
             <c:if test="${sessionScope.LOGIN != null}">
                 <div class="comment-box">
-                    <div class="comment-box__new">
-                        <input id="typeComment" style="margin-left:2rem" class="input" type="text" id="title"
-                               name="title" autocomplete="off" placeholder="Type to comment">
-                        <a id="comment" href="#" class="cbutton cbutton--blue cbutton--small">Comment</a>
+                    <div class="comment-box__new validate-form" >
+                        <div class="validate-input"
+                             data-validate="Comment is required">
+                            <input id="typeComment" style="margin-left:2rem" class="input" type="text" id="title"
+                                   name="title" autocomplete="off" placeholder="Type to comment">
+                        </div>
+
+                        <a id="comment" class="cbutton cbutton--blue cbutton--small">Comment</a>
                     </div>
                     <c:forEach var="item" items="${comments}">
                         <div class="comment-box__item">
@@ -214,14 +222,27 @@
     </div>
 </div>
 <script src="<c:url value="/template/paging/jquery.twbsPagination.js"/>"></script>
+<script src="<c:url value="/js/validate.js"/>"></script>
 <script type="text/javascript">
     $('#comment').click(function (e) {
-        e.preventDefault();
-        var data = {};
-        data["content"] = $('#typeComment').val();
-        data["post_id"] = ${post.id};
-        data["user_id"] = ${sessionScope.LOGIN.id};
-        addComment(data);
+        var input = $('.validate-input .input');
+
+        var check = true;
+
+        for (var i = 0; i < input.length; i++) {
+            if (validate(input[i]) == false) {
+                showValidate(input[i]);
+                check = false;
+            }
+        }
+        if (check === true) {
+            e.preventDefault();
+            var data = {};
+            data["content"] = $('#typeComment').val();
+            data["post_id"] = ${post.id};
+            data["user_id"] = ${sessionScope.LOGIN.id};
+            addComment(data);
+        }
     });
 
     // Comment

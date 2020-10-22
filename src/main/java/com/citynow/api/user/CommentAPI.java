@@ -56,10 +56,12 @@ public class CommentAPI extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
         CommentModel commentModel = mapper.readValue(ConvertUtil.convertJsonToString(req.getReader()), CommentModel.class);
-        commentModel.setDateCreated(new Date(System.currentTimeMillis()));
-        commentModel.setUser(userService.findOne(commentModel.getUser_id()));
-        commentModel.setPost(postService.findOne(commentModel.getPost_id()));
-        commentModel = commentService.save(commentModel);
-        mapper.writeValue(resp.getOutputStream(), commentModel);
+        if (commentModel.getContent() != "") {
+            commentModel.setDateCreated(new Date(System.currentTimeMillis()));
+            commentModel.setUser(userService.findOne(commentModel.getUser_id()));
+            commentModel.setPost(postService.findOne(commentModel.getPost_id()));
+            commentModel = commentService.save(commentModel);
+            mapper.writeValue(resp.getOutputStream(), commentModel);
+        }
     }
 }
