@@ -1,17 +1,19 @@
 <%--
   Created by IntelliJ IDEA.
   User: VuKhanh
-  Date: 10/12/2020
-  Time: 2:11 PM
+  Date: 10/22/2020
+  Time: 5:03 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<c:url var="APIRegister" value="/api-user"/>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List Posts - Review Film</title>
+    <title>Admin Manage User - Review Film</title>
     <link href="<c:url value='/css/style.css'/>" rel="stylesheet">
     <link rel="shortcut icon" href="<c:url value="/images/logo.ico"/>"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -42,10 +44,12 @@
                                         <c:param name="id" value="${sessionScope.LOGIN.id}"/>
                                     </c:url>
                                     <c:if test="${sessionScope.LOGIN.role.id == 1}">
-                                        <a class="dropdown-item" href="<c:url value="/admin-manage-post"/>">Admin Manage Post</a>
+                                        <a class="dropdown-item" href="<c:url value="/admin-manage-post"/>">Admin Manage
+                                            Post</a>
                                     </c:if>
                                     <c:if test="${sessionScope.LOGIN.role.id == 1}">
-                                        <a class="dropdown-item" href="<c:url value="/admin-manage-user"/>">Admin Manage User</a>
+                                        <a class="dropdown-item" href="<c:url value="/admin-manage-user"/>">Admin Manage
+                                            User</a>
                                     </c:if>
                                     <a class="dropdown-item" href="${profile}">Profile</a>
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
@@ -83,100 +87,54 @@
     </div>
 </div>
 <div class="listpost-wrap">
-    <c:if test="${not empty message}">
-        <c:if test="${message == 'success'}">
-            <div class="alert alert-success alert-custom">
-                SUCCESS
-            </div>
-        </c:if>
-    </c:if>
     <div class="row mb-5">
-        <a href="<c:url value="/home?page=1&limit=5"/>" class="cbutton cbutton--blue cbutton--big">List Posts</a>
+        <a href="<c:url value='/home?page=1&limit=5'/>" class="cbutton cbutton--blue cbutton--big">List Posts</a>
     </div>
-    <p class="heading-primary">Your Activity</p>
+    <p class="heading-primary">Admin management</p>
     <div class="information">
         <div class="row">
             <div class="col-12">
                 <div class="tabs">
-                    <input id="tab-1" type="radio" name="radio-set" class="tab-selector-1" checked="checked"/>
-                    <label for="tab-1" class="tab-label-1">Your Posts</label>
-                    <input id="tab-2" type="radio" name="radio-set" class="tab-selector-2"/>
-                    <label for="tab-2" class="tab-label-2">Posts Interacted</label>
+                    <input id="tab-2" type="radio" name="radio-set" class="tab-selector-2" checked="checked"/>
+                    <label for="tab-2" class="tab-label-2">User Management</label>
                     <div class="clear-shadow"></div>
                     <div class="content">
-                        <div class="content-1">
-                            <table class="table table-bordered u-center-text">
-                                <thead>
-                                <tr class="d-flex table-secondary">
-                                    <th><input type="checkbox" id="checkAllUrPost"></th>
-                                    <th class="col-1" scope="col">ID Post</th>
-                                    <th class="col-7" scope="col">Title</th>
-                                    <th class="col-2" scope="col">Status</th>
-                                    <th class="col-2" scope="col">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach var="item" items="${yourposts}">
-                                    <tr class="d-flex">
-                                        <td><input type="checkbox" name="cbUrPost" id="checkbox_${item.id}" value="${item.id}"></td>
-                                        <th class="col-1">${item.id}</th>
-                                        <td class="col-7">${item.title}</td>
-                                        <c:if test="${item.status == 1}">
-                                            <td class="col-2 u-color-green u-bold">Approved</td>
-                                        </c:if>
-                                        <c:if test="${item.status == 0}">
-                                            <td class="col-2 u-color-yellow u-bold">Pending</td>
-                                        </c:if>
-                                        <td class="col-2">
-                                            <c:url var="post" value="/post">
-                                                <c:param name="id" value="${item.id}"/>
-                                            </c:url>
-                                            <a href="${post}" class="cbutton cbutton--blue cbutton--small">EDIT</a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
-                            <div class="pagination-wrap">
-                                <ul class="pagination" id="paginationUrPost"></ul>
-                            </div>
-                        </div>
                         <div class="content-2">
                             <table class="table table-bordered u-center-text">
                                 <thead>
                                 <tr class="d-flex table-secondary">
-                                    <th><input type="checkbox" id="checkAllUrInteract"></th>
-                                    <th class="col-1" scope="col">ID Post</th>
-                                    <th class="col-7" scope="col">Title</th>
-                                    <th class="col-2" scope="col">Vote</th>
-                                    <th class="col-2" scope="col">Action</th>
+                                    <th class="col-1" scope="col">Username</th>
+                                    <th class="col-6" scope="col">Fullname</th>
+                                    <th class="col-2" scope="col">Status</th>
+                                    <th class="col-3" scope="col">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach var="item" items="${postsinteract}">
+                                <c:forEach var="item" items="${users}">
                                     <tr class="d-flex">
-                                        <td><input type="checkbox" name="cbUrInteract" id="checkbox_${item.id}" value="${item.id}"></td>
-                                        <th class="col-1">${item.post.id}</th>
-                                        <td class="col-7">${item.post.title}</td>
-                                        <c:if test="${item.actionVote == 1}">
-                                            <td class="col-2 u-color-green u-bold">Liked</td>
+                                        <th class="col-1">${item.username}</th>
+                                        <td class="col-6">${item.fullname}</td>
+                                        <c:if test="${item.status == 1}">
+                                            <td class="col-2 u-color-green u-bold">Normal</td>
                                         </c:if>
-                                        <c:if test="${item.actionVote == 0}">
-                                            <td class="col-2 u-color-red u-bold">Disliked</td>
+                                        <c:if test="${item.status == 0}">
+                                            <td class="col-2 u-color-yellow u-bold">Block</td>
                                         </c:if>
-                                        <td class="col-2">
-                                            <c:url var="detailPost" value="/detail-post">
-                                                <c:param name="id" value="${item.post.id}"/>
+                                        <c:if test="${item.status == -1}">
+                                            <td class="col-2 u-color-red u-bold">Ban</td>
+                                        </c:if>
+                                        <td class="col-3">
+                                            <c:url var="profile" value="/profile">
+                                                <c:param name="id" value="${item.id}"/>
                                             </c:url>
-                                            <a href="${detailPost}"
-                                               class="cbutton cbutton--blue cbutton--small">VIEW</a>
+                                            <a href="${profile}" class="cbutton cbutton--blue cbutton--small">VIEW</a>
                                         </td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
                             </table>
                             <div class="pagination-wrap">
-                                <ul class="pagination" id="paginationUrInteracted"></ul>
+                                <ul class="pagination" id="pagination"></ul>
                             </div>
                         </div>
                     </div>
@@ -188,43 +146,22 @@
 <script src="<c:url value="/template/paging/jquery.twbsPagination.js"/>"></script>
 <script type="text/javascript">
 
-
-    // Pagination your post
-    var totalPagesUrPost = ${totalPageUrPost};
-    var currentPageUrPost = ${currentPageUrPost};
-
-    // Pagination your interacted
-    var totalPageUrInteracted = ${totalPageUrInteracted};
-    var currentPageUrInteracted = ${currentPageUrInteracted};
-
+    // Pagination user management
+    var totalPage = ${totalPage};
+    var currentPage = ${currentPage};
 
     $(function () {
-        window.pagObj = $('#paginationUrPost').twbsPagination({
-            totalPages: totalPagesUrPost,
+        window.pagObj = $('#pagination').twbsPagination({
+            totalPages: totalPage,
             visiblePages: 5,
-            startPage: currentPageUrPost,
+            startPage: currentPage,
             onPageClick: function (event, page) {
-                if (currentPageUrPost != page) {
-                    window.location = '<c:url value="/list-posts"/>' + "?page_ur_post=" + page + "&page_ur_interacted=" + currentPageUrInteracted;
+                if (currentPage != page) {
+                    window.location = '<c:url value="/admin-manage-user"/>' + "?page=" + page;
                 }
             }
         });
     });
-
-
-    $(function () {
-        window.pagObj = $('#paginationUrInteracted').twbsPagination({
-            totalPages: totalPageUrInteracted,
-            visiblePages: 5,
-            startPage: currentPageUrInteracted,
-            onPageClick: function (event, page) {
-                if (currentPageUrInteracted != page) {
-                    window.location = '<c:url value="/list-posts"/>' + "?page_ur_post=" + currentPageUrPost + "&page_ur_interacted=" + page;
-                }
-            }
-        });
-    });
-
 </script>
 <script src="<c:url value="/js/pagination.js"/>"></script>
 </body>

@@ -45,7 +45,7 @@ public class LoginController extends HttpServlet {
             if (model.getRole().getCode().equals("USER")) {
                 resp.sendRedirect(req.getContextPath() + "/home");
             } else if (model.getRole().getCode().equals("ADMIN")) {
-                resp.sendRedirect(req.getContextPath() + "/admin-management");
+                resp.sendRedirect(req.getContextPath() + "/admin-manage-post");
             }
         } else {
             //resp.sendRedirect(req.getContextPath() + "/login");

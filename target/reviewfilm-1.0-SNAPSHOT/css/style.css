@@ -215,7 +215,7 @@ select[multiple] option {
   width: 100%; }
 .tabs #tab-2 {
   left: 25rem; }
-.tabs input {
+.tabs > input {
   position: absolute;
   z-index: 1000;
   width: 25rem;
@@ -228,9 +228,9 @@ select[multiple] option {
   cursor: pointer;
   transition: transform 1s; }
 .tabs input:hover + label {
-  background: #56baed; }
+  background: #f6f6f6; }
 .tabs input:checked + label {
-  background: #f6f6f6;
+  background: #56baed;
   z-index: 6;
   transform: translateY(0.2rem); }
 .tabs label {

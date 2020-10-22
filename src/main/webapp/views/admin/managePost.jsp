@@ -43,7 +43,10 @@
                                         <c:param name="id" value="${sessionScope.LOGIN.id}"/>
                                     </c:url>
                                     <c:if test="${sessionScope.LOGIN.role.id == 1}">
-                                        <a class="dropdown-item" href="<c:url value="/admin-management"/>">Admin Management</a>
+                                        <a class="dropdown-item" href="<c:url value="/admin-manage-post"/>">Admin Manage Post</a>
+                                    </c:if>
+                                    <c:if test="${sessionScope.LOGIN.role.id == 1}">
+                                        <a class="dropdown-item" href="<c:url value="/admin-manage-user"/>">Admin Manage User</a>
                                     </c:if>
                                     <a class="dropdown-item" href="${profile}">Profile</a>
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
@@ -86,9 +89,6 @@
                 <div class="tabs">
                     <input id="tab-1" type="radio" name="radio-set" class="tab-selector-1" checked="checked"/>
                     <label for="tab-1" class="tab-label-1">Post Management</label>
-
-                    <input id="tab-2" type="radio" name="radio-set" class="tab-selector-2"/>
-                    <label for="tab-2" class="tab-label-2">User Management</label>
                     <div class="clear-shadow"></div>
                     <div class="content">
                         <div class="content-1">
@@ -127,45 +127,7 @@
                                 </tbody>
                             </table>
                             <div class="pagination-wrap">
-                                <ul class="pagination" id="paginationPostManagement"></ul>
-                            </div>
-                        </div>
-                        <div class="content-2">
-                            <table class="table table-bordered u-center-text">
-                                <thead>
-                                <tr class="d-flex table-secondary">
-                                    <th class="col-1" scope="col">Username</th>
-                                    <th class="col-7" scope="col">Fullname</th>
-                                    <th class="col-2" scope="col">Status</th>
-                                    <th class="col-2" scope="col">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach var="item" items="${users}">
-                                    <tr class="d-flex">
-                                        <th class="col-1">${item.username}</th>
-                                        <td class="col-7">${item.fullname}</td>
-                                        <c:if test="${item.status == 1}">
-                                            <td class="col-2 u-color-green u-bold">Normal</td>
-                                        </c:if>
-                                        <c:if test="${item.status == 0}">
-                                            <td class="col-2 u-color-yellow u-bold">Block</td>
-                                        </c:if>
-                                        <c:if test="${item.status == -1}">
-                                            <td class="col-2 u-color-red u-bold">Ban</td>
-                                        </c:if>
-                                        <td class="col-2">
-                                            <c:url var="profile" value="/profile">
-                                                <c:param name="id" value="${item.id}"/>
-                                            </c:url>
-                                            <a href="${profile}" class="cbutton cbutton--blue cbutton--small">VIEW</a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
-                            <div class="pagination-wrap">
-                                <ul class="pagination" id="paginationUserManagement"></ul>
+                                <ul class="pagination" id="pagination"></ul>
                             </div>
                         </div>
                     </div>
@@ -192,37 +154,18 @@
         });
     }
 
-
-    // Pagination post management
-    var totalPagePost = ${totalPagePost};
-    var currentPagePost = ${currentPagePost};
-
     // Pagination user management
-    var totalPageUser = ${totalPageUser};
-    var currentPageUser = ${currentPageUser};
-
-
-    $(function () {
-        window.pagObj = $('#paginationPostManagement').twbsPagination({
-            totalPages: totalPagePost,
-            visiblePages: 5,
-            startPage: currentPagePost,
-            onPageClick: function (event, page) {
-                if (currentPagePost != page) {
-                    window.location = '<c:url value="/admin-management"/>' + "?page_post=" + page + "&page_user=" + currentPageUser;
-                }
-            }
-        });
-    });
+    var totalPage = ${totalPage};
+    var currentPage = ${currentPage};
 
     $(function () {
-        window.pagObj = $('#paginationUserManagement').twbsPagination({
-            totalPages: totalPageUser,
+        window.pagObj = $('#pagination').twbsPagination({
+            totalPages: totalPage,
             visiblePages: 5,
-            startPage: currentPageUser,
+            startPage: currentPage,
             onPageClick: function (event, page) {
-                if (currentPageUser != page) {
-                    window.location = '<c:url value="/admin-management"/>' + "?page_post=" + currentPagePost + "&page_user=" + page;
+                if (currentPage != page) {
+                    window.location = '<c:url value="/admin-manage-post"/>' + "?page=" + page;
                 }
             }
         });

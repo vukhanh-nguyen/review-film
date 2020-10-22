@@ -42,8 +42,10 @@
                                         <c:param name="id" value="${sessionScope.LOGIN.id}"/>
                                     </c:url>
                                     <c:if test="${sessionScope.LOGIN.role.id == 1}">
-                                        <a class="dropdown-item" href="<c:url value="/admin-management"/>">Admin
-                                            Management</a>
+                                        <a class="dropdown-item" href="<c:url value="/admin-manage-post"/>">Admin Manage Post</a>
+                                    </c:if>
+                                    <c:if test="${sessionScope.LOGIN.role.id == 1}">
+                                        <a class="dropdown-item" href="<c:url value="/admin-manage-user"/>">Admin Manage User</a>
                                     </c:if>
                                     <a class="dropdown-item" href="${profile}">Profile</a>
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
@@ -106,6 +108,7 @@
                             <table class="table table-bordered u-center-text">
                                 <thead>
                                 <tr class="d-flex table-secondary">
+                                    <th><input type="checkbox" id="checkAllUrPost"></th>
                                     <th class="col-1" scope="col">ID Post</th>
                                     <th class="col-7" scope="col">Title</th>
                                     <th class="col-2" scope="col">Status</th>
@@ -115,6 +118,7 @@
                                 <tbody>
                                 <c:forEach var="item" items="${yourposts}">
                                     <tr class="d-flex">
+                                        <td><input type="checkbox" name="cbUrPost" id="checkbox_${item.id}" value="${item.id}"></td>
                                         <th class="col-1">${item.id}</th>
                                         <td class="col-7">${item.title}</td>
                                         <c:if test="${item.status == 1}">
@@ -141,6 +145,7 @@
                             <table class="table table-bordered u-center-text">
                                 <thead>
                                 <tr class="d-flex table-secondary">
+                                    <th><input type="checkbox" id="checkAllUrInteract"></th>
                                     <th class="col-1" scope="col">ID Post</th>
                                     <th class="col-7" scope="col">Title</th>
                                     <th class="col-2" scope="col">Vote</th>
@@ -150,6 +155,7 @@
                                 <tbody>
                                 <c:forEach var="item" items="${postsinteract}">
                                     <tr class="d-flex">
+                                        <td><input type="checkbox" name="cbUrInteract" id="checkbox_${item.id}" value="${item.id}"></td>
                                         <th class="col-1">${item.post.id}</th>
                                         <td class="col-7">${item.post.title}</td>
                                         <c:if test="${item.actionVote == 1}">
