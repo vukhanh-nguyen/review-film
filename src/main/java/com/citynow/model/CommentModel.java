@@ -2,14 +2,34 @@ package com.citynow.model;
 
 import java.util.Date;
 
+/**
+ * Represents an comment of user
+ * @author VuKhanh
+ */
 public class CommentModel {
 
     private Long id;
+
+    /**
+     * Represent who create comment
+     */
     private Long user_id;
     private UserModel user;
+
+    /**
+     * Represent post where comment is created
+     */
     private Long post_id;
     private PostModel post;
+
+    /**
+     * Represent content of comment
+     */
     private String content;
+
+    /**
+     * Represents a date when comment is created
+     */
     private Date dateCreated;
 
     public Long getId() {

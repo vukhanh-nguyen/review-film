@@ -1,14 +1,11 @@
 package com.citynow.api.admin;
 
-import com.citynow.model.CommentModel;
 import com.citynow.model.PostModel;
 import com.citynow.model.UserModel;
 import com.citynow.service.IPostService;
 import com.citynow.service.IUserService;
 import com.citynow.service.impl.PostServiceImpl;
 import com.citynow.service.impl.UserServiceImpl;
-import com.citynow.utils.ConvertUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Date;
 
 @WebServlet(urlPatterns = {"/admin-api-post"})
 public class PostAPI extends HttpServlet {

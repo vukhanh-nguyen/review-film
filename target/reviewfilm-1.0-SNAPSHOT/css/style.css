@@ -466,6 +466,7 @@ select[multiple] option {
   border-radius: 1rem;
   margin: 1rem 0rem;
   height: 23rem;
+  position: relative;
   cursor: pointer; }
 .content-collapse__item:hover {
   background-color: #f6f6f6; }
@@ -493,9 +494,14 @@ select[multiple] option {
   font-size: 1.8rem;
   font-weight: 400; }
 .content-collapse__item--left {
-  float: left; }
+  position: absolute;
+  left: 0;
+  width: 20%; }
 .content-collapse__item--right {
-  float: right; }
+  position: absolute;
+  right: 0;
+  width: 80%;
+  overflow: hidden; }
 
 .rank-reviewers {
   width: 100%;

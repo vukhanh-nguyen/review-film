@@ -2,6 +2,8 @@ package com.citynow.dao.impl;
 
 import com.citynow.dao.IDao;
 import com.citynow.mapper.IMapper;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,20 +13,27 @@ import java.util.ResourceBundle;
 public class AbstractDao<T> implements IDao<T> {
 
     ResourceBundle resource = ResourceBundle.getBundle("database");
+    HikariConfig config = new HikariConfig();
+    HikariDataSource ds;
 
     public Connection getConnection() {
+        config.setDriverClassName(resource.getString("driverName"));
+        config.setJdbcUrl(resource.getString("url"));
+        config.setUsername(resource.getString("user"));
+        config.setPassword(resource.getString("password"));
+        config.setMinimumIdle(Integer.parseInt(resource.getString("min_connection")));
+        config.setMaximumPoolSize(Integer.parseInt(resource.getString("max_connection")));
+        // Some additional properties
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        ds = new HikariDataSource(config);
         try {
-            Class.forName(resource.getString("driverName"));
-            String url = resource.getString("url");
-            String user = resource.getString("user");
-            String password = resource.getString("password");
-            return DriverManager.getConnection(url, user, password);
+            return ds.getConnection();
         } catch (SQLException e) {
-            return null;
-        } catch (ClassNotFoundException e) {
-            return null;
+            e.printStackTrace();
         }
-
+        return null;
     }
 
     private void setParameter(PreparedStatement statement, Object... parameters) {
@@ -64,20 +73,6 @@ public class AbstractDao<T> implements IDao<T> {
             return results;
         } catch (SQLException e) {
             return null;
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-                if (statement != null) {
-                    statement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException e) {
-                return null;
-            }
         }
     }
 
@@ -100,17 +95,6 @@ public class AbstractDao<T> implements IDao<T> {
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
-            }
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-                if (statement != null) {
-                    statement.close();
-                }
-            } catch (SQLException e2) {
-                e2.printStackTrace();
             }
         }
     }
@@ -141,20 +125,6 @@ public class AbstractDao<T> implements IDao<T> {
                     e1.printStackTrace();
                 }
             }
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-                if (statement != null) {
-                    statement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException e2) {
-                e2.printStackTrace();
-            }
         }
         return null;
     }
@@ -176,20 +146,6 @@ public class AbstractDao<T> implements IDao<T> {
             return count;
         } catch (SQLException e) {
             return 0;
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-                if (statement != null) {
-                    statement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException e) {
-                return 0;
-            }
         }
     }
 }

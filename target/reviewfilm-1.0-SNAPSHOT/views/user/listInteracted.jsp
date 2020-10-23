@@ -99,9 +99,8 @@
                             <table class="table table-bordered u-center-text">
                                 <thead>
                                 <tr class="d-flex table-secondary">
-                                    <th class="col-1"> <input type="checkbox" id="checkAll"></th>
                                     <th class="col-1" scope="col">ID Post</th>
-                                    <th class="col-6" scope="col">Title</th>
+                                    <th class="col-7" scope="col">Title</th>
                                     <th class="col-2" scope="col">Vote</th>
                                     <th class="col-2" scope="col">Action</th>
                                 </tr>
@@ -109,9 +108,8 @@
                                 <tbody>
                                 <c:forEach var="item" items="${postsinteract}">
                                     <tr class="d-flex">
-                                        <td class="col-1"><input type="checkbox" name="cb" id="checkbox_${item.id}" value="${item.id}"></td>
                                         <th class="col-1">${item.post.id}</th>
-                                        <td class="col-6">${item.post.title}</td>
+                                        <td class="col-7">${item.post.title}</td>
                                         <c:if test="${item.actionVote == 1}">
                                             <td class="col-2 u-color-green u-bold">Liked</td>
                                         </c:if>
@@ -140,7 +138,6 @@
     </div>
 </div>
 <script src="<c:url value="/template/paging/jquery.twbsPagination.js"/>"></script>
-<script src="<c:url value="/js/checkbox.js"/>"></script>
 <script type="text/javascript">
 
 
