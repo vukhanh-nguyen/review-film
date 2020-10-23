@@ -1,5 +1,6 @@
 package com.citynow.controller.user;
 
+import com.citynow.constant.Constant;
 import com.citynow.model.UserModel;
 import com.citynow.service.IUserService;
 import com.citynow.service.impl.UserServiceImpl;
@@ -25,7 +26,6 @@ public class LoginController extends HttpServlet {
             req.setAttribute("message", message);
         }
 
-        //resp.sendRedirect(req.getContextPath() + "/home");
         req.getRequestDispatcher("/views/user/login.jsp").forward(req, resp);
     }
 
@@ -37,18 +37,20 @@ public class LoginController extends HttpServlet {
         String password = req.getParameter("password");
 
         UserModel model = userService.fineOneByUsername(username);
-        if (model != null && !BCrypt.checkpw(password,model.getPassword())){
+        if (model != null && !BCrypt.checkpw(password, model.getPassword())) {
             model = null;
         }
-        if (model != null) {
+        if (model != null && model.getStatus() != Constant.USER_BAN_STATUS) {
             SessionUtil.getInstance().putValue(req, "LOGIN", model);
             if (model.getRole().getCode().equals("USER")) {
                 resp.sendRedirect(req.getContextPath() + "/home");
             } else if (model.getRole().getCode().equals("ADMIN")) {
                 resp.sendRedirect(req.getContextPath() + "/admin-manage-post");
             }
+        } else if (model != null && model.getStatus() == Constant.USER_BAN_STATUS) {
+            req.setAttribute("message", "account-banned");
+            req.getRequestDispatcher("/views/user/login.jsp").forward(req, resp);
         } else {
-            //resp.sendRedirect(req.getContextPath() + "/login");
             req.setAttribute("message", "wrong-account");
             req.getRequestDispatcher("/views/user/login.jsp").forward(req, resp);
         }

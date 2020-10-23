@@ -1,5 +1,6 @@
 package com.citynow.api.user;
 
+import com.citynow.constant.Constant;
 import com.citynow.model.PostModel;
 import com.citynow.model.UserModel;
 import com.citynow.service.IPostService;
@@ -42,9 +43,10 @@ public class PostAPI extends HttpServlet {
         } catch (Exception e) {
             return;
         }
-        postModel = postService.save(postModel);
-
-        mapper.writeValue(resp.getOutputStream(), postModel);
+        if (postModel.getUser().getStatus() != Constant.USER_BLOCK_STATUS){
+            postModel = postService.save(postModel);
+            mapper.writeValue(resp.getOutputStream(), postModel);
+        }
     }
 
     @Override

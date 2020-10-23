@@ -50,14 +50,17 @@
                                         <c:param name="id" value="${sessionScope.LOGIN.id}"/>
                                     </c:url>
                                     <c:if test="${sessionScope.LOGIN.role.id == 1}">
-                                        <a class="dropdown-item" href="<c:url value="/admin-manage-post"/>">Admin Manage Post</a>
+                                        <a class="dropdown-item" href="<c:url value="/admin-manage-post"/>">Admin Manage
+                                            Post</a>
                                     </c:if>
                                     <c:if test="${sessionScope.LOGIN.role.id == 1}">
-                                        <a class="dropdown-item" href="<c:url value="/admin-manage-user"/>">Admin Manage User</a>
+                                        <a class="dropdown-item" href="<c:url value="/admin-manage-user"/>">Admin Manage
+                                            User</a>
                                     </c:if>
                                     <a class="dropdown-item" href="${profile}">Profile</a>
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
-                                    <a class="dropdown-item" href="<c:url value="/list-interacted"/>">Your Interacted</a>
+                                    <a class="dropdown-item" href="<c:url value="/list-interacted"/>">Your
+                                        Interacted</a>
                                     <a class="dropdown-item" href="<c:url value="/change-password"/>">Change
                                         Password</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
@@ -184,15 +187,27 @@
         <div class="col-3">
             <c:if test="${sessionScope.LOGIN != null}">
                 <div class="comment-box">
-                    <div class="comment-box__new validate-form" >
-                        <div class="validate-input"
-                             data-validate="Comment is required">
-                            <input id="typeComment" style="margin-left:2rem" class="input" type="text" id="title"
-                                   name="title" autocomplete="off" placeholder="Type to comment">
+                    <c:if test="${message == 'fail'}">
+                        <div class="alert alert-danger alert-custom">
+                            Fail to comment
                         </div>
+                    </c:if>
+                    <c:if test="${sessionScope.LOGIN.status == 0}">
+                        <div class="alert alert-danger alert-custom" style="width:100%">
+                            Can not comment
+                        </div>
+                    </c:if>
+                    <c:if test="${sessionScope.LOGIN.status != 0}">
+                        <div class="comment-box__new validate-form">
+                            <div class="validate-input"
+                                 data-validate="Comment is required">
+                                <input id="typeComment" style="margin-left:2rem" class="input" type="text" id="title"
+                                       name="title" autocomplete="off" placeholder="Type to comment">
+                            </div>
 
-                        <a id="comment" class="cbutton cbutton--blue cbutton--small">Comment</a>
-                    </div>
+                            <a id="comment" class="cbutton cbutton--blue cbutton--small">Comment</a>
+                        </div>
+                    </c:if>
                     <c:forEach var="item" items="${comments}">
                         <div class="comment-box__item">
                             <div class="comment-box__item__logo">
@@ -260,7 +275,7 @@
                 location.reload()
             },
             error: function (error) {
-                alert("Không hợp lệ");
+                window.location.href = '<c:url value="/detail-post"/>' + "?id=${post.id}" + "&message=fail";
             }
         });
     }

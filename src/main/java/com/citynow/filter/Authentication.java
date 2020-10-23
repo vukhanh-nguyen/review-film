@@ -76,7 +76,7 @@ public class Authentication implements Filter {
             }
         } else if (url.startsWith("/post")) {
             // Check login
-            if (model != null) {
+            if (model != null && model.getStatus() != Constant.USER_BLOCK_STATUS) {
                 try {
                     Long id = Long.parseLong(request.getParameter("id"));
                     Long idUserPost = postService.findOne(id).getUser().getId();
@@ -91,6 +91,8 @@ public class Authentication implements Filter {
                 } catch (Exception e) {
                     chain.doFilter(servletRequest, servletResponse);
                 }
+            }else if (model != null && model.getStatus() == Constant.USER_BLOCK_STATUS) {
+                response.sendRedirect(request.getContextPath() + "/home?message=account-block");
             } else {
                 // NOT LOGIN redirect to login page
                 response.sendRedirect(request.getContextPath() + "/login?message=not_login");

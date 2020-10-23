@@ -48,6 +48,11 @@
                 Username or password is not correct. Please try again
             </div>
         </c:if>
+        <c:if test="${message == 'account-banned'}">
+            <div class="alert alert-danger alert-custom">
+                This account is banned
+            </div>
+        </c:if>
     </c:if>
     <div id="formContent">
         <!-- Logo -->

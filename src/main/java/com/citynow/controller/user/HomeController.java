@@ -26,6 +26,12 @@ public class HomeController extends HttpServlet {
     protected void doGet(HttpServletRequest req,
                          HttpServletResponse resp)
             throws ServletException, IOException {
+
+        String message = req.getParameter("message");
+        if (message != null) {
+            req.setAttribute("message", message);
+        }
+
         // Pagination
         int page = 1;
         int limit = 5;

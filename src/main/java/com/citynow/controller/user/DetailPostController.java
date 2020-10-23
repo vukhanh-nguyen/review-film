@@ -27,6 +27,12 @@ public class DetailPostController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String message = req.getParameter("message");
+        if (message != null) {
+            req.setAttribute("message", message);
+        }
+
+
         Long idPost = Long.parseLong(req.getParameter("id"));
 
         UserModel model = (UserModel) SessionUtil.getInstance().getValue(req, "LOGIN");

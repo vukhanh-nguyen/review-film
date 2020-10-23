@@ -2,6 +2,7 @@ package com.citynow.api.user;
 
 import com.citynow.constant.Constant;
 import com.citynow.model.CommentModel;
+import com.citynow.model.UserModel;
 import com.citynow.service.ICommentService;
 import com.citynow.service.IPostService;
 import com.citynow.service.IUserService;
@@ -56,9 +57,11 @@ public class CommentAPI extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
         CommentModel commentModel = mapper.readValue(ConvertUtil.convertJsonToString(req.getReader()), CommentModel.class);
-        if (commentModel.getContent() != "") {
+        UserModel userModel = userService.findOne(commentModel.getUser_id());
+        int statusAcoount = userModel.getStatus();
+        if (commentModel.getContent() != "" && statusAcoount != Constant.USER_BLOCK_STATUS) {
             commentModel.setDateCreated(new Date(System.currentTimeMillis()));
-            commentModel.setUser(userService.findOne(commentModel.getUser_id()));
+            commentModel.setUser(userModel);
             commentModel.setPost(postService.findOne(commentModel.getPost_id()));
             commentModel = commentService.save(commentModel);
             mapper.writeValue(resp.getOutputStream(), commentModel);

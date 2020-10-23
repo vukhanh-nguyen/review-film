@@ -84,6 +84,11 @@
     </div>
 </div>
 <div class="container-fluid">
+    <c:if test="${message == 'account-block'}">
+        <div class="alert alert-danger alert-custom">
+            Account was blocked. Not access this page
+        </div>
+    </c:if>
     <div class="row">
         <a href="<c:url value="/post"/>" class="cbutton cbutton--blue cbutton--medium">Create New Post</a>
     </div>
@@ -260,7 +265,6 @@
         });
     });
 
-    /*Pagination*/
     function filterHome(obj) {
         var sortValue = obj.value;
         if (pageSort == null) {

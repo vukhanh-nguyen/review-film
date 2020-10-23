@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.sql.Date;
 
 @WebServlet(urlPatterns = {"/admin-api-post"})
-public class UpdatePostAPI extends HttpServlet {
+public class PostAPI extends HttpServlet {
 
     IPostService postService = new PostServiceImpl();
 

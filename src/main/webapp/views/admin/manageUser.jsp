@@ -53,7 +53,8 @@
                                     </c:if>
                                     <a class="dropdown-item" href="${profile}">Profile</a>
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
-                                    <a class="dropdown-item" href="<c:url value="/list-interacted"/>">Your Interacted</a>
+                                    <a class="dropdown-item" href="<c:url value="/list-interacted"/>">Your
+                                        Interacted</a>
                                     <a class="dropdown-item" href="<c:url value="/change-password"/>">Change
                                         Password</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
@@ -115,15 +116,28 @@
                                     <tr class="d-flex">
                                         <th class="col-1">${item.username}</th>
                                         <td class="col-6">${item.fullname}</td>
-                                        <c:if test="${item.status == 1}">
-                                            <td class="col-2 u-color-green u-bold">Normal</td>
-                                        </c:if>
-                                        <c:if test="${item.status == 0}">
-                                            <td class="col-2 u-color-yellow u-bold">Block</td>
-                                        </c:if>
-                                        <c:if test="${item.status == -1}">
-                                            <td class="col-2 u-color-red u-bold">Ban</td>
-                                        </c:if>
+                                        <td class="col-2 u-color-green u-bold">
+                                            <select onchange="changeStatus(this, ${item.id})"
+                                                    <c:if test="${item.status == 1}">style="transform: translate(40%,50%)"
+                                                    class="u-color-green u-bold" </c:if>
+                                                    <c:if test="${item.status == 0}">style="transform: translate(40%,50%)"
+                                                    class="u-color-yellow u-bold" </c:if>
+                                                    <c:if test="${item.status == -1}">style="transform: translate(40%,50%)"
+                                                    class="u-color-red u-bold" </c:if>
+                                                    id="standard-select">
+                                                <option class="u-color-green u-bold" value="1"
+                                                        <c:if test="${item.status == 1}">selected="selected"</c:if> >
+                                                    ACTIVE
+                                                </option>
+                                                <option class="u-color-yellow u-bold" value="0"
+                                                        <c:if test="${item.status == 0}">selected="selected"</c:if>>
+                                                    BLOCK
+                                                </option>
+                                                <option class="u-color-red u-bold" value="-1"
+                                                        <c:if test="${item.status == -1}">selected="selected"</c:if>>BAN
+                                                </option>
+                                            </select>
+                                        </td>
                                         <td class="col-3">
                                             <c:url var="profile" value="/profile">
                                                 <c:param name="id" value="${item.id}"/>
@@ -163,6 +177,28 @@
             }
         });
     });
+
+    // Change status
+
+    function changeStatus(status, postId) {
+        var status = status.value;
+        var data = {};
+        data["status"] = status;
+        data["user_id"] = postId;
+        $.ajax({
+            url: '<c:url value="/admin-api-user"/>',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                location.reload()
+            },
+            error: function (error) {
+                location.reload()
+            }
+        });
+    }
 </script>
 <script src="<c:url value="/js/pagination.js"/>"></script>
 </body>
