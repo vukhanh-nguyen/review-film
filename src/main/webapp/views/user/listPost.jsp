@@ -42,13 +42,16 @@
                                         <c:param name="id" value="${sessionScope.LOGIN.id}"/>
                                     </c:url>
                                     <c:if test="${sessionScope.LOGIN.role.id == 1}">
-                                        <a class="dropdown-item" href="<c:url value="/admin-manage-post"/>">Admin Manage Post</a>
+                                        <a class="dropdown-item" href="<c:url value="/admin-manage-post"/>">Admin Manage
+                                            Post</a>
                                     </c:if>
                                     <c:if test="${sessionScope.LOGIN.role.id == 1}">
-                                        <a class="dropdown-item" href="<c:url value="/admin-manage-user"/>">Admin Manage User</a>
+                                        <a class="dropdown-item" href="<c:url value="/admin-manage-user"/>">Admin Manage
+                                            User</a>
                                     </c:if>
                                     <a class="dropdown-item" href="${profile}">Profile</a>
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
+                                    <a class="dropdown-item" href="<c:url value="/list-interacted"/>">Your Interacted</a>
                                     <a class="dropdown-item" href="<c:url value="/change-password"/>">Change
                                         Password</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
@@ -100,17 +103,15 @@
                 <div class="tabs">
                     <input id="tab-1" type="radio" name="radio-set" class="tab-selector-1" checked="checked"/>
                     <label for="tab-1" class="tab-label-1">Your Posts</label>
-                    <input id="tab-2" type="radio" name="radio-set" class="tab-selector-2"/>
-                    <label for="tab-2" class="tab-label-2">Posts Interacted</label>
                     <div class="clear-shadow"></div>
                     <div class="content">
                         <div class="content-1">
                             <table class="table table-bordered u-center-text">
                                 <thead>
                                 <tr class="d-flex table-secondary">
-                                    <th><input type="checkbox" id="checkAllUrPost"></th>
+                                    <th class="col-1"><input type="checkbox" id="checkAllUrPost"></th>
                                     <th class="col-1" scope="col">ID Post</th>
-                                    <th class="col-7" scope="col">Title</th>
+                                    <th class="col-6" scope="col">Title</th>
                                     <th class="col-2" scope="col">Status</th>
                                     <th class="col-2" scope="col">Action</th>
                                 </tr>
@@ -118,9 +119,10 @@
                                 <tbody>
                                 <c:forEach var="item" items="${yourposts}">
                                     <tr class="d-flex">
-                                        <td><input type="checkbox" name="cbUrPost" id="checkbox_${item.id}" value="${item.id}"></td>
+                                        <td class="col-1"><input type="checkbox" name="cbUrPost" id="checkbox_${item.id}"
+                                                   value="${item.id}"></td>
                                         <th class="col-1">${item.id}</th>
-                                        <td class="col-7">${item.title}</td>
+                                        <td class="col-6">${item.title}</td>
                                         <c:if test="${item.status == 1}">
                                             <td class="col-2 u-color-green u-bold">Approved</td>
                                         </c:if>
@@ -138,45 +140,7 @@
                                 </tbody>
                             </table>
                             <div class="pagination-wrap">
-                                <ul class="pagination" id="paginationUrPost"></ul>
-                            </div>
-                        </div>
-                        <div class="content-2">
-                            <table class="table table-bordered u-center-text">
-                                <thead>
-                                <tr class="d-flex table-secondary">
-                                    <th><input type="checkbox" id="checkAllUrInteract"></th>
-                                    <th class="col-1" scope="col">ID Post</th>
-                                    <th class="col-7" scope="col">Title</th>
-                                    <th class="col-2" scope="col">Vote</th>
-                                    <th class="col-2" scope="col">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach var="item" items="${postsinteract}">
-                                    <tr class="d-flex">
-                                        <td><input type="checkbox" name="cbUrInteract" id="checkbox_${item.id}" value="${item.id}"></td>
-                                        <th class="col-1">${item.post.id}</th>
-                                        <td class="col-7">${item.post.title}</td>
-                                        <c:if test="${item.actionVote == 1}">
-                                            <td class="col-2 u-color-green u-bold">Liked</td>
-                                        </c:if>
-                                        <c:if test="${item.actionVote == 0}">
-                                            <td class="col-2 u-color-red u-bold">Disliked</td>
-                                        </c:if>
-                                        <td class="col-2">
-                                            <c:url var="detailPost" value="/detail-post">
-                                                <c:param name="id" value="${item.post.id}"/>
-                                            </c:url>
-                                            <a href="${detailPost}"
-                                               class="cbutton cbutton--blue cbutton--small">VIEW</a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
-                            <div class="pagination-wrap">
-                                <ul class="pagination" id="paginationUrInteracted"></ul>
+                                <ul class="pagination" id="pagination"></ul>
                             </div>
                         </div>
                     </div>
@@ -190,36 +154,17 @@
 
 
     // Pagination your post
-    var totalPagesUrPost = ${totalPageUrPost};
-    var currentPageUrPost = ${currentPageUrPost};
-
-    // Pagination your interacted
-    var totalPageUrInteracted = ${totalPageUrInteracted};
-    var currentPageUrInteracted = ${currentPageUrInteracted};
-
+    var totalPage = ${totalPage};
+    var currentPage = ${currentPage};
 
     $(function () {
-        window.pagObj = $('#paginationUrPost').twbsPagination({
-            totalPages: totalPagesUrPost,
+        window.pagObj = $('#pagination').twbsPagination({
+            totalPages: totalPage,
             visiblePages: 5,
-            startPage: currentPageUrPost,
+            startPage: currentPage,
             onPageClick: function (event, page) {
-                if (currentPageUrPost != page) {
-                    window.location = '<c:url value="/list-posts"/>' + "?page_ur_post=" + page + "&page_ur_interacted=" + currentPageUrInteracted;
-                }
-            }
-        });
-    });
-
-
-    $(function () {
-        window.pagObj = $('#paginationUrInteracted').twbsPagination({
-            totalPages: totalPageUrInteracted,
-            visiblePages: 5,
-            startPage: currentPageUrInteracted,
-            onPageClick: function (event, page) {
-                if (currentPageUrInteracted != page) {
-                    window.location = '<c:url value="/list-posts"/>' + "?page_ur_post=" + currentPageUrPost + "&page_ur_interacted=" + page;
+                if (currentPage != page) {
+                    window.location = '<c:url value="/list-posts"/>' + "?page=" + page;
                 }
             }
         });

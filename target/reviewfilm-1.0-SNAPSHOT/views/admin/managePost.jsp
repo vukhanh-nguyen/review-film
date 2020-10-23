@@ -50,6 +50,7 @@
                                     </c:if>
                                     <a class="dropdown-item" href="${profile}">Profile</a>
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
+                                    <a class="dropdown-item" href="<c:url value="/list-interacted"/>">Your Interacted</a>
                                     <a class="dropdown-item" href="<c:url value="/change-password"/>">Change Password</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
                                 </div>
@@ -96,16 +97,16 @@
                                 <thead>
                                 <tr class="d-flex table-secondary">
                                     <th class="col-1" scope="col">ID</th>
-                                    <th class="col-7" scope="col">Title</th>
+                                    <th class="col-6" scope="col">Title</th>
                                     <th class="col-2" scope="col">Status</th>
-                                    <th class="col-2" scope="col">Action</th>
+                                    <th class="col-3" scope="col">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <c:forEach var="item" items="${posts}">
                                     <tr class="d-flex">
                                         <th class="col-1">${item.id}</th>
-                                        <td class="col-7">${item.title}</td>
+                                        <td class="col-6">${item.title}</td>
                                         <c:if test="${item.status == 1}">
                                             <td class="col-2 u-color-green u-bold">Approved</td>
                                         </c:if>
@@ -115,7 +116,7 @@
                                                    class="cbutton cbutton--yellow cbutton--small">Pending</a>
                                             </td>
                                         </c:if>
-                                        <td class="col-2">
+                                        <td class="col-3">
                                             <c:url var="detailPost" value="/detail-post">
                                                 <c:param name="id" value="${item.id}"/>
                                             </c:url>

@@ -49,6 +49,7 @@
                                     </c:if>
                                     <a class="dropdown-item" href="${profile}">Profile</a>
                                     <a class="dropdown-item" href="<c:url value="/list-posts"/>">Your Posts</a>
+                                    <a class="dropdown-item" href="<c:url value="/list-interacted"/>">Your Interacted</a>
                                     <a class="dropdown-item" href="<c:url value="/change-password"/>">Change
                                         Password</a>
                                     <a class="dropdown-item" href="<c:url value="/logout"/>">Log Out</a>
