@@ -35,4 +35,6 @@ public interface IPostService {
     int countByStatusAndSearch(int status, String search);
 
     int countByUserId(Long userId);
+
+    void delete(Long[] ids);
 }

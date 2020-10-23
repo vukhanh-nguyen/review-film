@@ -43,4 +43,9 @@ public class CommentServiceImpl implements ICommentService {
     public int countAllByPostId(Long postId) {
         return commentDao.countAllByPostId(postId);
     }
+
+    @Override
+    public void delete(Long id) {
+        commentDao.delete(id);
+    }
 }

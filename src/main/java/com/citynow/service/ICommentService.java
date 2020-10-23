@@ -12,4 +12,5 @@ public interface ICommentService {
     List<CommentModel> findAllByPostId(Long postId, int page, int limit);
     CommentModel save(CommentModel commentModel);
     int countAllByPostId(Long postId);
+    void delete(Long id);
 }

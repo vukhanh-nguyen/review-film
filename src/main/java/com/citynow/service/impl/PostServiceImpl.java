@@ -1,6 +1,8 @@
 package com.citynow.service.impl;
 
+import com.citynow.dao.ICommentDao;
 import com.citynow.dao.IPostDao;
+import com.citynow.dao.impl.CommentDaoImpl;
 import com.citynow.dao.impl.PostDaoImpl;
 import com.citynow.model.PostModel;
 import com.citynow.model.UserModel;
@@ -11,6 +13,8 @@ import java.util.List;
 public class PostServiceImpl implements IPostService {
 
     IPostDao postDao = new PostDaoImpl();
+
+    ICommentDao commentDao = new CommentDaoImpl();
 
     @Override
     public List<PostModel> findAll() {
@@ -94,5 +98,14 @@ public class PostServiceImpl implements IPostService {
     @Override
     public int countByUserId(Long userId) {
         return postDao.countByUserId(userId);
+    }
+
+    @Override
+    public void delete(Long[] ids) {
+        for (Long id:
+             ids) {
+            commentDao.delete(id);
+            postDao.delete(id);
+        }
     }
 }

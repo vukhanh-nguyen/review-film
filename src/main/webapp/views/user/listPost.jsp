@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -92,6 +93,11 @@
                 SUCCESS
             </div>
         </c:if>
+        <c:if test="${message == 'fail'}">
+            <div class="alert alert-danger alert-custom">
+                Fail
+            </div>
+        </c:if>
     </c:if>
     <div class="row mb-5">
         <a href="<c:url value="/home?page=1&limit=5"/>" class="cbutton cbutton--blue cbutton--big">List Posts</a>
@@ -104,12 +110,13 @@
                     <input id="tab-1" type="radio" name="radio-set" class="tab-selector-1" checked="checked"/>
                     <label for="tab-1" class="tab-label-1">Your Posts</label>
                     <div class="clear-shadow"></div>
-                    <div class="content">
+                    <div class="content" style="height: 60rem">
                         <div class="content-1">
+                            <a id="btnDelete" style="float:right; margin:3rem 0" class="cbutton cbutton--red cbutton--small">DELETE</a>
                             <table class="table table-bordered u-center-text">
                                 <thead>
                                 <tr class="d-flex table-secondary">
-                                    <th class="col-1"><input type="checkbox" id="checkAllUrPost"></th>
+                                    <th class="col-1"><input type="checkbox" id="checkAll"></th>
                                     <th class="col-1" scope="col">ID Post</th>
                                     <th class="col-6" scope="col">Title</th>
                                     <th class="col-2" scope="col">Status</th>
@@ -119,7 +126,7 @@
                                 <tbody>
                                 <c:forEach var="item" items="${yourposts}">
                                     <tr class="d-flex">
-                                        <td class="col-1"><input type="checkbox" name="cbUrPost" id="checkbox_${item.id}"
+                                        <td class="col-1"><input type="checkbox" name="cb" id="checkbox_${item.id}"
                                                    value="${item.id}"></td>
                                         <th class="col-1">${item.id}</th>
                                         <td class="col-6">${item.title}</td>
@@ -150,6 +157,7 @@
     </div>
 </div>
 <script src="<c:url value="/template/paging/jquery.twbsPagination.js"/>"></script>
+<script src="<c:url value="/js/checkbox.js"/>"></script>
 <script type="text/javascript">
 
 
@@ -170,6 +178,29 @@
         });
     });
 
+    $("#btnDelete").click(function() {
+        var data = {};
+        var ids = $('tbody input[type=checkbox]:checked').map(function () {
+            return $(this).val();
+        }).get();
+        data['ids'] = ids;
+        deletePost(data);
+    });
+
+    function deletePost(data) {
+        $.ajax({
+            url: '<c:url value="/api-post"/>',
+            type: 'DELETE',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (result) {
+                window.location.href = "<c:url value="/list-posts"/>" + "?message=success";
+            },
+            error: function (error) {
+                window.location.href = "<c:url value="/list-posts"/>" + "?message=fail";
+            }
+        });
+    }
 </script>
 <script src="<c:url value="/js/pagination.js"/>"></script>
 </body>

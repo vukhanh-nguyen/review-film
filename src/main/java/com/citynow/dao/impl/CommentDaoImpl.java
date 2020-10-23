@@ -70,4 +70,10 @@ public class CommentDaoImpl extends AbstractDao<CommentModel> implements ICommen
         int x = count(sql.toString(), postId);
         return count(sql.toString(), postId);
     }
+
+    @Override
+    public void delete(Long postId) {
+        String sql = "DELETE FROM comment WHERE comment.post_id = ?";
+        update(sql, postId);
+    }
 }

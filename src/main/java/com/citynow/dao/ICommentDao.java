@@ -13,4 +13,5 @@ public interface ICommentDao {
     List<CommentModel> findAllByPostId(Long postId);
     List<CommentModel> findAllByPostId(Long postId, int page, int limit);
     int countAllByPostId(Long postId);
+    void delete(Long postId);
 }

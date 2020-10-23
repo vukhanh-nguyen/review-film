@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:url var="createPostAPI" value="/api-create-post"/>
+<c:url var="createPostAPI" value="/api-post"/>
 <c:url var="listPosts" value="/list-posts"/>
 <c:url var="createPost" value="/post"/>
 <html>
