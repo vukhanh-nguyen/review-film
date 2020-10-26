@@ -2,17 +2,57 @@ package com.citynow.model;
 
 import java.sql.Date;
 
+/**
+ * Represents a post review film
+ * @author VuKhanh
+ */
 public class PostModel {
 
     private Long id;
+
+    /**
+     * Represent user who create this post
+     */
     private UserModel user;
+
+    /**
+     * Represent date when post is created
+     */
     private Date dateModified;
+
+    /**
+     * Represent quantity Up Vote or Like of post
+     */
     private Long upvote;
+
+    /**
+     * Represent quantity Down Vote or Dislike of post
+     */
     private Long downvote;
+
+    /**
+     * Represent title of post
+     */
     private String title;
+
+    /**
+     * Represent the name of film which this post review
+     */
     private String filmName;
+
+    /**
+     * Represent rate of this film (which this post review)
+     */
     private int postRate;
+
+    /**
+     * Represent content of post
+     */
     private String postReview;
+
+    /**
+     * Represent status of post (Approve or Pending,..)
+     */
     private int status;
 
     public Long getId() {

@@ -9,6 +9,11 @@ public class RoleServiceImpl implements IRoleService {
 
     IRoleDao roleDao = new RoleDaoImpl();
 
+    /**
+     * Service Find role by ID
+     * @param id
+     * @return role model
+     */
     @Override
     public RoleModel findOne(Long id) {
         return roleDao.findOne(id);

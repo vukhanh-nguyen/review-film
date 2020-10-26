@@ -8,6 +8,12 @@ import java.util.List;
 
 public class CommentDaoImpl extends AbstractDao<CommentModel> implements ICommentDao {
 
+    /**
+     * Save comment to database
+     *
+     * @param commentModel
+     * @return ID of comment model
+     */
     @Override
     public Long save(CommentModel commentModel) {
         StringBuilder sql = new StringBuilder("INSERT INTO comment (user_id, post_id , content, datecreated) ");
@@ -16,6 +22,12 @@ public class CommentDaoImpl extends AbstractDao<CommentModel> implements ICommen
                 commentModel.getContent(), commentModel.getDateCreated());
     }
 
+    /**
+     * Find comment with ID from database
+     *
+     * @param id
+     * @return comment model
+     */
     @Override
     public CommentModel findOne(Long id) {
         StringBuilder sql = new StringBuilder("SELECT * ");
@@ -24,6 +36,10 @@ public class CommentDaoImpl extends AbstractDao<CommentModel> implements ICommen
         return commentModels.isEmpty() ? null : commentModels.get(0);
     }
 
+    /**
+     * Find all comment from database
+     * @return List all comment model
+     */
     @Override
     public List<CommentModel> findAll() {
         StringBuilder sql = new StringBuilder("SELECT * ");
@@ -31,6 +47,11 @@ public class CommentDaoImpl extends AbstractDao<CommentModel> implements ICommen
         return query(sql.toString(), new CommetMapper());
     }
 
+    /**
+     * Find comment with ID user, who created this comment from database
+     * @param userId
+     * @return List comment which user created
+     */
     @Override
     public List<CommentModel> findAllByUserId(Long userId) {
         StringBuilder sql = new StringBuilder("SELECT * ");
@@ -39,6 +60,11 @@ public class CommentDaoImpl extends AbstractDao<CommentModel> implements ICommen
         return query(sql.toString(), new CommetMapper(), userId);
     }
 
+    /**
+     * Find comment of post with post ID from database
+     * @param postId
+     * @return List comment of post
+     */
     @Override
     public List<CommentModel> findAllByPostId(Long postId) {
         StringBuilder sql = new StringBuilder("SELECT * ");
@@ -48,6 +74,13 @@ public class CommentDaoImpl extends AbstractDao<CommentModel> implements ICommen
         return query(sql.toString(), new CommetMapper(), postId);
     }
 
+    /**
+     * Find comment of post with post ID and pagination(page, limit) from database
+     * @param postId
+     * @param page
+     * @param limit
+     * @return List comment of post with page and limit of 1 page
+     */
     @Override
     public List<CommentModel> findAllByPostId(Long postId, int page, int limit) {
         StringBuilder sql = new StringBuilder(" SELECT * ");
@@ -57,20 +90,27 @@ public class CommentDaoImpl extends AbstractDao<CommentModel> implements ICommen
         sql.append(" LIMIT ? OFFSET ?");
 
         // offset = (page -1 ) * limit (MySQL count from 0)
-        // limit = limit - 1
         int offset = (page - 1) * limit;
         return query(sql.toString(), new CommetMapper(), postId, limit, offset);
     }
 
+    /**
+     * Count quantity comment of 1 post with post ID from database
+     * @param postId
+     * @return quantity comment(int)
+     */
     @Override
     public int countAllByPostId(Long postId) {
         StringBuilder sql = new StringBuilder("SELECT count(*) ");
         sql.append(" FROM comment ");
         sql.append(" WHere comment.post_id = ?");
-        int x = count(sql.toString(), postId);
         return count(sql.toString(), postId);
     }
 
+    /**
+     * Delete post from database
+     * @param postId
+     */
     @Override
     public void delete(Long postId) {
         String sql = "DELETE FROM comment WHERE comment.post_id = ?";

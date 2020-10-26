@@ -19,6 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Represent API Vote
+ * @author VuKhanh
+ */
 @WebServlet(urlPatterns = {"/api-vote"})
 public class VoteAPI extends HttpServlet {
 
@@ -28,14 +32,22 @@ public class VoteAPI extends HttpServlet {
 
     IUserService userService = new UserServiceImpl();
 
+    /**
+     * Create Like or dislike post
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        // Get user was login by Session
         UserModel model = (UserModel) SessionUtil.getInstance().getValue(req, "LOGIN");
         Long idPost = Long.parseLong(req.getParameter("idPost"));
+        // Find info post from database
         PostModel postModel = postService.findOne(idPost);
         int statusVote = Integer.parseInt(req.getParameter("statusVote"));
-
 
         // Change vote
         VoteModel voteModel = voteService.findOneByUserIdAndPostId(model.getId(), idPost);
@@ -50,7 +62,7 @@ public class VoteAPI extends HttpServlet {
             voteService.update(voteModel);
         }
 
-        // Change post (total vote)
+        // Change total vote of post
         Long totalVoteLike = voteService.countTotalVoteByPostIdAndAction(idPost, Constant.VOTE_LIKE);
         Long totalVoteDislike = voteService.countTotalVoteByPostIdAndAction(idPost, Constant.VOTE_DISLIKE);
         postModel.setUpvote(totalVoteLike);
@@ -63,6 +75,13 @@ public class VoteAPI extends HttpServlet {
         userService.update(author);
     }
 
+    /**
+     * Delete vote of a post
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

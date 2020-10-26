@@ -8,7 +8,11 @@ import java.util.List;
 
 public class RoleDaoImpl extends AbstractDao<RoleModel> implements IRoleDao {
 
-
+    /**
+     * Find role with ID role from database
+     * @param id
+     * @return role
+     */
     @Override
     public RoleModel findOne(Long id) {
         String sql = "SELECT * FROM role WHERE id = ?";

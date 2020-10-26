@@ -1,25 +1,62 @@
 package com.citynow.model;
 
-import com.citynow.utils.ValidateUtil;
-import org.mindrot.jbcrypt.BCrypt;
-
 import java.sql.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+/**
+ * Represents an user
+ * @author VuKhanh
+ */
 public class UserModel {
 
     private Long id;
+
+    /**
+     * Represent Username, user use Username to login
+     */
     private String username;
+
+    /**
+     * Represent Password, user use Password to login
+     */
     private String password;
+
+    /**
+     * Represent full name of user
+     */
     private String fullname;
+
+    /**
+     * Represent email of user
+     */
     private String email;
+
+    /**
+     * Represent avatar of user
+     */
     private String avatar;
     private Date dateOfBirth;
     private String phone;
+
+    /**
+     * Represent quantity post user was post
+     * Only posts was approved to be counted
+     */
     private Long quantityPost;
+
+    /**
+     * Represent quantity like post user was interacted
+     */
     private Long quantityUpvote;
+
+    /**
+     * Represent status of user
+     * Ex: Active, Block, Ban,...
+     */
     private int status;
+
+    /**
+     * Represent role of user
+     */
     private RoleModel role = new RoleModel();
 
     public Long getId() {
@@ -83,12 +120,7 @@ public class UserModel {
     }
 
     public void setPhone(String phone) {
-        boolean matchFound = ValidateUtil.validate("^\\+?\\d{1,3}?[- .]?\\(?(?:\\d{2,3})\\)?[- .]?\\d\\d\\d[- .]?\\d\\d\\d\\d$", phone);
-        if (matchFound) {
-            this.phone = phone;
-        } else {
-            this.phone = "";
-        }
+        this.phone = phone;
     }
 
     public Long getQuantityPost() {

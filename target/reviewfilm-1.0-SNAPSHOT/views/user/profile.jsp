@@ -156,6 +156,16 @@
                         autocomplete="off">
                     </div>
 
+                    <label for="phone" class="mt-5">Status: </label>
+                    <c:if test="${profileuser.status == 1}">
+                        <label for="phone" class="u-color-green u-bold">ACTIVE</label>
+                    </c:if>
+                    <c:if test="${profileuser.status == 0}">
+                        <label for="phone" class="u-color-yellow u-bold">BLOCK</label>
+                    </c:if>
+                    <c:if test="${profileuser.status == -1}">
+                        <label for="phone" class="u-color-red u-bold">BAN</label>
+                    </c:if>
                     <div class="information__btn">
                         <c:url var="profile_user" value="/profile">
                             <c:param name="id" value="${profileuser.id}"/>

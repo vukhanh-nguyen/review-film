@@ -12,6 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Controller list post which user interacted
+ * @author VuKhanh
+ */
 @WebServlet(urlPatterns = {"/list-interacted"})
 public class ListInteractedController extends HttpServlet {
 
@@ -19,6 +23,8 @@ public class ListInteractedController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        // Get user who was login
         UserModel model = (UserModel) SessionUtil.getInstance().getValue(req, "LOGIN");
 
         // Pagination
@@ -26,6 +32,7 @@ public class ListInteractedController extends HttpServlet {
 
         int page = 1;
 
+        // Count total post user interacted -> total Page
         int totalPage = (int) Math.ceil((double) voteService.countByUserId(model.getId()) / limit);
         try {
             if (req.getParameter("page") != null) {
@@ -34,6 +41,7 @@ public class ListInteractedController extends HttpServlet {
         } catch (Exception e) {
         }
 
+        // Find all post which user interacted
         req.setAttribute("postsinteract", voteService.findAllByUserId(model.getId(), page, limit));
         req.setAttribute("totalPage", totalPage);
         req.setAttribute("currentPage", page);

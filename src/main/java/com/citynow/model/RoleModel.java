@@ -1,8 +1,17 @@
 package com.citynow.model;
 
+
+/**
+ * Represents Role of user
+ * @author VuKhanh
+ */
 public class RoleModel {
 
     private Long id;
+
+    /**
+     * Represent name of role (ADMIN, USER,...)
+     */
     private String code;
 
     public Long getId() {

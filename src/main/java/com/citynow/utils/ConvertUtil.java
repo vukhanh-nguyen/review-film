@@ -4,20 +4,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+/**
+ * Manage Convert Utility
+ * @author VuKhanh
+ */
 public class ConvertUtil {
 
-    public static String convertBytesToString(byte[] bytes) {
-        try {
-            return new String(bytes, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            return null;
-        }
-    }
-
-    public static byte[] convertStringToBytes(String string) {
-        return string.getBytes();
-    }
-
+    /**
+     * Convert Json to String
+     * @param reader
+     * @return String(Json)
+     */
     public static String convertJsonToString(BufferedReader reader){
         StringBuilder sb = new StringBuilder();
         try {

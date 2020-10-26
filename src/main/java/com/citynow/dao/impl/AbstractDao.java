@@ -16,6 +16,10 @@ public class AbstractDao<T> implements IDao<T> {
     HikariConfig config = new HikariConfig();
     HikariDataSource ds;
 
+    /**
+     * Get connection using connection pool (Hikari)
+     * @return connection
+     */
     public Connection getConnection() {
         config.setDriverClassName(resource.getString("driverName"));
         config.setJdbcUrl(resource.getString("url"));
@@ -36,6 +40,11 @@ public class AbstractDao<T> implements IDao<T> {
         return null;
     }
 
+    /**
+     * Cast value from object and assign to statement
+     * @param statement
+     * @param parameters
+     */
     private void setParameter(PreparedStatement statement, Object... parameters) {
         try {
             for (int i = 0; i < parameters.length; i++) {
@@ -56,6 +65,14 @@ public class AbstractDao<T> implements IDao<T> {
         }
     }
 
+    /**
+     * Query from database (select,..)
+     * @param sql
+     * @param mapper
+     * @param parameters
+     * @param <T>
+     * @return List Object
+     */
     @Override
     public <T> List<T> query(String sql, IMapper<T> mapper, Object... parameters) {
         List<T> results = new ArrayList<>();
@@ -76,6 +93,11 @@ public class AbstractDao<T> implements IDao<T> {
         }
     }
 
+    /**
+     * Update data from database (Update, delete,..)
+     * @param sql
+     * @param parameters
+     */
     @Override
     public void update(String sql, Object... parameters) {
         Connection connection = null;
@@ -99,6 +121,12 @@ public class AbstractDao<T> implements IDao<T> {
         }
     }
 
+    /**
+     * insert new value to database (Insert,...)
+     * @param sql
+     * @param parameters
+     * @return ID Object
+     */
     @Override
     public Long insert(String sql, Object... parameters) {
         Connection connection = null;
@@ -129,6 +157,12 @@ public class AbstractDao<T> implements IDao<T> {
         return null;
     }
 
+    /**
+     * Count record from database
+     * @param sql
+     * @param parameters
+     * @return total record
+     */
     @Override
     public int count(String sql, Object... parameters) {
         Connection connection = null;

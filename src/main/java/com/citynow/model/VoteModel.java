@@ -1,9 +1,22 @@
 package com.citynow.model;
 
+
+/**
+ * Represents vote of user for a post
+ * @author VuKhanh
+ */
 public class VoteModel {
 
     private Long id;
+
+    /**
+     * Represent user vote
+     */
     private UserModel user;
+
+    /**
+     * Represent post was voted
+     */
     private PostModel post;
     private int actionVote;
 

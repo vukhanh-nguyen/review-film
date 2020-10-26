@@ -9,6 +9,11 @@ import java.util.List;
 
 public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
 
+    /**
+     * Find User by username from database
+     * @param userName
+     * @return user model
+     */
     @Override
     public UserModel findByUserName(String userName) {
         StringBuilder sql = new StringBuilder("SELECT * FROM user ");
@@ -18,6 +23,11 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
         return users.isEmpty() ? null : users.get(0);
     }
 
+    /**
+     * Find User by ID user from database
+     * @param id
+     * @return user model
+     */
     @Override
     public UserModel findOne(Long id) {
         StringBuilder sql = new StringBuilder("SELECT * ");
@@ -27,6 +37,11 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
         return users.isEmpty() ? null : users.get(0);
     }
 
+    /**
+     * Save user to database
+     * @param userModel
+     * @return ID of user
+     */
     @Override
     public Long save(UserModel userModel) {
         if (userModel.getAvatar() == null){
@@ -42,6 +57,10 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
                 userModel.getRole().getId());
     }
 
+    /**
+     * Update user to database replace old user
+     * @param userModel
+     */
     @Override
     public void update(UserModel userModel) {
         if (userModel.getAvatar() == null){
@@ -56,6 +75,10 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
                 userModel.getRole().getId(), userModel.getId());
     }
 
+    /**
+     * Find all user from database
+     * @return list user model
+     */
     @Override
     public List<UserModel> findAll() {
         StringBuilder sql = new StringBuilder("SELECT * ");
@@ -63,6 +86,12 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
         return query(sql.toString(), new UserMapper());
     }
 
+    /**
+     * Find all user with pagination from database
+     * @param page
+     * @param limit
+     * @return list user model with pagination
+     */
     @Override
     public List<UserModel> findAll(int page, int limit) {
         StringBuilder sql = new StringBuilder(" SELECT * ");
@@ -70,11 +99,15 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
         sql.append(" LIMIT ? OFFSET ?");
 
         // offset = (page -1 ) * limit (MySQL count from 0)
-        // limit = limit - 1
         int offset = (page - 1) * limit;
         return query(sql.toString(), new UserMapper(), limit, offset);
     }
 
+    /**
+     * Find all user have total post have liked highest
+     * @param top
+     * @return List user model
+     */
     @Override
     public List<UserModel> findTopByQuantityLike(int top) {
         StringBuilder sql = new StringBuilder("SELECT * ");
@@ -84,6 +117,11 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
         return query(sql.toString(), new UserMapper(), top);
     }
 
+    /**
+     * Count total like of user from database
+     * @param userId
+     * @return total like of user
+     */
     @Override
     public Long countTotalLikedByUserId(Long userId) {
         StringBuilder sql = new StringBuilder("SELECT count(*) ");
@@ -92,6 +130,10 @@ public class UserDaoImpl extends AbstractDao<UserModel> implements IUserDao {
         return Long.valueOf(count(sql.toString(), userId));
     }
 
+    /**
+     * Count total user from database
+     * @return total user
+     */
     @Override
     public int count() {
         StringBuilder sql = new StringBuilder("SELECT count(*) ");

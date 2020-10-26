@@ -287,10 +287,10 @@
             type: 'POST',
             data: {"idPost": idPost, "statusVote": statusVote},
             success: function (result) {
-                location.reload()
+                location.reload();
             },
             error: function (error) {
-                location.reload()
+                location.reload();
             }
         });
     }

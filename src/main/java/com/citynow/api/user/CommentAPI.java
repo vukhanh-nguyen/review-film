@@ -21,6 +21,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 
+/**
+ * Represent API comment
+ * @author VuKhanh
+ */
 @WebServlet(urlPatterns = {"/api-comment"})
 public class CommentAPI extends HttpServlet {
 
@@ -30,10 +34,19 @@ public class CommentAPI extends HttpServlet {
 
     IPostService postService = new PostServiceImpl();
 
+    /**
+     * Get list comment of post by post_id
+     * list get by pagination
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ObjectMapper mapper = new ObjectMapper();
 
+        // Get json from ajax request
         String json = ConvertUtil.convertJsonToString(req.getReader());
         JSONObject dataJson = new JSONObject(json);
 
@@ -43,6 +56,7 @@ public class CommentAPI extends HttpServlet {
 
 
         int totalPage;
+        // Get total comment of post -> Count total page
         totalPage = (int) Math.ceil((double) commentService.countAllByPostId(postId) / limit);
 
         req.setAttribute("totalPage", totalPage);
@@ -51,19 +65,37 @@ public class CommentAPI extends HttpServlet {
         mapper.writeValue(resp.getOutputStream(), "{}" );
     }
 
+    /**
+     * Create comment to one post
+     * @param req
+     * @param resp
+     * @return Comment after save to database
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
+
+        // Get data json form ajax request -> mapping to comment model
         CommentModel commentModel = mapper.readValue(ConvertUtil.convertJsonToString(req.getReader()), CommentModel.class);
+
+        // Get user who create comment from database
         UserModel userModel = userService.findOne(commentModel.getUser_id());
-        int statusAcoount = userModel.getStatus();
-        if (commentModel.getContent() != "" && statusAcoount != Constant.USER_BLOCK_STATUS) {
+        int statusAccount = userModel.getStatus();
+
+        // Check comment not empty and user was not blocked
+        if (commentModel.getContent() != "" && statusAccount != Constant.USER_BLOCK_STATUS) {
+            // Set date when created comment
             commentModel.setDateCreated(new Date(System.currentTimeMillis()));
+            // Set user who comment
             commentModel.setUser(userModel);
             commentModel.setPost(postService.findOne(commentModel.getPost_id()));
+            // Save comment to database
             commentModel = commentService.save(commentModel);
+            // Response model json
             mapper.writeValue(resp.getOutputStream(), commentModel);
         }
     }

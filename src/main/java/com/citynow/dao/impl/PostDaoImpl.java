@@ -8,6 +8,11 @@ import java.util.List;
 
 public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
 
+    /**
+     * Find post with ID post from database
+     * @param id
+     * @return  post model
+     */
     @Override
     public PostModel findOne(Long id) {
         StringBuilder sql = new StringBuilder("SELECT * ");
@@ -17,6 +22,11 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
         return postModels.isEmpty() ? null : postModels.get(0);
     }
 
+    /**
+     * Save post to database
+     * @param postModel
+     * @return ID of post model
+     */
     @Override
     public Long save(PostModel postModel) {
         StringBuilder sql = new StringBuilder("INSERT INTO post (user_id, datemodified,");
@@ -27,6 +37,10 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
                 postModel.getTitle(), postModel.getFilmName(), postModel.getPostRate(), postModel.getPostReview(), postModel.getStatus());
     }
 
+    /**
+     * Update post to database replace old post
+     * @param postModel
+     */
     @Override
     public void update(PostModel postModel) {
         StringBuilder sql = new StringBuilder("UPDATE post SET user_id =?, datemodified = ?, upvote = ?,");
@@ -37,12 +51,20 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
                 postModel.getStatus(), postModel.getId());
     }
 
+    /**
+     * Delete post from database
+     * @param id
+     */
     @Override
     public void delete(Long id) {
         String sql = "DELETE FROM post WHERE id = ?";
         update(sql, id);
     }
 
+    /**
+     * Find all post from database
+     * @return List all post model
+     */
     @Override
     public List<PostModel> findAll() {
         StringBuilder sql = new StringBuilder("SELECT * ");
@@ -51,6 +73,12 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
         return query(sql.toString(), new PostMapper());
     }
 
+    /**
+     * Find all post with pagination(page, limit) from database
+     * @param page
+     * @param limit
+     * @return List post with page and limit of 1 page
+     */
     @Override
     public List<PostModel> findAll(int page, int limit) {
         StringBuilder sql = new StringBuilder(" SELECT * ");
@@ -60,11 +88,15 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
         sql.append(" LIMIT ? OFFSET ?");
 
         // offset = (page -1 ) * limit (MySQL count from 0)
-        // limit = limit - 1
         int offset = (page - 1) * limit;
         return query(sql.toString(), new PostMapper(), limit, offset);
     }
 
+    /**
+     * Find list posts with status from database
+     * @param status
+     * @return List post with status
+     */
     @Override
     public List<PostModel> findAllByStatus(int status) {
         StringBuilder sql = new StringBuilder("SELECT * ");
@@ -73,11 +105,19 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
         return query(sql.toString(), new PostMapper(), status);
     }
 
+    /**
+     * Find all posts with status and pagination(page, limit) from database
+     * @param status
+     * @param search
+     * @param page
+     * @param limit
+     * @param sort
+     * @return List post with status and page, limit of 1 page
+     */
     @Override
     public List<PostModel> findAllByStatus(int status, String search, int page, int limit, String sort) {
 
         StringBuilder sql = new StringBuilder(" ");
-
         if (sort.equals("date-asc")) {
             sql.append(" SELECT * ");
             sql.append(" FROM POST, USER ");
@@ -130,11 +170,15 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
         }
 
         // offset = (page -1 ) * limit (MySQL count from 0)
-        // limit = limit - 1
         int offset = (page - 1) * limit;
         return query(sql.toString(), new PostMapper(), status, search, search, limit, offset);
     }
 
+    /**
+     * Find list posts with user who created this post from database
+     * @param userId
+     * @return list posts which user created
+     */
     @Override
     public List<PostModel> findAllByUserId(Long userId) {
         StringBuilder sql = new StringBuilder("SELECT * ");
@@ -143,6 +187,13 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
         return query(sql.toString(), new PostMapper(), userId);
     }
 
+    /**
+     * Find list posts with user who created this post and pagination(page, limit) from database
+     * @param userId
+     * @param page
+     * @param limit
+     * @return List posts which user created with page and limit of 1 page
+     */
     @Override
     public List<PostModel> findAllByUserId(Long userId, int page, int limit) {
         StringBuilder sql = new StringBuilder(" SELECT * ");
@@ -151,11 +202,16 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
         sql.append(" LIMIT ? OFFSET ?");
 
         // offset = (page -1 ) * limit (MySQL count from 0)
-        // limit = limit - 1
         int offset = (page - 1) * limit;
         return query(sql.toString(), new PostMapper(), userId, limit, offset);
     }
 
+    /**
+     * Find list posts with user who created this post and status of that post
+     * @param userId
+     * @param postStatus
+     * @return list posts which user created and status of this post
+     */
     @Override
     public List<PostModel> findAllByUserIdAndStatus(Long userId, int postStatus) {
         StringBuilder sql = new StringBuilder("SELECT * ");
@@ -164,6 +220,12 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
         return query(sql.toString(), new PostMapper(), userId, postStatus);
     }
 
+    /**
+     * Find list post top like highest with status
+     * @param top
+     * @param status
+     * @return List posts top like highest with status
+     */
     @Override
     public List<PostModel> findAllTopByStatus(int top, int status) {
         StringBuilder sql = new StringBuilder("SELECT * ");
@@ -174,6 +236,11 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
         return query(sql.toString(), new PostMapper(), status, top);
     }
 
+    /**
+     * Count quantity post with post status from database
+     * @param status
+     * @return quantity post with status
+     */
     @Override
     public int countByStatus(int status) {
         StringBuilder sql = new StringBuilder("SELECT count(*) ");
@@ -182,6 +249,12 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
         return count(sql.toString(), status);
     }
 
+    /**
+     * Count quantity post with post status and search text from database
+     * @param status
+     * @param search
+     * @return quantity post with status and search text
+     */
     @Override
     public int countByStatusAndSearch(int status, String search) {
         StringBuilder sql = new StringBuilder("SELECT count(*) ");
@@ -192,6 +265,11 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
         return count(sql.toString(), status, search, search);
     }
 
+    /**
+     * Count quantity post with user who created this from database
+     * @param userId
+     * @return quantity post with user who created this
+     */
     @Override
     public int countByUserId(Long userId) {
         StringBuilder sql = new StringBuilder("SELECT count(*) ");
@@ -200,6 +278,10 @@ public class PostDaoImpl extends AbstractDao<PostModel> implements IPostDao {
         return count(sql.toString(), userId);
     }
 
+    /**
+     * Count quantity all post form database
+     * @return quantity all post
+     */
     @Override
     public int count() {
         StringBuilder sql = new StringBuilder("SELECT count(*) ");

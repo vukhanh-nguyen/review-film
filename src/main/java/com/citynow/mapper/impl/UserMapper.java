@@ -8,8 +8,17 @@ import com.citynow.utils.ConvertUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Map data to user model
+ * @author VuKhanh
+ */
 public class UserMapper implements IMapper<UserModel> {
 
+    /**
+     * Map from resultSet to user model
+     * @param rs
+     * @return user model
+     */
     public UserModel map(ResultSet rs) {
 
         UserModel user = new UserModel();

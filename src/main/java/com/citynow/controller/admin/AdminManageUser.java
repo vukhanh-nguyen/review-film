@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Management post under control ADMIN
+ * @author VuKhanh
+ */
 @WebServlet(urlPatterns = {"/admin-manage-user"})
 public class AdminManageUser extends HttpServlet {
 
@@ -18,13 +22,12 @@ public class AdminManageUser extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Pagination
+        // Set default pagination
         int limit = 5;
-
         int page = 1;
 
+        // Get total user -> Count total page
         int totalPage = (int) Math.ceil((double) userService.count() / limit);
-
         try {
             if (req.getParameter("page") != null) {
                 page = Integer.parseInt(req.getParameter("page"));
@@ -32,6 +35,7 @@ public class AdminManageUser extends HttpServlet {
         } catch (Exception e) {
         }
 
+        // Set attribute
         req.setAttribute("users", userService.findAll(page, limit));
         req.setAttribute("totalPage", totalPage);
         req.setAttribute("currentPage", page);

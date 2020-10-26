@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Controller list post user created
+ * @author VuKhanh
+ */
 @WebServlet(urlPatterns = {"/list-posts"})
 public class ListPostController extends HttpServlet {
 
@@ -21,10 +25,13 @@ public class ListPostController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        // Get message to alert for user
         String message = req.getParameter("message");
         if (message != null) {
             req.setAttribute("message", message);
         }
+        // Get user who was login
         UserModel model = (UserModel) SessionUtil.getInstance().getValue(req, "LOGIN");
 
         // Pagination
@@ -32,6 +39,7 @@ public class ListPostController extends HttpServlet {
 
         int page = 1;
 
+        // Count total post user created -> total Page
         int totalPageUrPost = (int) Math.ceil((double) postService.countByUserId(model.getId()) / limit);
         try {
             if (req.getParameter("page") != null) {
@@ -40,6 +48,7 @@ public class ListPostController extends HttpServlet {
         } catch (Exception e) {
         }
 
+        // Find all post which user created
         req.setAttribute("yourposts", postService.findAllByUserId(model.getId(), page, limit));
         req.setAttribute("totalPage", totalPageUrPost);
         req.setAttribute("currentPage", page);

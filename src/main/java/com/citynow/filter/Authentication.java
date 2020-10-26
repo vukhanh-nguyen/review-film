@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Filter before access any page
+ */
 @WebFilter({"/*"})
 public class Authentication implements Filter {
 

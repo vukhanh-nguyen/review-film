@@ -23,6 +23,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Date;
 
+/**
+ * Represent API user
+ * @author VuKhanh
+ */
 @WebServlet(urlPatterns = {"/api-user"})
 public class UserAPI extends HttpServlet {
 
@@ -30,14 +34,25 @@ public class UserAPI extends HttpServlet {
 
     IRoleService roleService = new RoleServiceImpl();
 
+    /**
+     * Create a new user
+     * @param req
+     * @param resp
+     * @return Information user after created
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
-        UserModel userModel = mapper.readValue(ConvertUtil.convertJsonToString(req.getReader()), UserModel.class);
-        userModel.setRole(roleService.findOne(Constant.ROLE_USER));
 
+        // Get data json form ajax request -> mapping to user model
+        UserModel userModel = mapper.readValue(ConvertUtil.convertJsonToString(req.getReader()), UserModel.class);
+        // Set role default for a new account is USER
+        userModel.setRole(roleService.findOne(Constant.ROLE_USER));
+        // Set value default for a new account
         userModel.setAvatar("");
         userModel.setStatus(Constant.USER_ACTIVE_STATUS);
         userModel.setQuantityUpvote(0L);
@@ -69,6 +84,13 @@ public class UserAPI extends HttpServlet {
         mapper.writeValue(resp.getOutputStream(), userService.save(userModel));
     }
 
+    /**
+     * Update information user
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserModel model = (UserModel) SessionUtil.getInstance().getValue(req, "LOGIN");
@@ -76,11 +98,13 @@ public class UserAPI extends HttpServlet {
 
         req.setCharacterEncoding("UTF-8");
 
+        // Get data json form ajax request
         String json = ConvertUtil.convertJsonToString(req.getReader());
         JSONObject dataJson = new JSONObject(json);
         String oldPassword = null;
         Long id = -1L;
         try {
+            // Get password from data json
             oldPassword = dataJson.getString("oldpassword");
         } catch (Exception e) {
         }
@@ -90,8 +114,8 @@ public class UserAPI extends HttpServlet {
         }
         UserModel userModel;
 
+        // Check if old password not empty -> do change password
         if (oldPassword != null) {
-            // Change password
             userModel = (UserModel) SessionUtil.getInstance().getValue(req, "LOGIN");
             if (userModel != null && BCrypt.checkpw(oldPassword, userModel.getPassword())) {
                 String newPassword = dataJson.getString("password");
@@ -104,9 +128,10 @@ public class UserAPI extends HttpServlet {
                 }
             }
         } else if (id.equals(model.getId())) {
-            //update profile
+            // if old password empty and user is login match account need change -> Accept change info user
             req.setCharacterEncoding("UTF-8");
             resp.setContentType("application/json");
+            // Get data json form ajax request -> mapping to user model
             userModel = mapper.readValue(json, UserModel.class);
             UserModel oldUser = userService.findOne(userModel.getId());
             userModel.setValue(oldUser);
@@ -128,6 +153,7 @@ public class UserAPI extends HttpServlet {
             SessionUtil.getInstance().putValue(req, "LOGIN", userModel);
             mapper.writeValue(resp.getOutputStream(), userModel);
         } else {
+            // if old password empty and user is login match account need change -> do nothing
             mapper.writeValue(resp.getOutputStream(), "{}");
         }
     }

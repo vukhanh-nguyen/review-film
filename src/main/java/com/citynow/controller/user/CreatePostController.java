@@ -11,11 +11,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Controller page create post
+ * @author VuKhanh
+ */
 @WebServlet(urlPatterns = {"/post"})
 public class CreatePostController extends HttpServlet {
 
     IPostService postService = new PostServiceImpl();
 
+    /**
+     * Return page create new post
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String message = req.getParameter("message");

@@ -16,6 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Controller page detail post
+ * @author VuKhanh
+ */
 @WebServlet(urlPatterns = {"/detail-post"})
 public class DetailPostController extends HttpServlet {
 
@@ -25,21 +29,28 @@ public class DetailPostController extends HttpServlet {
 
     IVoteService voteService = new VoteServiceImpl();
 
+    /**
+     * Return page detail post
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String message = req.getParameter("message");
         if (message != null) {
             req.setAttribute("message", message);
         }
-
-
         Long idPost = Long.parseLong(req.getParameter("id"));
 
         UserModel model = (UserModel) SessionUtil.getInstance().getValue(req, "LOGIN");
         if (model != null) {
+            // Set attribute vote if user voted this post
             req.setAttribute("vote", voteService.findOneByUserIdAndPostId(model.getId(), idPost));
         }
 
+        // Set default for pagination
         int limit = 5;
         int page = 1;
         int totalPage;
@@ -48,6 +59,7 @@ public class DetailPostController extends HttpServlet {
                 page = Integer.parseInt(req.getParameter("page"));
             }
         }catch (Exception e){}
+        // Get total comment of post -> Count total page
         totalPage = (int) Math.ceil((double) commentService.countAllByPostId(idPost) / limit);
 
         req.setAttribute("totalPage", totalPage);
@@ -59,6 +71,13 @@ public class DetailPostController extends HttpServlet {
         req.getRequestDispatcher("/views/user/detailPost.jsp").forward(req, resp);
     }
 
+    /**
+     * Return a page detail post
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/views/user/detailPost.jsp").forward(req, resp);

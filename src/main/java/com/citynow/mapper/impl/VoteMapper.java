@@ -8,8 +8,17 @@ import com.citynow.model.VoteModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Map data to vote model
+ * @author VuKhanh
+ */
 public class VoteMapper implements IMapper<VoteModel> {
 
+    /**
+     * Map from resultSet to vote model
+     * @param rs
+     * @return vote model
+     */
     @Override
     public VoteModel map(ResultSet rs) {
         VoteModel voteModel = new VoteModel();

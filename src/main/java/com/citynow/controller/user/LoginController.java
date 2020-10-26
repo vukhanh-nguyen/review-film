@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Controller of login age
+ */
 @WebServlet(urlPatterns = {"/login"})
 public class LoginController extends HttpServlet {
 
@@ -21,6 +24,8 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        // Get message to alert for user
         String message = req.getParameter("message");
         if (message != null) {
             req.setAttribute("message", message);
@@ -33,13 +38,20 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest req,
                           HttpServletResponse resp)
             throws ServletException, IOException {
+
+        // Get info account from ajax
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
+        // Find user from database
         UserModel model = userService.fineOneByUsername(username);
+
+        // Check password wrong
         if (model != null && !BCrypt.checkpw(password, model.getPassword())) {
             model = null;
         }
+
+        // Check status account not was banned
         if (model != null && model.getStatus() != Constant.USER_BAN_STATUS) {
             SessionUtil.getInstance().putValue(req, "LOGIN", model);
             if (model.getRole().getCode().equals("USER")) {
@@ -48,9 +60,11 @@ public class LoginController extends HttpServlet {
                 resp.sendRedirect(req.getContextPath() + "/admin-manage-post");
             }
         } else if (model != null && model.getStatus() == Constant.USER_BAN_STATUS) {
+            // If status account is banned -> Alert to user
             req.setAttribute("message", "account-banned");
             req.getRequestDispatcher("/views/user/login.jsp").forward(req, resp);
         } else {
+            // Alert to user account not exist
             req.setAttribute("message", "wrong-account");
             req.getRequestDispatcher("/views/user/login.jsp").forward(req, resp);
         }

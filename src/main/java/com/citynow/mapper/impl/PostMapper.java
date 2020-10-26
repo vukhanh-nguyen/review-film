@@ -7,8 +7,17 @@ import com.citynow.model.UserModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Map data to post model
+ * @author VuKhanh
+ */
 public class PostMapper implements IMapper<PostModel> {
 
+    /**
+     * Map from resultSet to post model
+     * @param rs
+     * @return post model
+     */
     public PostModel map(ResultSet rs) {
         PostModel postModel = new PostModel();
         try {

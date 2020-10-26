@@ -8,8 +8,17 @@ import com.citynow.model.UserModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Map data to comment model
+ * @author VuKhanh
+ */
 public class CommetMapper implements IMapper<CommentModel> {
 
+    /**
+     * Map from resultSet to comment model
+     * @param rs
+     * @return comment model
+     */
     public CommentModel map(ResultSet rs) {
         CommentModel commentModel = new CommentModel();
         try {

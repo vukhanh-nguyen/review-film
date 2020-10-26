@@ -3,7 +3,7 @@ package com.citynow.model;
 import java.util.Date;
 
 /**
- * Represents an comment of user
+ * Represents a comment of user
  * @author VuKhanh
  */
 public class CommentModel {
