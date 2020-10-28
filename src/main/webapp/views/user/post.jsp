@@ -196,6 +196,8 @@
             var data = {};
             var formData = $('#createPostForm').serializeArray();
 
+            data["postRate"] = document.getElementById("standard-select").value;
+
             $.each(formData, function (i, v) {
                 data["" + v.name + ""] = v.value;
             });

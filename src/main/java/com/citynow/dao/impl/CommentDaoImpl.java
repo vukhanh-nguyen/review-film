@@ -112,7 +112,7 @@ public class CommentDaoImpl extends AbstractDao<CommentModel> implements ICommen
      * @param postId
      */
     @Override
-    public void delete(Long postId) {
+    public void deleteByPostId(Long postId) {
         String sql = "DELETE FROM comment WHERE comment.post_id = ?";
         update(sql, postId);
     }

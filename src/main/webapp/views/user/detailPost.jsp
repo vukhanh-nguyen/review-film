@@ -99,7 +99,7 @@
         <a href="<c:url value='/home?page=1&limit=5'/>" class="cbutton cbutton--blue cbutton--big">List Posts</a>
     </div>
     <div class="row">
-        <div class="col-2">
+        <div class="col-3">
             <div class="box-avatar">
                 <div class="box-avatar__avatar">
                     <c:if test="${not empty post.user.avatar}">
@@ -121,8 +121,59 @@
                     </p>
                 </div>
             </div>
+            <br>
+            <c:if test="${sessionScope.LOGIN != null}">
+                <div class="comment-box">
+                    <c:if test="${message == 'fail'}">
+                        <div class="alert alert-danger alert-custom">
+                            Fail to comment
+                        </div>
+                    </c:if>
+                    <c:if test="${sessionScope.LOGIN.status == 0}">
+                        <div class="alert alert-danger alert-custom" style="width:100%">
+                            Can not comment
+                        </div>
+                    </c:if>
+                    <c:if test="${sessionScope.LOGIN.status != 0}">
+                        <div class="comment-box__new validate-form">
+                            <div class="validate-input"
+                                 data-validate="Comment is required">
+                                <input id="typeComment" style="margin-left:2rem" class="input" type="text" id="title"
+                                       name="title" autocomplete="off" placeholder="Type to comment">
+                            </div>
+
+                            <a id="comment" class="cbutton cbutton--blue cbutton--small">Comment</a>
+                        </div>
+                    </c:if>
+                    <c:forEach var="item" items="${comments}">
+                        <div class="comment-box__item">
+                            <div class="comment-box__item__logo">
+                                <c:if test="${not empty item.user.avatar}">
+                                    <img src="<c:out value="${item.user.avatar}"/>" alt="">
+                                </c:if>
+                                <c:if test="${empty item.user.avatar}">
+                                    <img src="<c:url value="/images/NoProfile.png"/>" alt="">
+                                </c:if>
+                            </div>
+                            <div class="comment-box__item__content">
+                                <p><span class="u-bold">${item.user.fullname}</span> <span>${item.content}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </c:forEach>
+                    <div class="pagination-wrap">
+                        <ul class="pagination" id="pagination"></ul>
+                    </div>
+                </div>
+            </c:if>
+            <c:if test="${sessionScope.LOGIN == null}">
+                <div class="comment-box comment-box--disable">
+                    <a href="<c:url value="/login"/>" class="cbutton cbutton--blue cbutton--small">LOGIN</a>
+                    <p>Sign in to comment</p>
+                </div>
+            </c:if>
         </div>
-        <div class="col-7">
+        <div class="col-9">
             <div class="box-detail-post">
                 <div class="box-detail-post__heading">
                     ${post.title}
@@ -184,59 +235,10 @@
                 </div>
             </div>
         </div>
-        <div class="col-3">
-            <c:if test="${sessionScope.LOGIN != null}">
-                <div class="comment-box">
-                    <c:if test="${message == 'fail'}">
-                        <div class="alert alert-danger alert-custom">
-                            Fail to comment
-                        </div>
-                    </c:if>
-                    <c:if test="${sessionScope.LOGIN.status == 0}">
-                        <div class="alert alert-danger alert-custom" style="width:100%">
-                            Can not comment
-                        </div>
-                    </c:if>
-                    <c:if test="${sessionScope.LOGIN.status != 0}">
-                        <div class="comment-box__new validate-form">
-                            <div class="validate-input"
-                                 data-validate="Comment is required">
-                                <input id="typeComment" style="margin-left:2rem" class="input" type="text" id="title"
-                                       name="title" autocomplete="off" placeholder="Type to comment">
-                            </div>
+        <%--<div class="col-3">
 
-                            <a id="comment" class="cbutton cbutton--blue cbutton--small">Comment</a>
-                        </div>
-                    </c:if>
-                    <c:forEach var="item" items="${comments}">
-                        <div class="comment-box__item">
-                            <div class="comment-box__item__logo">
-                                <c:if test="${not empty item.user.avatar}">
-                                    <img src="<c:out value="${item.user.avatar}"/>" alt="">
-                                </c:if>
-                                <c:if test="${empty item.user.avatar}">
-                                    <img src="<c:url value="/images/NoProfile.png"/>" alt="">
-                                </c:if>
-                            </div>
-                            <div class="comment-box__item__content">
-                                <p><span class="u-bold">${item.user.fullname}</span> <span>${item.content}</span>
-                                </p>
-                            </div>
-                        </div>
-                    </c:forEach>
-                    <div class="pagination-wrap">
-                        <ul class="pagination" id="pagination"></ul>
-                    </div>
-                </div>
-            </c:if>
-            <c:if test="${sessionScope.LOGIN == null}">
-                <div class="comment-box comment-box--disable">
-                    <a href="<c:url value="/login"/>" class="cbutton cbutton--blue cbutton--small">LOGIN</a>
-                    <p>Sign in to comment</p>
-                </div>
-            </c:if>
 
-        </div>
+        </div>--%>
     </div>
 </div>
 <script src="<c:url value="/template/paging/jquery.twbsPagination.js"/>"></script>
@@ -272,7 +274,11 @@
             data: JSON.stringify(data),
             dataType: 'json',
             success: function (result) {
-                location.reload()
+                if (result == "{}"){
+                    window.location.href = '<c:url value="/detail-post"/>' + "?id=${post.id}" + "&message=fail";
+                }else{
+                    location.reload()
+                }
             },
             error: function (error) {
                 window.location.href = '<c:url value="/detail-post"/>' + "?id=${post.id}" + "&message=fail";

@@ -32,6 +32,11 @@
                 REGISTER FAIL
             </div>
         </c:if>
+        <c:if test="${message == 'account_exist'}">
+            <div class="alert alert-danger alert-custom">
+                Username is exist. Please try again
+            </div>
+        </c:if>
     </c:if>
     <div id="formContent">
         <!-- Logo -->
@@ -117,7 +122,11 @@
                 data: JSON.stringify(data),
                 dataType: 'json',
                 success: function (result) {
-                    window.location.href = "${login}?message=success";
+                    if (result == "{}"){
+                        window.location.href = "${register}?message=account_exist";
+                    }else{
+                        window.location.href = "${login}?message=success";
+                    }
                 },
                 error: function (error) {
                     window.location.href = "${register}?message=fail";

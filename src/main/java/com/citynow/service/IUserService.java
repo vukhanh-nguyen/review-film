@@ -71,4 +71,10 @@ public interface IUserService {
      * @return total user
      */
     int count();
+
+    /**
+     * Service find one by user name
+     * @return user model
+     */
+    UserModel findOneByUsername(String username);
 }

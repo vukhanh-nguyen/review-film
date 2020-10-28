@@ -285,13 +285,13 @@
         var searchText = $('#search-input').val();
 
         if (searchText == "") {
-            window.location = '<c:url value="/home"/>' + "?page=" + currentPage + "&limit=" + limit;
+            window.location = '<c:url value="/home"/>' + "?page=" + 1 + "&limit=" + 5;
         } else {
-            window.location = '<c:url value="/home"/>' + "?page=" + currentPage + "&limit=" + limit + "&search=" + searchText;
+            window.location = '<c:url value="/home"/>' + "?page=" + 1 + "&limit=" + 5 + "&search=" + searchText;
         }
-
     }
-</script>
+
+</script>/
 <script src="<c:url value="/js/pagination.js"/>"></script>
 </body>
 </html>

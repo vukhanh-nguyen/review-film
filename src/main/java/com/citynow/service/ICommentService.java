@@ -58,5 +58,5 @@ public interface ICommentService {
      * Service delete comment
      * @param id
      */
-    void delete(Long id);
+    void deleteByPostId(Long id);
 }

@@ -30,6 +30,8 @@ public class PostAPI extends HttpServlet {
 
     IPostService postService = new PostServiceImpl();
 
+    IUserService userService = new UserServiceImpl();
+
     /**
      * Create a new post
      * @param req
@@ -116,14 +118,24 @@ public class PostAPI extends HttpServlet {
 
         // Get id list post need delete
         Long[] ids = new Long[idsJson.length()];
+        Long[] idUsers = new Long[idsJson.length()];
         for (int i = 0; i <idsJson.length(); i++) {
             ids[i] = idsJson.getLong(i);
+            idUsers[i] = postService.findOne(ids[i]).getUser().getId();
         }
         try{
             // Delete post from database
             postService.delete(ids);
-            mapper.writeValue(resp.getOutputStream(), "{}");
         }catch (Exception e){}
+        // Change user vote (total vote of user write this post)
+        for (Long i:
+                idUsers) {
+            Long idUser = postService.findOne(i).getUser().getId();
+            UserModel author = userService.findOne(idUser);
+            author.setQuantityUpvote(userService.countTotalLikedByUserId(author.getId()));
+            userService.update(author);
+        }
 
+        mapper.writeValue(resp.getOutputStream(), "{}");
     }
 }

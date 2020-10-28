@@ -2,8 +2,10 @@ package com.citynow.service.impl;
 
 import com.citynow.dao.ICommentDao;
 import com.citynow.dao.IPostDao;
+import com.citynow.dao.IVoteDao;
 import com.citynow.dao.impl.CommentDaoImpl;
 import com.citynow.dao.impl.PostDaoImpl;
+import com.citynow.dao.impl.VoteDaoImpl;
 import com.citynow.model.PostModel;
 import com.citynow.model.UserModel;
 import com.citynow.service.IPostService;
@@ -15,6 +17,8 @@ public class PostServiceImpl implements IPostService {
     IPostDao postDao = new PostDaoImpl();
 
     ICommentDao commentDao = new CommentDaoImpl();
+
+    IVoteDao voteDao = new VoteDaoImpl();
 
     /**
      * Service Find all post
@@ -191,7 +195,8 @@ public class PostServiceImpl implements IPostService {
     public void delete(Long[] ids) {
         for (Long id:
              ids) {
-            commentDao.delete(id);
+            commentDao.deleteByPostId(id);
+            voteDao.deleteByPostId(id);
             postDao.delete(id);
         }
     }

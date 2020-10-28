@@ -64,5 +64,5 @@ public interface ICommentDao {
      * Delete comment from database
      * @param postId
      */
-    void delete(Long postId);
+    void deleteByPostId(Long postId);
 }

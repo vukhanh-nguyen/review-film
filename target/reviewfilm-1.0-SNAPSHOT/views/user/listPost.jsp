@@ -188,18 +188,20 @@
     });
 
     function deletePost(data) {
-        $.ajax({
-            url: '<c:url value="/api-post"/>',
-            type: 'DELETE',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            success: function (result) {
-                window.location.href = "<c:url value="/list-posts"/>" + "?message=success";
-            },
-            error: function (error) {
-                window.location.href = "<c:url value="/list-posts"/>" + "?message=fail";
-            }
-        });
+        if (data['ids'] !=""){
+            $.ajax({
+                url: '<c:url value="/api-post"/>',
+                type: 'DELETE',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (result) {
+                    window.location.href = "<c:url value="/list-posts"/>" + "?message=success";
+                },
+                error: function (error) {
+                    window.location.href = "<c:url value="/list-posts"/>" + "?message=fail";
+                }
+            });
+        }
     }
 </script>
 <script src="<c:url value="/js/pagination.js"/>"></script>

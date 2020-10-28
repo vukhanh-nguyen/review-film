@@ -65,6 +65,12 @@ public interface IVoteDao {
     void delete(Long id);
 
     /**
+     * Delete vote by Post ID from database
+     * @param postId
+     */
+    void deleteByPostId(Long postId);
+
+    /**
      * Count total vote of user (like or dislike)
      * @param userId
      * @return total vote of user

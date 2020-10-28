@@ -108,4 +108,9 @@ public class UserServiceImpl implements IUserService {
     public int count() {
         return userDao.count();
     }
+
+    @Override
+    public UserModel findOneByUsername(String username) {
+        return userDao.findByUserName(username);
+    }
 }

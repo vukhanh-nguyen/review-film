@@ -119,6 +119,12 @@ public class VoteDaoImpl extends AbstractDao<VoteModel> implements IVoteDao {
         update(sql, id);
     }
 
+    @Override
+    public void deleteByPostId(Long postId) {
+        String sql = "DELETE FROM VOTE WHERE post_id = ?";
+        update(sql, postId);
+    }
+
     /**
      * Count total vote of user (like or dislike)
      * @param userId

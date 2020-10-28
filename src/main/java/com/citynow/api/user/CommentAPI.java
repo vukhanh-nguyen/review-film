@@ -94,9 +94,16 @@ public class CommentAPI extends HttpServlet {
             commentModel.setUser(userModel);
             commentModel.setPost(postService.findOne(commentModel.getPost_id()));
             // Save comment to database
-            commentModel = commentService.save(commentModel);
-            // Response model json
-            mapper.writeValue(resp.getOutputStream(), commentModel);
+            if (commentModel.getPost().getStatus() != Constant.POST_PENDING_STATUS)
+            {
+                commentModel = commentService.save(commentModel);
+                // Response model json
+                mapper.writeValue(resp.getOutputStream(), commentModel);
+            }else{
+                // Comment in post pending
+                mapper.writeValue(resp.getOutputStream(), "{}");
+            }
+
         }
     }
 }

@@ -81,7 +81,12 @@ public class UserAPI extends HttpServlet {
         if (!regexEmail) {
             userModel.setEmail(null);
         }
-        mapper.writeValue(resp.getOutputStream(), userService.save(userModel));
+        if (userService.fineOneByUsername(userModel.getUsername()) !=null)
+        {
+            mapper.writeValue(resp.getOutputStream(), "{}");
+        }else{
+            mapper.writeValue(resp.getOutputStream(), userService.save(userModel));
+        }
     }
 
     /**

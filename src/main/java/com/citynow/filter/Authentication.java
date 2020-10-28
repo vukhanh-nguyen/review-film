@@ -105,7 +105,7 @@ public class Authentication implements Filter {
                 Long id = Long.parseLong(request.getParameter("id"));
                 PostModel postModel = postService.findOne(id);
 
-                if (postModel.getStatus() == Constant.POST_APPROVE_STATUS) {
+                if (postModel.getStatus() == Constant.POST_APPROVE_STATUS || model.getRole().getCode().equals("ADMIN")) {
                     // CHECK INFOR USER -> TRUE accept to access
                     chain.doFilter(servletRequest, servletResponse);
                 } else {

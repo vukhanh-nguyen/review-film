@@ -80,7 +80,7 @@ public class CommentServiceImpl implements ICommentService {
      * @param id
      */
     @Override
-    public void delete(Long id) {
-        commentDao.delete(id);
+    public void deleteByPostId(Long id) {
+        commentDao.deleteByPostId(id);
     }
 }
